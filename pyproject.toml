@@ -1,0 +1,21 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "datura"
+version = "0.0.1"
+authors = [
+    {name = "Peter Weir", email = "peter.weir@gmail.com"},
+]
+description = "A small pure Python data visualization package"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Documentation = "https://github.com/ptweir/datura"
+Source = "https://github.com/ptweir/datura"
