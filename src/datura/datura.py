@@ -124,7 +124,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_axis_text_vb += f""" <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {x_ticks[-1]} </text> </g>"""
         x_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{x_axis_pts_vb}" />"""
 
-    if x_label is not None:
+    if x_label is None:
+        x_axis_label = ''
+    else:
         x_label_x_vb = .5*vb_width
         x_label_y_vb = vb_height - tick_length
         x_axis_label = f"""<text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> {x_label} </text>"""
@@ -150,7 +152,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         y_axis_text_vb += f""" <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="black" text-anchor="end" dominant-baseline="middle" > {y_ticks[-1]} </text> </g>"""
         y_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{y_axis_pts_vb}" />"""
 
-    if y_label is not None:
+    if y_label is None:
+        y_axis_label = ''
+    else:
         y_label_x_vb = tick_length
         y_label_y_vb = .5 * vb_height
         y_axis_label = f"""<text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate({y_label_x_vb},{y_label_y_vb}) rotate(270)" font-family="sans-serif" font-size="10"> {y_label} </text>"""
