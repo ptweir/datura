@@ -160,7 +160,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         y_axis_label = f"""<text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate({y_label_x_vb},{y_label_y_vb}) rotate(270)" font-family="sans-serif" font-size="10"> {y_label} </text>"""
 
 
-    if title is not None:
+    if title is None:
+        title_vb = ''
+    else:
         title_x_vb = .5*vb_width
         title_y_vb = tick_length
         title_vb = f"""<text x="{title_x_vb}" y="{title_y_vb}" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"> {title} </text>"""
@@ -190,6 +192,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     return(full_figure)
 
+"""
 labels = ['black', 'red', 'blue', 'hi', 'hi']
 label_nudges = [0, -2, 5, 0, 0]
 x_label = 'x label'
@@ -217,3 +220,4 @@ yls = [yl1, yl2, yl3]
 
 plot(xs, ys, yus=yus, yls=yls, x_label='x label', y_label='y label', title='title',
 labels=labels, label_nudges=label_nudges, x_ticks=[-5, -10, 0, 5, 10], y_ticks=[-50, 0, 50, 100])
+"""
