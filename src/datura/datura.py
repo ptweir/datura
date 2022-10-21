@@ -22,6 +22,25 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     vb_width_in = vb_width*.0096*2
     vb_height_in = vb_height*.0096*2
 
+    # the following conditionals are just to account for what I expect to be common sources of confusion
+    if type(xs) is not list:
+        try:
+            xs = xs.T.tolist() # convert from numpy array
+        except:
+            xs = xs.values.T.tolist() # convert from pandas dataframe
+
+    if type(ys) is not list:
+        try:
+            ys = ys.T.tolist() # convert from numpy array
+        except:
+            ys = ys.values.T.tolist() # convert from pandas dataframe
+
+    if not all(isinstance(_y, list) for _y in ys):
+        ys = [ys] # convert to list of lists
+
+    if not all(isinstance(_x, list) for _x in xs):
+        xs = [xs for i in range(len(ys))]  # convert to list of lists
+
     x_min = min([min(x) for x in xs])
     x_max = max([max(x) for x in xs])
 
@@ -57,6 +76,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     datalines = []
     for line_ind, x in enumerate(xs):
         y = ys[line_ind]
+
+        assert len(x) == len(y), 'all xs and ys should be the same length'
+
         x_vb = [x2vb(xi) for xi in x]
         y_vb = [y2vb(yi) for yi in y]
         dataline = ''
