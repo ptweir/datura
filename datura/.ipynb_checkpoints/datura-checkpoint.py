@@ -1,8 +1,8 @@
-
+import math
 
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_label=None, y_label=None, title=None,
-        colors=['black', '#d32323', '#0073bb', '#41a700'],
+        colors=None,
         labels=None, label_nudges=None,
         x_ticks=None, y_ticks=None):
     """
@@ -40,6 +40,22 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     if not all(isinstance(_x, list) for _x in xs):
         xs = [xs for i in range(len(ys))]  # convert to list of lists
+
+    if colors is None:
+        colors = ['black', 'blue', 'red', 'green', 'orange', 'violet']
+        if len(ys) > len(colors):
+            num_colors = len(ys)
+            reds = [min(255, x*255*2/num_colors) for x in range(num_colors)]
+            greens = [min(255, x*255*2/num_colors - 255) for x in range(num_colors)]
+            blues = [0 for x in range(num_colors)]
+            colors = []
+            for color_ind in range(num_colors):
+                red = math.floor(min(255, color_ind*256*2/num_colors))
+                green = math.floor(max(0, color_ind*256*2/num_colors - 256))
+                this_color = 'rgb(' + str(red) + ', '+ str(green) +', 0)'
+                colors.append(this_color)
+
+
 
     x_min = min([min(x) for x in xs])
     x_max = max([max(x) for x in xs])

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>datura.line_plot &mdash; datura 0.0.5 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> datura
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">datura</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datura</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>datura.line_plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for datura.line_plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<div class="viewcode-block" id="plot"><a class="viewcode-back" href="../../datura.html#datura.line_plot.plot">[docs]</a><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;plot.svg&#39;</span><span class="p">,</span>
+        <span class="n">x_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an .svg file containing a plot of the data in lists ys and xs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">+=</span> <span class="s1">&#39;.svg&#39;</span>
+    <span class="k">if</span> <span class="n">label_nudges</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">label_nudges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">]</span>
+
+    <span class="n">XBUF</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">YBUF</span> <span class="o">=</span> <span class="mf">0.13</span>
+    <span class="n">tick_length</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">vb_width</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">vb_height</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="n">vb_width_in</span> <span class="o">=</span> <span class="n">vb_width</span><span class="o">*</span><span class="mf">.0096</span><span class="o">*</span><span class="mi">2</span>
+    <span class="n">vb_height_in</span> <span class="o">=</span> <span class="n">vb_height</span><span class="o">*</span><span class="mf">.0096</span><span class="o">*</span><span class="mi">2</span>
+
+    <span class="c1"># the following conditionals are just to account for what I expect to be common sources of confusion</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># convert from numpy array</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># convert from pandas dataframe</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># convert from numpy array</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># convert from pandas dataframe</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_y</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">_y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">):</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">ys</span><span class="p">]</span> <span class="c1"># convert to list of lists</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">_x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">):</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">))]</span>  <span class="c1"># convert to list of lists</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">]</span> <span class="c1"># convert to list with one string</span>
+        
+
+    <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;violet&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">):</span>
+            <span class="n">num_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+            <span class="n">reds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="mi">255</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">)]</span>
+            <span class="n">greens</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="mi">255</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span> <span class="o">-</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">)]</span>
+            <span class="n">blues</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">)]</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">color_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">):</span>
+                <span class="n">red</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span><span class="p">))</span>
+                <span class="n">green</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span> <span class="o">-</span> <span class="mi">256</span><span class="p">))</span>
+                <span class="n">this_color</span> <span class="o">=</span> <span class="s1">&#39;rgb(&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">red</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">green</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;, 0)&#39;</span>
+                <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_color</span><span class="p">)</span>
+
+
+
+    <span class="n">x_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">])</span>
+    <span class="n">x_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">yus</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">yls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">all_ys</span> <span class="o">=</span> <span class="n">ys</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">all_ys</span> <span class="o">=</span> <span class="n">ys</span> <span class="o">+</span> <span class="n">yus</span> <span class="o">+</span> <span class="n">yls</span>
+
+    <span class="n">y_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">all_ys</span><span class="p">])</span>
+    <span class="n">y_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">all_ys</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">x_ticks</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">y_ticks</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="n">y_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
+
+    <span class="n">x_range</span> <span class="o">=</span> <span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span>
+    <span class="k">if</span> <span class="n">x_range</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x_range</span> <span class="o">=</span> <span class="mf">1.</span>
+
+    <span class="n">y_range</span> <span class="o">=</span> <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span>
+    <span class="k">if</span> <span class="n">y_range</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">y_range</span> <span class="o">=</span> <span class="mf">1.</span>
+
+    <span class="k">def</span> <span class="nf">x2vb</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">x_sc</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_range</span>
+        <span class="k">return</span> <span class="n">x_sc</span> <span class="o">*</span> <span class="n">vb_width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">XBUF</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">vb_width</span> <span class="o">*</span> <span class="n">XBUF</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">y2vb</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">y_sc</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">y_range</span><span class="p">)</span> <span class="c1"># reflect to account for top-left origin in svg</span>
+        <span class="k">return</span> <span class="n">y_sc</span> <span class="o">*</span> <span class="n">vb_height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">YBUF</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">vb_height</span> <span class="o">*</span> <span class="n">YBUF</span><span class="p">)</span>
+
+    <span class="n">datalines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s1">&#39;all xs and ys should be the same length&#39;</span>
+
+        <span class="n">x_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">x2vb</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">y_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">y2vb</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+        <span class="n">dataline</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">xy_vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_vb</span><span class="p">,</span> <span class="n">y_vb</span><span class="p">):</span>
+            <span class="n">dataline</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+
+        <span class="n">datalines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataline</span><span class="p">)</span>
+
+    <span class="n">polylines</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">line_labels</span> <span class="o">=</span> <span class="s1">&#39;&lt;g font-family=&quot;sans-serif&quot; font-size=&quot;10&quot; &gt;&#39;</span>
+    <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">dataline</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datalines</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">line_ind</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+        <span class="n">polylines</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;polyline fill=&quot;none&quot; stroke=&quot;</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">&quot; stroke-width=&quot;1&quot; points=&quot;</span><span class="si">{</span><span class="n">dataline</span><span class="si">}</span><span class="s2">&quot; /&gt;</span><span class="se">\n</span><span class="s2"> &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+            <span class="n">label_nudge</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">label_nudges</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+            <span class="n">label_color</span> <span class="o">=</span> <span class="n">color</span>
+            <span class="n">x_label_vb</span> <span class="o">=</span> <span class="n">x2vb</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]))</span>
+            <span class="n">max_ind</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]))</span>
+            <span class="n">y_label_vb</span> <span class="o">=</span> <span class="n">y2vb</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="n">line_ind</span><span class="p">][</span><span class="n">max_ind</span><span class="p">])</span>
+            <span class="n">line_labels</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;text x=&quot;</span><span class="si">{</span><span class="n">x_label_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">y_label_vb</span><span class="si">}</span><span class="s2">&quot; dy=&quot;</span><span class="si">{</span><span class="n">label_nudge</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">label_color</span><span class="si">}</span><span class="s2">&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> &lt;/text&gt;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">line_labels</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/g&gt;&#39;</span>
+
+    <span class="k">if</span> <span class="n">yus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">datalines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+            <span class="n">yu</span> <span class="o">=</span> <span class="n">yus</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+            <span class="n">yl</span> <span class="o">=</span> <span class="n">yls</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+            <span class="n">x_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">x2vb</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">yu_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">y2vb</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">yu</span><span class="p">]</span>
+            <span class="n">yl_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">y2vb</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">yl</span><span class="p">]</span>
+            <span class="n">dataline</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">xyu_vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_vb</span><span class="p">,</span> <span class="n">yu_vb</span><span class="p">):</span>
+                <span class="n">dataline</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xyu_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">xyu_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+            <span class="k">for</span> <span class="n">xyl_vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_vb</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">yl_vb</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">dataline</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xyl_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">xyl_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+
+            <span class="n">datalines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataline</span><span class="p">)</span>
+
+        <span class="n">polygons</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">dataline</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datalines</span><span class="p">):</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">line_ind</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+            <span class="n">polygons</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;polygon fill=&quot;</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">&quot; stroke=&quot;none&quot; stroke-width=&quot;0&quot; fill-opacity=&quot;0.2&quot; points=&quot;</span><span class="si">{</span><span class="n">dataline</span><span class="si">}</span><span class="s2">&quot; /&gt;</span><span class="se">\n</span><span class="s2"> &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">x_axis_text_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_ticks</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">x_axis_y_vb</span> <span class="o">=</span> <span class="n">vb_height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">YBUF</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">tick_length</span>
+        <span class="n">x_axis_yt_vb</span> <span class="o">=</span> <span class="n">vb_height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">YBUF</span><span class="p">)</span> <span class="o">+</span> <span class="n">tick_length</span>
+
+        <span class="n">x_axis_pts_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">x_axis_text_vb</span> <span class="o">=</span> <span class="s1">&#39;&lt;g font-family=&quot;sans-serif&quot; font-size=&quot;10&quot; &gt;&#39;</span>
+        <span class="k">for</span> <span class="n">xt_ind</span><span class="p">,</span> <span class="n">xt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">xt_vb</span> <span class="o">=</span> <span class="n">x2vb</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>
+            <span class="n">xtn_vb</span> <span class="o">=</span> <span class="n">x2vb</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">[</span><span class="n">xt_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">x_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_yt_vb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_y_vb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_y_vb</span><span class="si">}</span><span class="s2"> &quot;&quot;&quot;</span>
+            <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;text x=&quot;</span><span class="si">{</span><span class="n">xt_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; &gt; </span><span class="si">{</span><span class="n">xt</span><span class="si">}</span><span class="s2"> &lt;/text&gt;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="n">x_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_yt_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;text x=&quot;</span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; &gt; </span><span class="si">{</span><span class="n">x_ticks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt;/text&gt; &lt;/g&gt;&quot;&quot;&quot;</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;1&quot; points=&quot;</span><span class="si">{</span><span class="n">x_axis_pts_vb</span><span class="si">}</span><span class="s2">&quot; /&gt;&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">x_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_axis_label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_label_x_vb</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="n">vb_width</span>
+        <span class="n">x_label_y_vb</span> <span class="o">=</span> <span class="n">vb_height</span> <span class="o">-</span> <span class="n">tick_length</span>
+        <span class="n">x_axis_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;text x=&quot;</span><span class="si">{</span><span class="n">x_label_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_label_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;middle&quot; font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt; </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span>
+
+
+    <span class="k">if</span> <span class="n">y_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_axis</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">y_axis_text_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">y_ticks</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">y_axis_x_vb</span> <span class="o">=</span> <span class="n">vb_width</span> <span class="o">*</span> <span class="n">XBUF</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">tick_length</span>
+        <span class="n">y_axis_xt_vb</span> <span class="o">=</span> <span class="n">vb_width</span> <span class="o">*</span> <span class="n">XBUF</span> <span class="o">-</span> <span class="n">tick_length</span>
+
+        <span class="n">y_axis_pts_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">y_axis_text_vb</span> <span class="o">=</span> <span class="s1">&#39;&lt;g font-family=&quot;sans-serif&quot; font-size=&quot;10&quot; &gt;&#39;</span>
+        <span class="k">for</span> <span class="n">yt_ind</span><span class="p">,</span> <span class="n">yt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">yt_vb</span> <span class="o">=</span> <span class="n">y2vb</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+            <span class="n">ytn_vb</span> <span class="o">=</span> <span class="n">y2vb</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">[</span><span class="n">yt_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">y_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">y_axis_xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">y_axis_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">y_axis_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">ytn_vb</span><span class="si">}</span><span class="s2"> &quot;&quot;&quot;</span>
+            <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">yt</span><span class="si">}</span><span class="s2"> &lt;/text&gt;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="n">y_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">y_axis_xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span> <span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">y_ticks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt;/text&gt; &lt;/g&gt;&quot;&quot;&quot;</span>
+        <span class="n">y_axis</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;1&quot; points=&quot;</span><span class="si">{</span><span class="n">y_axis_pts_vb</span><span class="si">}</span><span class="s2">&quot; /&gt;&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">y_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_axis_label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">y_label_x_vb</span> <span class="o">=</span> <span class="n">tick_length</span>
+        <span class="n">y_label_y_vb</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="n">vb_height</span>
+        <span class="n">y_axis_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;text fill=&quot;black&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; transform=&quot;translate(</span><span class="si">{</span><span class="n">y_label_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y_label_y_vb</span><span class="si">}</span><span class="s2">) rotate(270)&quot; font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt; </span><span class="si">{</span><span class="n">y_label</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span>
+
+
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">title_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">title_x_vb</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="n">vb_width</span>
+        <span class="n">title_y_vb</span> <span class="o">=</span> <span class="n">tick_length</span>
+        <span class="n">title_vb</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;text x=&quot;</span><span class="si">{</span><span class="n">title_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">title_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt; </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span>
+
+
+    <span class="n">full_figure</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;</span>
+<span class="s2">    &lt;svg width=&quot;</span><span class="si">{</span><span class="n">vb_width_in</span><span class="si">}</span><span class="s2">in&quot; height=&quot;</span><span class="si">{</span><span class="n">vb_height_in</span><span class="si">}</span><span class="s2">in&quot; viewBox=&quot;0 0 </span><span class="si">{</span><span class="n">vb_width</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">vb_height</span><span class="si">}</span><span class="s2">&quot; </span>
+<span class="s2">    xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span>
+
+<span class="s2">    </span><span class="si">{</span><span class="n">polygons</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">polylines</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">line_labels</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">x_axis</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">x_axis_text_vb</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">x_axis_label</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">y_axis</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">y_axis_text_vb</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">y_axis_label</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    </span><span class="si">{</span><span class="n">title_vb</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">    &lt;/svg&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">out_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">full_figure</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">full_figure</span><span class="p">)</span></div>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">labels = [&#39;black&#39;, &#39;red&#39;, &#39;blue&#39;, &#39;hi&#39;, &#39;hi&#39;]</span>
+<span class="sd">label_nudges = [0, -2, 5, 0, 0]</span>
+<span class="sd">x_label = &#39;x label&#39;</span>
+<span class="sd">y_label = &#39;y label&#39;</span>
+<span class="sd">title = &#39;Chart title&#39;</span>
+
+<span class="sd">x1 = [xx*.1 for xx in range(-100,101)]</span>
+<span class="sd">xs = [x1, x1, x1]</span>
+<span class="sd">#xs = [x1]</span>
+
+<span class="sd">y1 = [(xx*.035)**3 for xx in range(-100,101)]</span>
+<span class="sd">y2 = [(xx*.1)**2 for xx in range(-100,101)]</span>
+<span class="sd">y3 = [int(str(xx**10)[:1]) + int(xx&gt;0)*(xx*.1)**2 for xx in range(-100,101)]</span>
+<span class="sd">ys = [y1, y2, y3]</span>
+
+
+<span class="sd">yu1 = [y+10 for y in y1]</span>
+<span class="sd">yl1 = [y-10 for y in y1]</span>
+<span class="sd">yu2 = y2 # this is a bit of a hack</span>
+<span class="sd">yl2 = y2</span>
+<span class="sd">yu3 = [y*1.3+5 for y in y3]</span>
+<span class="sd">yl3 = [y*.5-10 for y in y3]</span>
+<span class="sd">yus = [yu1, yu2, yu3]</span>
+<span class="sd">yls = [yl1, yl2, yl3]</span>
+
+<span class="sd">plot(xs, ys, yus=yus, yls=yls, x_label=&#39;x label&#39;, y_label=&#39;y label&#39;, title=&#39;title&#39;,</span>
+<span class="sd">labels=labels, label_nudges=label_nudges, x_ticks=[-5, -10, 0, 5, 10], y_ticks=[-50, 0, 50, 100])</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Peter Weir.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
