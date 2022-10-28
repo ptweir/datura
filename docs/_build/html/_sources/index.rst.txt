@@ -11,6 +11,7 @@ Welcome to datura's documentation!
    :caption: Contents:
 
    introduction
+   examples
    modules
 
 
