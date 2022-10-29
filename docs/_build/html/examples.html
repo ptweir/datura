@@ -41,6 +41,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#first-example">First example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-error-patches">Displaying error patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#displaying-data-in-a-pandas-dataframe">Displaying data in a Pandas dataFrame</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">datura</a></li>
@@ -77,8 +78,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datura</span>
 
 <span class="n">datura</span><span class="o">.</span><span class="n">plot</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]],</span> <span class="n">yus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;first_example.svg&#39;</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;my x label&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;my y label&#39;</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;my title&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;better&#39;</span><span class="p">],</span> <span class="n">x_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;first_example.svg&#39;</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;x label&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;y label&#39;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;First Example&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;better&#39;</span><span class="p">],</span> <span class="n">x_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
             <span class="n">y_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -108,7 +109,7 @@
 <span class="n">yls</span> <span class="o">=</span> <span class="p">[</span><span class="n">yl1</span><span class="p">,</span> <span class="n">yl2</span><span class="p">,</span> <span class="n">yl3</span><span class="p">]</span>
 
 <span class="n">datura</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="n">yus</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="n">yls</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;error_patch_example.svg&#39;</span><span class="p">,</span>
-            <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;my x label&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;my y label&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;my title&#39;</span><span class="p">,</span>
+            <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;x label&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;y label&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Error Patch Example&#39;</span><span class="p">,</span>
             <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="n">label_nudges</span><span class="p">,</span> <span class="n">x_ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
             <span class="n">y_ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
 
@@ -116,6 +117,23 @@
 </div>
 <div class="figure" id="id1">
 <img alt="_images/error_patch_example.svg" src="_images/error_patch_example.svg" /><p class="caption"><span class="caption-text">error_patch_example.svg</span></p>
+</div>
+</div>
+<div class="section" id="displaying-data-in-a-pandas-dataframe">
+<h2>Displaying data in a Pandas dataFrame<a class="headerlink" href="#displaying-data-in-a-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datura</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="s1">&#39;y1&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">:</span><span class="mi">100</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">})</span>
+
+<span class="n">datura</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span><span class="s1">&#39;y2&#39;</span><span class="p">]],</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;pandas_example.svg&#39;</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;x label&#39;</span><span class="p">,</span>
+            <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;y label&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Pandas Example&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="n">x_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">y_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="figure" id="id2">
+<img alt="_images/pandas_example.svg" src="_images/pandas_example.svg" /><p class="caption"><span class="caption-text">pandas_example.svg</span></p>
 </div>
 </div>
 </div>

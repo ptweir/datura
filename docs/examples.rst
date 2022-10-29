@@ -17,3 +17,12 @@ Displaying error patches
 ..  figure:: ../examples/error_patch_example.svg
 
     error_patch_example.svg
+
+Displaying data in a Pandas dataFrame
+-------------------------------------
+
+.. literalinclude:: ../examples/pandas_example.py
+
+..  figure:: ../examples/pandas_example.svg
+
+    pandas_example.svg
