@@ -84,7 +84,39 @@
 <dl class="function">
 <dt id="datura.line_plot.plot">
 <code class="descclassname">datura.line_plot.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>xs</em>, <em>ys</em>, <em>yus=None</em>, <em>yls=None</em>, <em>filename='plot.svg'</em>, <em>x_label=None</em>, <em>y_label=None</em>, <em>title=None</em>, <em>colors=None</em>, <em>labels=None</em>, <em>label_nudges=None</em>, <em>x_ticks=None</em>, <em>y_ticks=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/line_plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datura.line_plot.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an .svg file containing a plot of the data in lists ys and xs</p>
+<dd><p>Returns .svg text and saves a .svg file containing a plot of the data in lists ys and xs.</p>
+<dl class="docutils">
+<dt>xs <span class="classifier-delimiter">:</span> <span class="classifier">list of lists</span></dt>
+<dd>Abscissas of the lines to plot (each list corresponds to a different line)</dd>
+<dt>ys <span class="classifier-delimiter">:</span> <span class="classifier">list of lists</span></dt>
+<dd>Ordinates of the lines to plot (each list corresponds to a different line)</dd>
+<dt>yus <span class="classifier-delimiter">:</span> <span class="classifier">list of lists, optional</span></dt>
+<dd>Abscissas of the upper bounds of the error patches to plot (each list corresponds to a different line)</dd>
+<dt>yls <span class="classifier-delimiter">:</span> <span class="classifier">list of lists, optional</span></dt>
+<dd>Abscissas of the lower bounds of the error patches to plot (each list corresponds to a different line)</dd>
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Name of the file to save. Default is ‘plot.svg’</dd>
+</dl>
+<p>x_label : string, optional
+y_label : string, optional
+title : string, optional
+colors : list, optional</p>
+<blockquote>
+<div>List containing svg colors for each line</div></blockquote>
+<dl class="docutils">
+<dt>labels <span class="classifier-delimiter">:</span> <span class="classifier">list of strings, optional</span></dt>
+<dd>Labels corresponding to each line</dd>
+<dt>label_nudges <span class="classifier-delimiter">:</span> <span class="classifier">list of ints, optional</span></dt>
+<dd>distances to move labels (intended to manually avoid overlaps)</dd>
+<dt>x_ticks <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd>locations of ticks on the x-axis. Empty (or length 1 list) will result in no x-axis being displayed.
+If None a automatically generated axis is displayed</dd>
+<dt>y_ticks <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd>locations of ticks on the y-axis. Empty (or length 1 list) will result in no y-axis being displayed.
+If None a automatically generated axis is displayed</dd>
+</dl>
+<p>full_figure : raw svg text string</p>
+<p>Tries to infer correct behavior when input is unexpected.</p>
 </dd></dl>
 
 </div>

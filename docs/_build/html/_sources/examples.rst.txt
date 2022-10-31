@@ -26,3 +26,12 @@ Displaying data in a Pandas dataFrame
 ..  figure:: ../examples/pandas_example.svg
 
     pandas_example.svg
+
+Displaying time series data in a Pandas dataFrame
+-------------------------------------------------
+
+.. literalinclude:: ../examples/time_example.py
+
+..  figure:: ../examples/time_example.svg
+
+    time_example.svg

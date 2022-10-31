@@ -1,12 +1,56 @@
+from datetime import datetime
 import math
+
+def _make_pretty_ticks(x_min, x_max, xs):
+
+    x_ticks = [x_min, x_max]
+
+    return x_ticks
+
 
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_label=None, y_label=None, title=None,
         colors=None,
         labels=None, label_nudges=None,
         x_ticks=None, y_ticks=None):
-    """
-    Create an .svg file containing a plot of the data in lists ys and xs
+    """Returns .svg text and saves a .svg file containing a plot of the data in lists ys and xs.
+
+    Parameters
+    ----------
+    xs : list of lists
+        Abscissas of the lines to plot (each list corresponds to a different line)
+    ys : list of lists
+        Ordinates of the lines to plot (each list corresponds to a different line)
+    yus : list of lists, optional
+        Abscissas of the upper bounds of the error patches to plot (each list corresponds to a different line)
+    yls : list of lists, optional
+        Abscissas of the lower bounds of the error patches to plot (each list corresponds to a different line)
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+    y_label : string, optional
+    title : string, optional
+    colors : list, optional
+        List containing svg colors for each line
+    labels : list of strings, optional
+        Labels corresponding to each line
+    label_nudges : list of ints, optional
+        distances to move labels (intended to manually avoid overlaps)
+    x_ticks : list, optional
+        locations of ticks on the x-axis. Empty (or length 1 list) will result in no x-axis being displayed.
+        If None a automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis. Empty (or length 1 list) will result in no y-axis being displayed.
+        If None a automatically generated axis is displayed
+
+    Returns
+    -------
+    full_figure : raw svg text string
+
+    Notes
+    -----
+    Tries to infer correct behavior when input is unexpected.
+
     """
     if filename[-4:] != '.svg':
         filename += '.svg'
@@ -41,9 +85,57 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     if not all(isinstance(_x, list) for _x in xs):
         xs = [xs for i in range(len(ys))]  # convert to list of lists
 
+    if x_ticks is not None:
+        if type(x_ticks) is not list:
+            try:
+                x_ticks = x_ticks.T.tolist() # convert from numpy array
+            except:
+                x_ticks = x_ticks.values.T.tolist() # convert from pandas dataframe
+
+    if y_ticks is not None:
+        if type(y_ticks) is not list:
+            try:
+                y_ticks = y_ticks.T.tolist() # convert from numpy array
+            except:
+                y_ticks = y_ticks.values.T.tolist() # convert from pandas dataframe
+
+    x_axis_is_time = False
+    for x_index, _x in enumerate(xs):
+        try:
+            _x[0] / 2
+        except TypeError:
+            x_axis_is_time = True
+            xs[x_index] = [datetime.timestamp(_xi) for _xi in _x]
+            print(xs)
+
+    x_min = min([min(x) for x in xs])
+    x_max = max([max(x) for x in xs])
+
+    if yus is None and yls is None:
+        all_ys = ys
+    else:
+        all_ys = ys + yus + yls
+
+    y_min = min([min(y) for y in all_ys])
+    y_max = max([max(y) for y in all_ys])
+
+
+    if x_ticks is None:
+        x_ticks = _make_pretty_ticks(x_min, x_max, xs)
+        if x_axis_is_time:
+            x_ticks = [datetime.fromtimestamp(_xt) for _xt in x_ticks]
+
+    if x_axis_is_time and len(x_ticks) >= 2:
+        x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
+        # trying to convert ticks
+        x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
+
+    if y_ticks is None:
+        y_ticks = _make_pretty_ticks(y_min, y_max, ys)
+
+
     if type(labels) == str and len(ys) == 1:
         labels = [labels] # convert to list with one string
-        
 
     if colors is None:
         colors = ['black', 'blue', 'red', 'green', 'orange', 'violet']
@@ -58,24 +150,6 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                 green = math.floor(max(0, color_ind*256*2/num_colors - 256))
                 this_color = 'rgb(' + str(red) + ', '+ str(green) +', 0)'
                 colors.append(this_color)
-
-
-
-    x_min = min([min(x) for x in xs])
-    x_max = max([max(x) for x in xs])
-
-    if yus is None and yls is None:
-        all_ys = ys
-    else:
-        all_ys = ys + yus + yls
-
-    y_min = min([min(y) for y in all_ys])
-    y_max = max([max(y) for y in all_ys])
-
-    if x_ticks == 'auto':
-        x_ticks = [x_min, x_max]
-    if y_ticks == 'auto':
-        y_ticks = [y_min, ymax]
 
     x_range = x_max - x_min
     if x_range == 0:
@@ -146,7 +220,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
             color = colors[line_ind%len(colors)]
             polygons += f"""<polygon fill="{color}" stroke="none" stroke-width="0" fill-opacity="0.2" points="{dataline}" />\n """
 
-    if x_ticks is None:
+    if len(x_ticks) < 2:
         x_axis = ''
         x_axis_text_vb = ''
     else:
@@ -159,11 +233,12 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         for xt_ind, xt in enumerate(x_ticks[:-1]):
             xt_vb = x2vb(xt)
             xtn_vb = x2vb(x_ticks[xt_ind + 1])
+            xt_text = x_ticks_text[xt_ind]
             x_axis_pts_vb += f"""{xt_vb},{x_axis_yt_vb} {xt_vb},{x_axis_y_vb} {xtn_vb},{x_axis_y_vb} """
-            x_axis_text_vb += f""" <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {xt} </text>\n"""
+            x_axis_text_vb += f""" <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {xt_text} </text>\n"""
 
         x_axis_pts_vb += f"""{xtn_vb},{x_axis_yt_vb}"""
-        x_axis_text_vb += f""" <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {x_ticks[-1]} </text> </g>"""
+        x_axis_text_vb += f""" <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {x_ticks_text[-1]} </text> </g>"""
         x_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{x_axis_pts_vb}" />"""
 
     if x_label is None:
@@ -174,7 +249,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_axis_label = f"""<text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> {x_label} </text>"""
 
 
-    if y_ticks is None:
+    if len(y_ticks) < 2:
         y_axis = ''
         y_axis_text_vb = ''
     else:
