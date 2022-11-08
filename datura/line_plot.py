@@ -79,6 +79,18 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         except:
             ys = ys.values.T.tolist() # convert from pandas dataframe
 
+    if yus is not None and type(yus) is not list:
+        try:
+            yus = yus.T.tolist() # convert from numpy array
+        except:
+            yus = yus.values.T.tolist() # convert from pandas dataframe
+
+    if yls is not None and type(yls) is not list:
+        try:
+            yls = yls.T.tolist() # convert from numpy array
+        except:
+            yls = yls.values.T.tolist() # convert from pandas dataframe
+
     if not all(isinstance(_y, list) for _y in ys):
         ys = [ys] # convert to list of lists
 
@@ -91,7 +103,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                 x_ticks = x_ticks.T.tolist() # convert from numpy array
             except:
                 x_ticks = x_ticks.values.T.tolist() # convert from pandas dataframe
-    x_ticks.sort()
+        x_ticks.sort()
 
     if y_ticks is not None:
         if type(y_ticks) is not list:
@@ -99,7 +111,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                 y_ticks = y_ticks.T.tolist() # convert from numpy array
             except:
                 y_ticks = y_ticks.values.T.tolist() # convert from pandas dataframe
-    y_ticks.sort()
+        y_ticks.sort()
 
     x_axis_is_time = False
     for x_index, _x in enumerate(xs):
