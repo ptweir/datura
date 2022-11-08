@@ -1,3 +1,4 @@
+import datura
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -11,6 +12,6 @@ for tick_ind, tick in enumerate(df.t.tolist()):
     if tick_ind%3 == 0:
         x_ticks.append(tick)
 
-plot(df['t'], df[['y1','y2']], filename='time_example.svg', x_label='x label',
+datura.plot(df['t'], df[['y1','y2']], filename='examples/time_example.svg', x_label='x label',
             y_label='y label', title='Time Example', labels=df.columns[1:].tolist(),
             x_ticks=x_ticks, y_ticks=[-1, 0, 1])

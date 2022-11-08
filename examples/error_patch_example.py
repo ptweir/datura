@@ -20,7 +20,7 @@ yl3 = [y*.5-10 for y in y3]
 yus = [yu1, yu2, yu3]
 yls = [yl1, yl2, yl3]
 
-datura.plot(xs, ys, yus=yus, yls=yls, filename='error_patch_example.svg',
+datura.plot(xs, ys, yus=yus, yls=yls, filename='examples/error_patch_example.svg',
             x_label='x label', y_label='y label', title='Error Patch Example',
             labels=labels, label_nudges=label_nudges, x_ticks=[-5, -10, 0, 5, 10],
             y_ticks=[-50, 0, 50, 100])

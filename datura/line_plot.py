@@ -91,6 +91,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                 x_ticks = x_ticks.T.tolist() # convert from numpy array
             except:
                 x_ticks = x_ticks.values.T.tolist() # convert from pandas dataframe
+    x_ticks.sort()
 
     if y_ticks is not None:
         if type(y_ticks) is not list:
@@ -98,6 +99,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                 y_ticks = y_ticks.T.tolist() # convert from numpy array
             except:
                 y_ticks = y_ticks.values.T.tolist() # convert from pandas dataframe
+    y_ticks.sort()
 
     x_axis_is_time = False
     for x_index, _x in enumerate(xs):
@@ -125,6 +127,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         if x_axis_is_time:
             x_ticks = [datetime.fromtimestamp(_xt) for _xt in x_ticks]
 
+    x_ticks_text = [str(_xt) for _xt in x_ticks]
     if x_axis_is_time and len(x_ticks) >= 2:
         x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
         # trying to convert ticks
@@ -224,7 +227,6 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_axis = ''
         x_axis_text_vb = ''
     else:
-        x_ticks.sort()
         x_axis_y_vb = vb_height * (1 - YBUF) + 2 * tick_length
         x_axis_yt_vb = vb_height * (1 - YBUF) + tick_length
 
@@ -253,7 +255,6 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         y_axis = ''
         y_axis_text_vb = ''
     else:
-        y_ticks.sort()
         y_axis_x_vb = vb_width * XBUF - 2 * tick_length
         y_axis_xt_vb = vb_width * XBUF - tick_length
 
