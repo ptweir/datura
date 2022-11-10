@@ -7,6 +7,39 @@ def _make_pretty_ticks(x_min, x_max, xs):
 
     return x_ticks
 
+def _convert_from_np_pd(input_to_convert):
+    """tries to convert from numpy array or pandas dataframe"""
+    if input_to_convert is not None:
+        if type(input_to_convert) is not list:
+            try:
+                input_to_convert = input_to_convert.T.tolist() # convert from numpy array
+            except:
+                input_to_convert = input_to_convert.values.T.tolist() # convert from pandas dataframe
+
+    return input_to_convert
+
+def _convert_to_lists_of_lists(xs, ys, yus, yls):
+    """convert from numpy arrays, pandas dataframes, and lists"""
+    ys = _convert_from_np_pd(ys)
+    if not all(isinstance(_y, list) for _y in ys):
+        ys = [ys] # convert to list of lists
+
+    yus = _convert_from_np_pd(yus)
+    if yus is not None:
+        if not all(isinstance(_y, list) for _y in yus):
+            yus = [yus] # convert to list of lists
+
+    yls = _convert_from_np_pd(yls)
+    if yls is not None:
+        if not all(isinstance(_y, list) for _y in yls):
+            yus = [yls] # convert to list of lists
+
+    xs = _convert_from_np_pd(xs)
+    if not all(isinstance(_x, list) for _x in xs):
+        xs = [xs for i in range(len(ys))]  # convert to list of lists
+    
+    return xs, ys, yus, yls
+    
 
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_label=None, y_label=None, title=None,
@@ -66,51 +99,14 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     vb_width_in = vb_width*.0096*2
     vb_height_in = vb_height*.0096*2
 
-    # the following conditionals are just to account for what I expect to be common sources of confusion
-    if type(xs) is not list:
-        try:
-            xs = xs.T.tolist() # convert from numpy array
-        except:
-            xs = xs.values.T.tolist() # convert from pandas dataframe
+    xs, ys, yus, yls = _convert_to_lists_of_lists(xs, ys, yus, yls)
 
-    if type(ys) is not list:
-        try:
-            ys = ys.T.tolist() # convert from numpy array
-        except:
-            ys = ys.values.T.tolist() # convert from pandas dataframe
-
-    if yus is not None and type(yus) is not list:
-        try:
-            yus = yus.T.tolist() # convert from numpy array
-        except:
-            yus = yus.values.T.tolist() # convert from pandas dataframe
-
-    if yls is not None and type(yls) is not list:
-        try:
-            yls = yls.T.tolist() # convert from numpy array
-        except:
-            yls = yls.values.T.tolist() # convert from pandas dataframe
-
-    if not all(isinstance(_y, list) for _y in ys):
-        ys = [ys] # convert to list of lists
-
-    if not all(isinstance(_x, list) for _x in xs):
-        xs = [xs for i in range(len(ys))]  # convert to list of lists
-
+    x_ticks = _convert_from_np_pd(x_ticks)
     if x_ticks is not None:
-        if type(x_ticks) is not list:
-            try:
-                x_ticks = x_ticks.T.tolist() # convert from numpy array
-            except:
-                x_ticks = x_ticks.values.T.tolist() # convert from pandas dataframe
         x_ticks.sort()
 
+    y_ticks = _convert_from_np_pd(y_ticks)
     if y_ticks is not None:
-        if type(y_ticks) is not list:
-            try:
-                y_ticks = y_ticks.T.tolist() # convert from numpy array
-            except:
-                y_ticks = y_ticks.values.T.tolist() # convert from pandas dataframe
         y_ticks.sort()
 
     x_axis_is_time = False
@@ -122,13 +118,26 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
             xs[x_index] = [datetime.timestamp(_xi) for _xi in _x]
             print(xs)
 
-    x_min = min([min(x) for x in xs])
-    x_max = max([max(x) for x in xs])
+    all_xs = xs
+    if x_ticks is None:
+        all_xs = xs
+    else:
+        if x_axis_is_time:
+            x_ticks_for_min_max = [datetime.timestamp(_xt) for _xt in x_ticks]
+            all_xs = xs + [x_ticks_for_min_max]
+        else:
+            all_xs = xs + [x_ticks]
+
+    x_min = min([min(x) for x in all_xs])
+    x_max = max([max(x) for x in all_xs])
 
     if yus is None and yls is None:
         all_ys = ys
     else:
         all_ys = ys + yus + yls
+
+    if y_ticks is not None:
+        all_ys = all_ys + [y_ticks]
 
     y_min = min([min(y) for y in all_ys])
     y_max = max([max(y) for y in all_ys])
