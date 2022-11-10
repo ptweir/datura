@@ -2,4 +2,6 @@
 
 A simple pure Python data visualization package.
 
-[code](https://github.com/ptweir/datura)
+[Documentation](https://datura.readthedocs.io)
+
+[Code](https://github.com/ptweir/datura)
