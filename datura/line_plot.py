@@ -8,7 +8,7 @@ def _make_pretty_ticks(x_min, x_max, xs):
     return x_ticks
 
 def _convert_from_np_pd(input_to_convert):
-    """tries to convert from numpy array or pandas dataframe"""
+    """tries to convert from numpy array or pandas dataframe to list of lists"""
     if input_to_convert is not None:
         if type(input_to_convert) is not list:
             try:
@@ -39,6 +39,75 @@ def _convert_to_lists_of_lists(xs, ys, yus, yls):
         xs = [xs for i in range(len(ys))]  # convert to list of lists
     
     return xs, ys, yus, yls
+
+def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick_length, x2vb):
+    if len(x_ticks) < 2:
+        x_axis = ''
+        x_axis_text_vb = ''
+    else:
+        x_axis_y_vb = vb_height * (1 - YBUF) + 2 * tick_length
+        x_axis_yt_vb = vb_height * (1 - YBUF) + tick_length
+
+        x_axis_pts_vb = ''
+        x_axis_text_vb = '<g font-family="sans-serif" font-size="10" >'
+        for xt_ind, xt in enumerate(x_ticks[:-1]):
+            xt_vb = x2vb(xt)
+            xtn_vb = x2vb(x_ticks[xt_ind + 1])
+            xt_text = x_ticks_text[xt_ind]
+            x_axis_pts_vb += f"""{xt_vb},{x_axis_yt_vb} {xt_vb},{x_axis_y_vb} {xtn_vb},{x_axis_y_vb} """
+            x_axis_text_vb += f""" <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {xt_text} </text>\n"""
+
+        x_axis_pts_vb += f"""{xtn_vb},{x_axis_yt_vb}"""
+        x_axis_text_vb += f""" <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {x_ticks_text[-1]} </text> </g>"""
+        x_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{x_axis_pts_vb}" />"""
+
+    if x_label is None:
+        x_axis_label = ''
+    else:
+        x_label_x_vb = .5*vb_width
+        x_label_y_vb = vb_height - tick_length
+        x_axis_label = f"""<text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> {x_label} </text>"""
+
+    return x_axis, x_axis_text_vb, x_axis_label
+
+def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF, tick_length, y2vb):
+    
+    if len(y_ticks) < 2:
+        y_axis = ''
+        y_axis_text_vb = ''
+    else:
+        y_axis_x_vb = vb_width * XBUF - 2 * tick_length
+        y_axis_xt_vb = vb_width * XBUF - tick_length
+
+        y_axis_pts_vb = ''
+        y_axis_text_vb = '<g font-family="sans-serif" font-size="10" >'
+        for yt_ind, yt in enumerate(y_ticks[:-1]):
+            yt_vb = y2vb(yt)
+            ytn_vb = y2vb(y_ticks[yt_ind + 1])
+            y_axis_pts_vb += f"""{y_axis_xt_vb},{yt_vb} {y_axis_x_vb},{yt_vb} {y_axis_x_vb},{ytn_vb} """
+            y_axis_text_vb += f""" <text x="{y_axis_x_vb - tick_length}" y="{yt_vb}" fill="black" text-anchor="end" dominant-baseline="middle" > {yt} </text>\n"""
+
+        y_axis_pts_vb += f"""{y_axis_xt_vb},{ytn_vb}"""
+        y_axis_text_vb += f""" <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="black" text-anchor="end" dominant-baseline="middle" > {y_ticks[-1]} </text> </g>"""
+        y_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{y_axis_pts_vb}" />"""
+
+    if y_label is None:
+        y_axis_label = ''
+    else:
+        y_label_x_vb = tick_length
+        y_label_y_vb = .5 * vb_height
+        y_axis_label = f"""<text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate({y_label_x_vb},{y_label_y_vb}) rotate(270)" font-family="sans-serif" font-size="10"> {y_label} </text>"""
+    
+    return y_axis, y_axis_text_vb, y_axis_label
+
+def _make_title(title, vb_width, tick_length):
+    if title is None:
+        title_vb = ''
+    else:
+        title_x_vb = .5*vb_width
+        title_y_vb = tick_length
+        title_vb = f"""<text x="{title_x_vb}" y="{title_y_vb}" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"> {title} </text>"""
+    return title_vb
     
 
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
@@ -61,8 +130,11 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     filename : string, optional
         Name of the file to save. Default is 'plot.svg'
     x_label : string, optional
+        Label for x axis
     y_label : string, optional
+        Label for y axis
     title : string, optional
+        Title of figure
     colors : list, optional
         List containing svg colors for each line
     labels : list of strings, optional
@@ -244,68 +316,10 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
             color = colors[line_ind%len(colors)]
             polygons += f"""<polygon fill="{color}" stroke="none" stroke-width="0" fill-opacity="0.2" points="{dataline}" />\n """
 
-    if len(x_ticks) < 2:
-        x_axis = ''
-        x_axis_text_vb = ''
-    else:
-        x_axis_y_vb = vb_height * (1 - YBUF) + 2 * tick_length
-        x_axis_yt_vb = vb_height * (1 - YBUF) + tick_length
-
-        x_axis_pts_vb = ''
-        x_axis_text_vb = '<g font-family="sans-serif" font-size="10" >'
-        for xt_ind, xt in enumerate(x_ticks[:-1]):
-            xt_vb = x2vb(xt)
-            xtn_vb = x2vb(x_ticks[xt_ind + 1])
-            xt_text = x_ticks_text[xt_ind]
-            x_axis_pts_vb += f"""{xt_vb},{x_axis_yt_vb} {xt_vb},{x_axis_y_vb} {xtn_vb},{x_axis_y_vb} """
-            x_axis_text_vb += f""" <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {xt_text} </text>\n"""
-
-        x_axis_pts_vb += f"""{xtn_vb},{x_axis_yt_vb}"""
-        x_axis_text_vb += f""" <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black" text-anchor="middle" dominant-baseline="hanging" > {x_ticks_text[-1]} </text> </g>"""
-        x_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{x_axis_pts_vb}" />"""
-
-    if x_label is None:
-        x_axis_label = ''
-    else:
-        x_label_x_vb = .5*vb_width
-        x_label_y_vb = vb_height - tick_length
-        x_axis_label = f"""<text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> {x_label} </text>"""
-
-
-    if len(y_ticks) < 2:
-        y_axis = ''
-        y_axis_text_vb = ''
-    else:
-        y_axis_x_vb = vb_width * XBUF - 2 * tick_length
-        y_axis_xt_vb = vb_width * XBUF - tick_length
-
-        y_axis_pts_vb = ''
-        y_axis_text_vb = '<g font-family="sans-serif" font-size="10" >'
-        for yt_ind, yt in enumerate(y_ticks[:-1]):
-            yt_vb = y2vb(yt)
-            ytn_vb = y2vb(y_ticks[yt_ind + 1])
-            y_axis_pts_vb += f"""{y_axis_xt_vb},{yt_vb} {y_axis_x_vb},{yt_vb} {y_axis_x_vb},{ytn_vb} """
-            y_axis_text_vb += f""" <text x="{y_axis_x_vb - tick_length}" y="{yt_vb}" fill="black" text-anchor="end" dominant-baseline="middle" > {yt} </text>\n"""
-
-        y_axis_pts_vb += f"""{y_axis_xt_vb},{ytn_vb}"""
-        y_axis_text_vb += f""" <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="black" text-anchor="end" dominant-baseline="middle" > {y_ticks[-1]} </text> </g>"""
-        y_axis = f"""<polyline fill="none" stroke="black" stroke-width="1" points="{y_axis_pts_vb}" />"""
-
-    if y_label is None:
-        y_axis_label = ''
-    else:
-        y_label_x_vb = tick_length
-        y_label_y_vb = .5 * vb_height
-        y_axis_label = f"""<text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate({y_label_x_vb},{y_label_y_vb}) rotate(270)" font-family="sans-serif" font-size="10"> {y_label} </text>"""
-
-
-    if title is None:
-        title_vb = ''
-    else:
-        title_x_vb = .5*vb_width
-        title_y_vb = tick_length
-        title_vb = f"""<text x="{title_x_vb}" y="{title_y_vb}" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"> {title} </text>"""
-
+    x_axis, x_axis_text_vb, x_axis_label = _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick_length, x2vb)
+    y_ticks_text = [] # TODO
+    y_axis, y_axis_text_vb, y_axis_label = _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF, tick_length, y2vb)
+    title_vb = _make_title(title, vb_width, tick_length)
 
     full_figure = f"""<?xml version="1.0" standalone="no"?>
     <svg width="{vb_width_in}in" height="{vb_height_in}in" viewBox="0 0 {vb_width} {vb_height}" 
