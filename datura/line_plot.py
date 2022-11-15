@@ -32,7 +32,7 @@ def _convert_to_lists_of_lists(xs, ys, yus, yls):
     yls = _convert_from_np_pd(yls)
     if yls is not None:
         if not all(isinstance(_y, list) for _y in yls):
-            yus = [yls] # convert to list of lists
+            yls = [yls] # convert to list of lists
 
     xs = _convert_from_np_pd(xs)
     if not all(isinstance(_x, list) for _x in xs):
