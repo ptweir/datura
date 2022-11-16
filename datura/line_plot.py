@@ -89,6 +89,64 @@ def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick
 
     return x_axis, x_axis_text_vb, x_axis_label
 
+def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges, tick_length):
+    datalines = []
+    for line_ind, x in enumerate(xs):
+        y = ys[line_ind]
+
+        assert len(x) == len(y), 'all xs and ys should be the same length'
+
+        x_vb = [x2vb(xi) for xi in x]
+        y_vb = [y2vb(yi) for yi in y]
+        dataline = ''
+        for xy_vb in zip(x_vb, y_vb):
+            dataline += str(xy_vb[0]) + ',' + str(xy_vb[1]) + ' '
+
+        datalines.append(dataline)
+
+    polylines = ''
+    line_labels = '<g font-family="sans-serif" font-size="10" >'
+    for line_ind, dataline in enumerate(datalines):
+        color = colors[line_ind%len(colors)]
+        polylines += f"""<polyline fill="none" stroke="{color}" stroke-width="1" points="{dataline}" />\n """
+        if labels is not None:
+            label = labels[line_ind]
+            label_nudge = -1*label_nudges[line_ind]
+            label_color = color
+            x_label_vb = x2vb(max(xs[line_ind]))
+            max_ind = xs[line_ind].index(max(xs[line_ind]))
+            y_label_vb = y2vb(ys[line_ind][max_ind])
+            line_labels += f""" <text x="{x_label_vb + tick_length}" y="{y_label_vb}" dy="{label_nudge}" fill="{label_color}" dominant-baseline="middle" > {label} </text>\n"""
+
+    line_labels += '</g>'
+    return polylines, line_labels
+
+def _make_polygons(xs, yus, yls, x2vb, y2vb, fill_colors, fill_opacities):
+    if yus is None:
+        polygons = ''
+    else:
+        datalines = []
+        for line_ind, x in enumerate(xs):
+            yu = yus[line_ind]
+            yl = yls[line_ind]
+            x_vb = [x2vb(xi) for xi in x]
+            yu_vb = [y2vb(yi) for yi in yu]
+            yl_vb = [y2vb(yi) for yi in yl]
+            dataline = ''
+            for xyu_vb in zip(x_vb, yu_vb):
+                dataline += str(xyu_vb[0]) + ',' + str(xyu_vb[1]) + ' '
+            for xyl_vb in zip(x_vb[::-1], yl_vb[::-1]):
+                dataline += str(xyl_vb[0]) + ',' + str(xyl_vb[1]) + ' '
+
+            datalines.append(dataline)
+
+        polygons = ''
+        for line_ind, dataline in enumerate(datalines):
+            fill_color = fill_colors[line_ind%len(fill_colors)]
+            fill_opacity = fill_opacities[line_ind%len(fill_opacities)]
+            polygons += f"""<polygon fill="{fill_color}" stroke="none" stroke-width="0" fill-opacity="{fill_opacity}" points="{dataline}" />\n """
+    return polygons
+
 def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF, tick_length, y2vb):
     
     if len(y_ticks) < 2:
@@ -173,7 +231,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     Returns
     -------
-    full_figure : raw svg text string
+    full_figure : raw svg string
 
     Notes
     -----
@@ -274,59 +332,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         y_sc = 1 - ((y - y_min) / y_range) # reflect to account for top-left origin in svg
         return y_sc * vb_height * (1 - 2 * YBUF) + (vb_height * YBUF)
 
-    datalines = []
-    for line_ind, x in enumerate(xs):
-        y = ys[line_ind]
+    polylines, line_labels = _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges, tick_length)
 
-        assert len(x) == len(y), 'all xs and ys should be the same length'
-
-        x_vb = [x2vb(xi) for xi in x]
-        y_vb = [y2vb(yi) for yi in y]
-        dataline = ''
-        for xy_vb in zip(x_vb, y_vb):
-            dataline += str(xy_vb[0]) + ',' + str(xy_vb[1]) + ' '
-
-        datalines.append(dataline)
-
-    polylines = ''
-    line_labels = '<g font-family="sans-serif" font-size="10" >'
-    for line_ind, dataline in enumerate(datalines):
-        color = colors[line_ind%len(colors)]
-        polylines += f"""<polyline fill="none" stroke="{color}" stroke-width="1" points="{dataline}" />\n """
-        if labels is not None:
-            label = labels[line_ind]
-            label_nudge = -1*label_nudges[line_ind]
-            label_color = color
-            x_label_vb = x2vb(max(xs[line_ind]))
-            max_ind = xs[line_ind].index(max(xs[line_ind]))
-            y_label_vb = y2vb(ys[line_ind][max_ind])
-            line_labels += f""" <text x="{x_label_vb + tick_length}" y="{y_label_vb}" dy="{label_nudge}" fill="{label_color}" dominant-baseline="middle" > {label} </text>\n"""
-
-    line_labels += '</g>'
-
-    if yus is None:
-        polygons = ''
-    else:
-        datalines = []
-        for line_ind, x in enumerate(xs):
-            yu = yus[line_ind]
-            yl = yls[line_ind]
-            x_vb = [x2vb(xi) for xi in x]
-            yu_vb = [y2vb(yi) for yi in yu]
-            yl_vb = [y2vb(yi) for yi in yl]
-            dataline = ''
-            for xyu_vb in zip(x_vb, yu_vb):
-                dataline += str(xyu_vb[0]) + ',' + str(xyu_vb[1]) + ' '
-            for xyl_vb in zip(x_vb[::-1], yl_vb[::-1]):
-                dataline += str(xyl_vb[0]) + ',' + str(xyl_vb[1]) + ' '
-
-            datalines.append(dataline)
-
-        polygons = ''
-        for line_ind, dataline in enumerate(datalines):
-            fill_color = fill_colors[line_ind%len(fill_colors)]
-            fill_opacity = fill_opacities[line_ind%len(fill_opacities)]
-            polygons += f"""<polygon fill="{fill_color}" stroke="none" stroke-width="0" fill-opacity="{fill_opacity}" points="{dataline}" />\n """
+    polygons = _make_polygons(xs, yus, yls, x2vb, y2vb, fill_colors, fill_opacities)
 
     x_axis, x_axis_text_vb, x_axis_label = _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick_length, x2vb)
     y_ticks_text = [] # TODO
