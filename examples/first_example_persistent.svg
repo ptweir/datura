@@ -1,25 +1,20 @@
-<?xml version="1.0" standalone="no"?>
-    <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" 
-    xmlns="http://www.w3.org/2000/svg" version="1.1">
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-    
-    <polyline fill="none" stroke="black" stroke-width="1" points="40.0,174.0 200.0,144.4 360.0,85.2 " />
- <polyline fill="none" stroke="blue" stroke-width="1" points="40.0,144.4 200.0,114.8 360.0,26.0 " />
- 
-    <g font-family="sans-serif" font-size="10" > <text x="362.0" y="85.2" dy="0" fill="black" dominant-baseline="middle" > good </text>
- <text x="362.0" y="26.0" dy="0" fill="blue" dominant-baseline="middle" > better </text>
-</g>
-    <polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 200.0,178.0 200.0,176.0 200.0,178.0 360.0,178.0 360.0,176.0" />
-    <g font-family="sans-serif" font-size="10" > <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 1 </text>
- <text x="200.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text>
- <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 3 </text> </g>
-    <text x="200.0" y="198" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> x label </text>
-    <polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,114.8 38.0,114.8 36.0,114.8 36.0,55.599999999999994 38.0,55.599999999999994" />
-    <g font-family="sans-serif" font-size="10" > <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > 0 </text>
- <text x="34.0" y="114.8" fill="black" text-anchor="end" dominant-baseline="middle" > 2 </text>
- <text x="34.0" y="55.599999999999994" fill="black" text-anchor="end" dominant-baseline="middle" > 4 </text> </g>
-    <text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate(2,100.0) rotate(270)" font-family="sans-serif" font-size="10"> y label </text>
-    <text x="200.0" y="2" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"> First Example </text>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,174.0 200.0,144.4 360.0,85.2 " />
+<polyline fill="none" stroke="blue" stroke-width="1" points="40.0,144.4 200.0,114.8 360.0,26.0 " />
 
-    </svg>
-    
+<g font-family="sans-serif" font-size="10" >
+    <text x="362.0" y="85.2" dy="0" fill="black" dominant-baseline="middle">good</text>
+    <text x="362.0" y="26.0" dy="0" fill="blue" dominant-baseline="middle">better</text></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 200.0,178.0 200.0,176.0 200.0,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 1 </text>
+    <text x="200.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 3 </text> </g>
+<text x="200.0" y="198" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> x label </text>
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,114.8 38.0,114.8 36.0,114.8 36.0,55.599999999999994 38.0,55.599999999999994" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > 0 </text>
+    <text x="34.0" y="114.8" fill="black" text-anchor="end" dominant-baseline="middle" > 2 </text><text x="34.0" y="55.599999999999994" fill="black" text-anchor="end" dominant-baseline="middle" > 4 </text> </g>
+<text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate(2,100.0) rotate(270)" font-family="sans-serif" font-size="10"> y label </text>
+<text x="200.0" y="2" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"> First Example </text></svg>
