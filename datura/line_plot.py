@@ -40,6 +40,25 @@ def _convert_to_lists_of_lists(xs, ys, yus, yls):
     
     return xs, ys, yus, yls
 
+def _convert_colors(colors, fill_colors, fill_opacities, ys, yus):
+    if colors is None:
+        colors = ['black', 'blue', 'red', 'green', 'orange', 'violet', 'brown']
+        if len(ys) > len(colors):
+            num_colors = len(ys)
+            colors = []
+            for color_ind in range(num_colors):
+                red = math.floor(min(255, color_ind*256*2/num_colors))
+                green = math.floor(max(0, color_ind*256*2/num_colors - 256))
+                this_color = 'rgb(' + str(red) + ', '+ str(green) +', 0)'
+                colors.append(this_color)
+    if fill_colors is None:
+        fill_colors = colors.copy()
+    
+    if (fill_opacities is None) and (yus is not None):
+        fill_opacities = ['0.2']*len(yus)
+
+    return colors, fill_colors, fill_opacities
+
 def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick_length, x2vb):
     if len(x_ticks) < 2:
         x_axis = ''
@@ -112,7 +131,7 @@ def _make_title(title, vb_width, tick_length):
 
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_label=None, y_label=None, title=None,
-        colors=None,
+        colors=None, fill_colors=None, fill_opacities=None,
         labels=None, label_nudges=None,
         x_ticks=None, y_ticks=None):
     """Returns .svg text and saves a .svg file containing a plot of the data in lists ys and xs.
@@ -137,6 +156,10 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         Title of figure
     colors : list, optional
         List containing svg colors for each line
+    fill_colors : list, optional
+        List containing svg colors for each patch (between yus and yls)
+    fill_opacities : list, optional
+        List containing numbers between 0 and 1 for each patch (between yus and yls)
     labels : list of strings, optional
         Labels corresponding to each line
     label_nudges : list of ints, optional
@@ -159,8 +182,6 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     """
     if filename[-4:] != '.svg':
         filename += '.svg'
-    if label_nudges is None and labels is not None:
-        label_nudges = [0 for y in ys]
 
     XBUF = 0.1
     YBUF = 0.13
@@ -172,6 +193,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     vb_height_in = vb_height*.0096*2
 
     xs, ys, yus, yls = _convert_to_lists_of_lists(xs, ys, yus, yls)
+
+    if label_nudges is None and labels is not None:
+        label_nudges = [0 for y in ys]
 
     x_ticks = _convert_from_np_pd(x_ticks)
     if x_ticks is not None:
@@ -188,7 +212,6 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         except TypeError:
             x_axis_is_time = True
             xs[x_index] = [datetime.timestamp(_xi) for _xi in _x]
-            print(xs)
 
     all_xs = xs
     if x_ticks is None:
@@ -233,19 +256,7 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     if type(labels) == str and len(ys) == 1:
         labels = [labels] # convert to list with one string
 
-    if colors is None:
-        colors = ['black', 'blue', 'red', 'green', 'orange', 'violet']
-        if len(ys) > len(colors):
-            num_colors = len(ys)
-            reds = [min(255, x*255*2/num_colors) for x in range(num_colors)]
-            greens = [min(255, x*255*2/num_colors - 255) for x in range(num_colors)]
-            blues = [0 for x in range(num_colors)]
-            colors = []
-            for color_ind in range(num_colors):
-                red = math.floor(min(255, color_ind*256*2/num_colors))
-                green = math.floor(max(0, color_ind*256*2/num_colors - 256))
-                this_color = 'rgb(' + str(red) + ', '+ str(green) +', 0)'
-                colors.append(this_color)
+    colors, fill_colors, fill_opacities = _convert_colors(colors, fill_colors, fill_opacities, ys, yus)
 
     x_range = x_max - x_min
     if x_range == 0:
@@ -313,8 +324,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
         polygons = ''
         for line_ind, dataline in enumerate(datalines):
-            color = colors[line_ind%len(colors)]
-            polygons += f"""<polygon fill="{color}" stroke="none" stroke-width="0" fill-opacity="0.2" points="{dataline}" />\n """
+            fill_color = fill_colors[line_ind%len(fill_colors)]
+            fill_opacity = fill_opacities[line_ind%len(fill_opacities)]
+            polygons += f"""<polygon fill="{fill_color}" stroke="none" stroke-width="0" fill-opacity="{fill_opacity}" points="{dataline}" />\n """
 
     x_axis, x_axis_text_vb, x_axis_label = _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF, tick_length, x2vb)
     y_ticks_text = [] # TODO
