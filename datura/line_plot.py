@@ -25,8 +25,12 @@ def _convert_from_np_pd(input_to_convert):
                 # convert from numpy array
                 input_to_convert = input_to_convert.T.tolist()
             except AttributeError:
-                # convert from pandas dataframe
-                input_to_convert = input_to_convert.values.T.tolist()
+                try:
+                    # convert from pandas dataframe
+                    input_to_convert = input_to_convert.values.T.tolist()
+                except AttributeError:
+                    # make singletons into a list of length 1
+                    input_to_convert = [input_to_convert]
 
     return input_to_convert
 
@@ -125,8 +129,9 @@ def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF,
 
 
 def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges,
-                           tick_length):
+                           tick_length, line_widths, points_radii):
     datalines = []
+    all_circles = []
     for line_ind, x in enumerate(xs):
         y = ys[line_ind]
 
@@ -135,17 +140,27 @@ def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges,
         x_vb = [x2vb(xi) for xi in x]
         y_vb = [y2vb(yi) for yi in y]
         dataline = ''
+        circles = '<g fill="{cc}" stroke="none" stroke-width="0">'
         for xy_vb in zip(x_vb, y_vb):
             dataline += str(xy_vb[0]) + ',' + str(xy_vb[1]) + ' '
+            circles += f'<circle cx="{xy_vb[0]}" cy="{xy_vb[1]}"'
+            circles += ' r="{cr}"/>'
 
+        circles += '</g>'
         datalines.append(dataline)
+        all_circles.append(circles)
 
     polylines = ''
     line_labels = '<g font-family="sans-serif" font-size="10" >'
     for line_ind, dataline in enumerate(datalines):
         color = colors[line_ind % len(colors)]
-        polylines += f'<polyline fill="none" stroke="{color}" '
-        polylines += f'stroke-width="1" points="{dataline}" />\n'
+        if line_widths is not None:
+            line_w = line_widths[line_ind % len(line_widths)]
+            polylines += f'<polyline fill="none" stroke="{color}" '
+            polylines += f'stroke-width="{line_w}" points="{dataline}" />\n'
+        if points_radii is not None:
+            c_r = points_radii[line_ind % len(points_radii)]
+            polylines += all_circles[line_ind].format(cr=c_r, cc=color) + '\n'
         if labels is not None:
             label = labels[line_ind]
             label_nudge = -1*label_nudges[line_ind]
@@ -256,6 +271,7 @@ def _make_title(title, vb_width, tick_length):
 def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
          x_label=None, y_label=None, title=None,
          colors=None, fill_colors=None, fill_opacities=None,
+         line_widths='1', points_radii=None,
          labels=None, label_nudges=None,
          x_ticks=None, y_ticks=None):
     """Returns .svg text and saves a .svg file containing a plot of the data in
@@ -290,6 +306,10 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     fill_opacities : list, optional
         List containing numbers between 0 and 1 for each patch
         (between yus and yls)
+    line_widths : list, optional
+        List containing width for each line
+    points_radii : list, optional
+        List containing size of circles at each data point
     labels : list of strings, optional
         Labels corresponding to each line
     label_nudges : list of ints, optional
@@ -328,6 +348,9 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     if label_nudges is None and labels is not None:
         label_nudges = [0 for y in ys]
+
+    line_widths = _convert_from_np_pd(line_widths)
+    points_radii = _convert_from_np_pd(points_radii)
 
     x_ticks = _convert_from_np_pd(x_ticks)
     if x_ticks is not None:
@@ -409,7 +432,8 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     polylines, line_labels = _make_lines_and_labels(xs, ys, x2vb, y2vb, colors,
                                                     labels, label_nudges,
-                                                    tick_length)
+                                                    tick_length, line_widths,
+                                                    points_radii)
 
     polygons = _make_polygons(xs, yus, yls, x2vb, y2vb,
                               fill_colors, fill_opacities)
