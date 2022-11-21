@@ -466,3 +466,44 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     out_file.close()
 
     return full_figure
+
+
+def hist(data, bin_edges=None, **kwargs):
+    if bin_edges is None:
+        # automatically create bin edges...
+        pass
+    bin_edges, data, _, _ = _convert_to_lists_of_lists(bin_edges, data,
+                                                       None, None)
+
+    xs, ys, yus, yls = [], [], [], []
+    for hist_ind in range(len(data)):
+        x, y, yl = _make_histogram_xys(data[hist_ind], bin_edges[hist_ind])
+        xs.append(x)
+        ys.append(y)
+        yus.append(y)
+        yls.append(yl)
+
+    return plot(xs, ys, yus=yus, yls=yls, **kwargs)
+
+
+def _make_histogram_xys(hist_data, bin_edges):
+
+    hist_data.sort()
+    bin_edges.sort()
+
+    bin_counts = [0 for be in bin_edges]
+
+    for bin_ind, bin_edge in enumerate(bin_edges):
+        while len(hist_data) > 0 and hist_data[0] < bin_edge:
+            bin_counts[bin_ind] += 1
+            hist_data.pop(0)
+    while len(hist_data) > 0 and hist_data[0] == bin_edges[-1]:
+        # include right side of last bin to match numpy behavior
+        bin_counts[bin_ind] += 1
+        hist_data.pop(0)
+
+    x_out = [be for be in bin_edges for _i in (1, 2)]
+    y_out = [0] + [bc for bc in bin_counts[1:] for _i in (1, 2)] + [0]
+    yl_out = [0 for y_o in y_out]
+
+    return x_out, y_out, yl_out
