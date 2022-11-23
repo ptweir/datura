@@ -4,10 +4,10 @@ datura package
 Submodules
 ----------
 
-datura.line\_plot module
+datura.draw
 ------------------------
 
-.. automodule:: datura.line_plot
+.. automodule:: datura.draw
     :members:
     :undoc-members:
     :show-inheritance:

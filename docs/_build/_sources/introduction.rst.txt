@@ -6,7 +6,7 @@ Overview
 
 ``plot([0, 1, 2], [1,2,-1] , x_ticks=[0, 1, 2], y_ticks=[-1, 1], x_label='time', y_label='amount', labels='label')``
 
-the :meth:`~datura.line_plot.plot` function.
+the :meth:`~datura.draw.plot` function.
 
 .. raw:: html
 
