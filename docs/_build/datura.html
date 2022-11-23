@@ -45,11 +45,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">datura</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">datura package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-datura.line_plot">datura.line_plot module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#datura.line_plot.hist"><code class="docutils literal notranslate"><span class="pre">hist()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#datura.line_plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#datura-line-plot-module">datura.line_plot module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-datura">Module contents</a></li>
 </ul>
 </li>
@@ -87,77 +83,8 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
-<section id="module-datura.line_plot">
-<span id="datura-line-plot-module"></span><h2>datura.line_plot module<a class="headerlink" href="#module-datura.line_plot" title="Permalink to this heading"></a></h2>
-<p>functions to produce a line plot</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="datura.line_plot.hist">
-<span class="sig-prename descclassname"><span class="pre">datura.line_plot.</span></span><span class="sig-name descname"><span class="pre">hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/line_plot.html#hist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.line_plot.hist" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="datura.line_plot.plot">
-<span class="sig-prename descclassname"><span class="pre">datura.line_plot.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'plot.svg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_opacities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_widths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_radii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_nudges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_ticks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_ticks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/line_plot.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.line_plot.plot" title="Permalink to this definition"></a></dt>
-<dd><p>Returns .svg text and saves a .svg file containing a plot of the data in
-lists ys and xs.</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
-<dl class="simple">
-<dt>xs<span class="classifier">list of lists</span></dt><dd><p>Abscissas of the lines to plot
-(each list corresponds to a different line)</p>
-</dd>
-<dt>ys<span class="classifier">list of lists</span></dt><dd><p>Ordinates of the lines to plot
-(each list corresponds to a different line)</p>
-</dd>
-<dt>yus<span class="classifier">list of lists, optional</span></dt><dd><p>Abscissas of the upper bounds of the error patches to plot
-(each list corresponds to a different line)</p>
-</dd>
-<dt>yls<span class="classifier">list of lists, optional</span></dt><dd><p>Abscissas of the lower bounds of the error patches to plot
-(each list corresponds to a different line)</p>
-</dd>
-<dt>filename<span class="classifier">string, optional</span></dt><dd><p>Name of the file to save. Default is ‘plot.svg’</p>
-</dd>
-<dt>x_label<span class="classifier">string, optional</span></dt><dd><p>Label for x axis</p>
-</dd>
-<dt>y_label<span class="classifier">string, optional</span></dt><dd><p>Label for y axis</p>
-</dd>
-<dt>title<span class="classifier">string, optional</span></dt><dd><p>Title of figure</p>
-</dd>
-<dt>colors<span class="classifier">list, optional</span></dt><dd><p>List containing svg colors for each line</p>
-</dd>
-<dt>fill_colors<span class="classifier">list, optional</span></dt><dd><p>List containing svg colors for each patch (between yus and yls)</p>
-</dd>
-<dt>fill_opacities<span class="classifier">list, optional</span></dt><dd><p>List containing numbers between 0 and 1 for each patch
-(between yus and yls)</p>
-</dd>
-<dt>line_widths<span class="classifier">list, optional</span></dt><dd><p>List containing width for each line</p>
-</dd>
-<dt>points_radii<span class="classifier">list, optional</span></dt><dd><p>List containing size of circles at each data point</p>
-</dd>
-<dt>labels<span class="classifier">list of strings, optional</span></dt><dd><p>Labels corresponding to each line</p>
-</dd>
-<dt>label_nudges<span class="classifier">list of ints, optional</span></dt><dd><p>distances to move labels (intended to manually avoid overlaps)</p>
-</dd>
-<dt>x_ticks<span class="classifier">list, optional</span></dt><dd><p>locations of ticks on the x-axis.
-Empty (or length 1 list) will result in no x-axis being displayed.
-If None a automatically generated axis is displayed</p>
-</dd>
-<dt>y_ticks<span class="classifier">list, optional</span></dt><dd><p>locations of ticks on the y-axis.
-Empty (or length 1 list) will result in no y-axis being displayed.
-If None a automatically generated axis is displayed</p>
-</dd>
-</dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
-<p>full_figure : raw svg string</p>
-</section>
-<section id="notes">
-<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this heading"></a></h3>
-<p>Tries to infer correct behavior when input is unexpected.</p>
-</section>
-</dd></dl>
-
+<section id="datura-line-plot-module">
+<h2>datura.line_plot module<a class="headerlink" href="#datura-line-plot-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-datura">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-datura" title="Permalink to this heading"></a></h2>

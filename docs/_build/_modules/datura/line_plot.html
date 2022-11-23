@@ -338,70 +338,12 @@
     <span class="k">return</span> <span class="n">title_vb</span>
 
 
-<div class="viewcode-block" id="plot"><a class="viewcode-back" href="../../datura.html#datura.line_plot.plot">[docs]</a><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;plot.svg&#39;</span><span class="p">,</span>
-         <span class="n">x_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_opacities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">line_widths</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">points_radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
-<span class="sd">    lists ys and xs.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    xs : list of lists</span>
-<span class="sd">        Abscissas of the lines to plot</span>
-<span class="sd">        (each list corresponds to a different line)</span>
-<span class="sd">    ys : list of lists</span>
-<span class="sd">        Ordinates of the lines to plot</span>
-<span class="sd">        (each list corresponds to a different line)</span>
-<span class="sd">    yus : list of lists, optional</span>
-<span class="sd">        Abscissas of the upper bounds of the error patches to plot</span>
-<span class="sd">        (each list corresponds to a different line)</span>
-<span class="sd">    yls : list of lists, optional</span>
-<span class="sd">        Abscissas of the lower bounds of the error patches to plot</span>
-<span class="sd">        (each list corresponds to a different line)</span>
-<span class="sd">    filename : string, optional</span>
-<span class="sd">        Name of the file to save. Default is &#39;plot.svg&#39;</span>
-<span class="sd">    x_label : string, optional</span>
-<span class="sd">        Label for x axis</span>
-<span class="sd">    y_label : string, optional</span>
-<span class="sd">        Label for y axis</span>
-<span class="sd">    title : string, optional</span>
-<span class="sd">        Title of figure</span>
-<span class="sd">    colors : list, optional</span>
-<span class="sd">        List containing svg colors for each line</span>
-<span class="sd">    fill_colors : list, optional</span>
-<span class="sd">        List containing svg colors for each patch (between yus and yls)</span>
-<span class="sd">    fill_opacities : list, optional</span>
-<span class="sd">        List containing numbers between 0 and 1 for each patch</span>
-<span class="sd">        (between yus and yls)</span>
-<span class="sd">    line_widths : list, optional</span>
-<span class="sd">        List containing width for each line</span>
-<span class="sd">    points_radii : list, optional</span>
-<span class="sd">        List containing size of circles at each data point</span>
-<span class="sd">    labels : list of strings, optional</span>
-<span class="sd">        Labels corresponding to each line</span>
-<span class="sd">    label_nudges : list of ints, optional</span>
-<span class="sd">        distances to move labels (intended to manually avoid overlaps)</span>
-<span class="sd">    x_ticks : list, optional</span>
-<span class="sd">        locations of ticks on the x-axis.</span>
-<span class="sd">        Empty (or length 1 list) will result in no x-axis being displayed.</span>
-<span class="sd">        If None a automatically generated axis is displayed</span>
-<span class="sd">    y_ticks : list, optional</span>
-<span class="sd">        locations of ticks on the y-axis.</span>
-<span class="sd">        Empty (or length 1 list) will result in no y-axis being displayed.</span>
-<span class="sd">        If None a automatically generated axis is displayed</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    full_figure : raw svg string</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    Tries to infer correct behavior when input is unexpected.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="base_plot"><a class="viewcode-back" href="../../datura.html#datura.line_plot.base_plot">[docs]</a><span class="k">def</span> <span class="nf">base_plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;plot.svg&#39;</span><span class="p">,</span>
+              <span class="n">x_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_opacities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">line_widths</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">points_radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
         <span class="n">filename</span> <span class="o">+=</span> <span class="s1">&#39;.svg&#39;</span>
 
@@ -536,6 +478,175 @@
     <span class="n">out_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">full_figure</span></div>
+
+
+<div class="viewcode-block" id="plot"><a class="viewcode-back" href="../../datura.html#datura.line_plot.plot">[docs]</a><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
+<span class="sd">    lists ys and xs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xs : list of lists</span>
+<span class="sd">        Abscissas of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    ys : list of lists</span>
+<span class="sd">        Ordinates of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    filename : string, optional</span>
+<span class="sd">        Name of the file to save. Default is &#39;plot.svg&#39;</span>
+<span class="sd">    x_label : string, optional</span>
+<span class="sd">        Label for x axis</span>
+<span class="sd">    y_label : string, optional</span>
+<span class="sd">        Label for y axis</span>
+<span class="sd">    title : string, optional</span>
+<span class="sd">        Title of figure</span>
+<span class="sd">    colors : list, optional</span>
+<span class="sd">        List containing svg colors for each line</span>
+<span class="sd">    line_widths : list, optional</span>
+<span class="sd">        List containing width for each line</span>
+<span class="sd">    points_radii : list, optional</span>
+<span class="sd">        List containing size of circles at each data point</span>
+<span class="sd">    labels : list of strings, optional</span>
+<span class="sd">        Labels corresponding to each line</span>
+<span class="sd">    label_nudges : list of ints, optional</span>
+<span class="sd">        distances to move labels (intended to manually avoid overlaps)</span>
+<span class="sd">    x_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the x-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no x-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+<span class="sd">    y_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the y-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no y-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    full_figure : raw svg string</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Tries to infer correct behavior when input is unexpected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="scatter"><a class="viewcode-back" href="../../datura.html#datura.line_plot.scatter">[docs]</a><span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
+<span class="sd">    lists ys and xs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xs : list of lists</span>
+<span class="sd">        Abscissas of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    ys : list of lists</span>
+<span class="sd">        Ordinates of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    filename : string, optional</span>
+<span class="sd">        Name of the file to save. Default is &#39;plot.svg&#39;</span>
+<span class="sd">    x_label : string, optional</span>
+<span class="sd">        Label for x axis</span>
+<span class="sd">    y_label : string, optional</span>
+<span class="sd">        Label for y axis</span>
+<span class="sd">    title : string, optional</span>
+<span class="sd">        Title of figure</span>
+<span class="sd">    colors : list, optional</span>
+<span class="sd">        List containing svg colors for each line</span>
+<span class="sd">    points_radii : list, optional</span>
+<span class="sd">        List containing size of circles at each data point</span>
+<span class="sd">    labels : list of strings, optional</span>
+<span class="sd">        Labels corresponding to each line</span>
+<span class="sd">    label_nudges : list of ints, optional</span>
+<span class="sd">        distances to move labels (intended to manually avoid overlaps)</span>
+<span class="sd">    x_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the x-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no x-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+<span class="sd">    y_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the y-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no y-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    full_figure : raw svg string</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Tries to infer correct behavior when input is unexpected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;line_widths&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;line_widths&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s1">&#39;points_radii&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">points_radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="error_plot"><a class="viewcode-back" href="../../datura.html#datura.line_plot.error_plot">[docs]</a><span class="k">def</span> <span class="nf">error_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
+<span class="sd">    lists ys and xs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xs : list of lists</span>
+<span class="sd">        Abscissas of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    ys : list of lists</span>
+<span class="sd">        Ordinates of the lines to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    yus : list of lists, optional</span>
+<span class="sd">        Abscissas of the upper bounds of the error patches to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    yls : list of lists, optional</span>
+<span class="sd">        Abscissas of the lower bounds of the error patches to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    filename : string, optional</span>
+<span class="sd">        Name of the file to save. Default is &#39;plot.svg&#39;</span>
+<span class="sd">    x_label : string, optional</span>
+<span class="sd">        Label for x axis</span>
+<span class="sd">    y_label : string, optional</span>
+<span class="sd">        Label for y axis</span>
+<span class="sd">    title : string, optional</span>
+<span class="sd">        Title of figure</span>
+<span class="sd">    colors : list, optional</span>
+<span class="sd">        List containing svg colors for each line</span>
+<span class="sd">    fill_colors : list, optional</span>
+<span class="sd">        List containing svg colors for each patch (between yus and yls)</span>
+<span class="sd">    fill_opacities : list, optional</span>
+<span class="sd">        List containing numbers between 0 and 1 for each patch</span>
+<span class="sd">        (between yus and yls)</span>
+<span class="sd">    line_widths : list, optional</span>
+<span class="sd">        List containing width for each line</span>
+<span class="sd">    points_radii : list, optional</span>
+<span class="sd">        List containing size of circles at each data point</span>
+<span class="sd">    labels : list of strings, optional</span>
+<span class="sd">        Labels corresponding to each line</span>
+<span class="sd">    label_nudges : list of ints, optional</span>
+<span class="sd">        distances to move labels (intended to manually avoid overlaps)</span>
+<span class="sd">    x_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the x-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no x-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+<span class="sd">    y_ticks : list, optional</span>
+<span class="sd">        locations of ticks on the y-axis.</span>
+<span class="sd">        Empty (or length 1 list) will result in no y-axis being displayed.</span>
+<span class="sd">        If None a automatically generated axis is displayed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    full_figure : raw svg string</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Tries to infer correct behavior when input is unexpected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="hist"><a class="viewcode-back" href="../../datura.html#datura.line_plot.hist">[docs]</a><span class="k">def</span> <span class="nf">hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bin_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

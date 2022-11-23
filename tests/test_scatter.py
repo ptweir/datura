@@ -21,9 +21,10 @@ def test_scatter_points():
     out_svg = os.path.join('tests', this_fn_base+'.svg')
     persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
 
-    _out = datura.plot(df['x'], df[['y1', 'y2', 'y3']], line_widths=None,
-                       points_radii=[1, 1.5, 2], filename=out_svg,
-                       y_ticks=[0, 200], labels=['r = 1', 'r = 1.5', 'r = 2'])
+    _out = datura.scatter(df['x'], df[['y1', 'y2', 'y3']],
+                          points_radii=[1, 1.5, 2], filename=out_svg,
+                          y_ticks=[0, 200],
+                          labels=['r = 1', 'r = 1.5', 'r = 2'])
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()

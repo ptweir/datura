@@ -1,2 +1,4 @@
-from .line_plot import plot
-from .line_plot import hist
+from .draw import plot
+from .draw import hist
+from .draw import scatter
+from .draw import error_plot

@@ -268,70 +268,12 @@ def _make_title(title, vb_width, tick_length):
     return title_vb
 
 
-def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
-         x_label=None, y_label=None, title=None,
-         colors=None, fill_colors=None, fill_opacities=None,
-         line_widths='1', points_radii=None,
-         labels=None, label_nudges=None,
-         x_ticks=None, y_ticks=None):
-    """Returns .svg text and saves a .svg file containing a plot of the data in
-    lists ys and xs.
-
-    Parameters
-    ----------
-    xs : list of lists
-        Abscissas of the lines to plot
-        (each list corresponds to a different line)
-    ys : list of lists
-        Ordinates of the lines to plot
-        (each list corresponds to a different line)
-    yus : list of lists, optional
-        Abscissas of the upper bounds of the error patches to plot
-        (each list corresponds to a different line)
-    yls : list of lists, optional
-        Abscissas of the lower bounds of the error patches to plot
-        (each list corresponds to a different line)
-    filename : string, optional
-        Name of the file to save. Default is 'plot.svg'
-    x_label : string, optional
-        Label for x axis
-    y_label : string, optional
-        Label for y axis
-    title : string, optional
-        Title of figure
-    colors : list, optional
-        List containing svg colors for each line
-    fill_colors : list, optional
-        List containing svg colors for each patch (between yus and yls)
-    fill_opacities : list, optional
-        List containing numbers between 0 and 1 for each patch
-        (between yus and yls)
-    line_widths : list, optional
-        List containing width for each line
-    points_radii : list, optional
-        List containing size of circles at each data point
-    labels : list of strings, optional
-        Labels corresponding to each line
-    label_nudges : list of ints, optional
-        distances to move labels (intended to manually avoid overlaps)
-    x_ticks : list, optional
-        locations of ticks on the x-axis.
-        Empty (or length 1 list) will result in no x-axis being displayed.
-        If None a automatically generated axis is displayed
-    y_ticks : list, optional
-        locations of ticks on the y-axis.
-        Empty (or length 1 list) will result in no y-axis being displayed.
-        If None a automatically generated axis is displayed
-
-    Returns
-    -------
-    full_figure : raw svg string
-
-    Notes
-    -----
-    Tries to infer correct behavior when input is unexpected.
-
-    """
+def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
+              x_label=None, y_label=None, title=None,
+              colors=None, fill_colors=None, fill_opacities=None,
+              line_widths='1', points_radii=None,
+              labels=None, label_nudges=None,
+              x_ticks=None, y_ticks=None):
     if filename[-4:] != '.svg':
         filename += '.svg'
 
@@ -466,6 +408,175 @@ def plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     out_file.close()
 
     return full_figure
+
+
+def plot(*args, **kwargs):
+    """Returns .svg text and saves a .svg file containing a plot of the data in
+    lists ys and xs.
+
+    Parameters
+    ----------
+    xs : list of lists
+        Abscissas of the lines to plot
+        (each list corresponds to a different line)
+    ys : list of lists
+        Ordinates of the lines to plot
+        (each list corresponds to a different line)
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+        Label for x axis
+    y_label : string, optional
+        Label for y axis
+    title : string, optional
+        Title of figure
+    colors : list, optional
+        List containing svg colors for each line
+    line_widths : list, optional
+        List containing width for each line
+    points_radii : list, optional
+        List containing size of circles at each data point
+    labels : list of strings, optional
+        Labels corresponding to each line
+    label_nudges : list of ints, optional
+        distances to move labels (intended to manually avoid overlaps)
+    x_ticks : list, optional
+        locations of ticks on the x-axis.
+        Empty (or length 1 list) will result in no x-axis being displayed.
+        If None a automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis.
+        Empty (or length 1 list) will result in no y-axis being displayed.
+        If None a automatically generated axis is displayed
+
+    Returns
+    -------
+    full_figure : raw svg string
+
+    Notes
+    -----
+    Tries to infer correct behavior when input is unexpected.
+
+    """
+
+    return base_plot(*args, **kwargs)
+
+
+def scatter(*args, **kwargs):
+    """Returns .svg text and saves a .svg file containing a plot of the data in
+    lists ys and xs.
+
+    Parameters
+    ----------
+    xs : list of lists
+        Abscissas of the lines to plot
+        (each list corresponds to a different line)
+    ys : list of lists
+        Ordinates of the lines to plot
+        (each list corresponds to a different line)
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+        Label for x axis
+    y_label : string, optional
+        Label for y axis
+    title : string, optional
+        Title of figure
+    colors : list, optional
+        List containing svg colors for each line
+    points_radii : list, optional
+        List containing size of circles at each data point
+    labels : list of strings, optional
+        Labels corresponding to each line
+    label_nudges : list of ints, optional
+        distances to move labels (intended to manually avoid overlaps)
+    x_ticks : list, optional
+        locations of ticks on the x-axis.
+        Empty (or length 1 list) will result in no x-axis being displayed.
+        If None a automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis.
+        Empty (or length 1 list) will result in no y-axis being displayed.
+        If None a automatically generated axis is displayed
+
+    Returns
+    -------
+    full_figure : raw svg string
+
+    Notes
+    -----
+    Tries to infer correct behavior when input is unexpected.
+
+    """
+    if 'line_widths' not in kwargs.keys():
+        kwargs['line_widths'] = None
+    if 'points_radii' not in kwargs.keys():
+        points_radii = [1]
+
+    return base_plot(*args, **kwargs)
+
+
+def error_plot(*args, **kwargs):
+    """Returns .svg text and saves a .svg file containing a plot of the data in
+    lists ys and xs.
+
+    Parameters
+    ----------
+    xs : list of lists
+        Abscissas of the lines to plot
+        (each list corresponds to a different line)
+    ys : list of lists
+        Ordinates of the lines to plot
+        (each list corresponds to a different line)
+    yus : list of lists, optional
+        Abscissas of the upper bounds of the error patches to plot
+        (each list corresponds to a different line)
+    yls : list of lists, optional
+        Abscissas of the lower bounds of the error patches to plot
+        (each list corresponds to a different line)
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+        Label for x axis
+    y_label : string, optional
+        Label for y axis
+    title : string, optional
+        Title of figure
+    colors : list, optional
+        List containing svg colors for each line
+    fill_colors : list, optional
+        List containing svg colors for each patch (between yus and yls)
+    fill_opacities : list, optional
+        List containing numbers between 0 and 1 for each patch
+        (between yus and yls)
+    line_widths : list, optional
+        List containing width for each line
+    points_radii : list, optional
+        List containing size of circles at each data point
+    labels : list of strings, optional
+        Labels corresponding to each line
+    label_nudges : list of ints, optional
+        distances to move labels (intended to manually avoid overlaps)
+    x_ticks : list, optional
+        locations of ticks on the x-axis.
+        Empty (or length 1 list) will result in no x-axis being displayed.
+        If None a automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis.
+        Empty (or length 1 list) will result in no y-axis being displayed.
+        If None a automatically generated axis is displayed
+
+    Returns
+    -------
+    full_figure : raw svg string
+
+    Notes
+    -----
+    Tries to infer correct behavior when input is unexpected.
+
+    """
+
+    return base_plot(*args, **kwargs)
 
 
 def hist(data, bin_edges=None, **kwargs):
