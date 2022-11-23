@@ -579,12 +579,19 @@ def error_plot(*args, **kwargs):
     return base_plot(*args, **kwargs)
 
 
-def hist(data, bin_edges=None, **kwargs):
-    if bin_edges is None:
-        # automatically create bin edges...
-        pass
+def hist(data, bin_edges=10, **kwargs):
+
     bin_edges, data, _, _ = _convert_to_lists_of_lists(bin_edges, data,
                                                        None, None)
+
+    if max([len(be) for be in bin_edges]) == 1:
+        num_bins = bin_edges[0][0]
+        # user specified number of bins, not edges
+        d_min = min([min(d) for d in data])
+        d_max = max([max(d) for d in data])
+        step = (d_max - d_min) / float(num_bins - 1)
+        bin_edge_list = [d_min + i * step for i in range(num_bins)]
+        bin_edges = [bin_edge_list for _d in data]
 
     xs, ys, yus, yls = [], [], [], []
     for hist_ind in range(len(data)):

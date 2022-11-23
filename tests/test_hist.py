@@ -32,6 +32,36 @@ def test_np_hist():
             assert out_svg_file.read() == persistent_svg_file.read()
 
 
+def test_autobin_hist():
+
+    this_fn_base = 'autobin_hist'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.hist(data=[[2 for i in range(10)],
+                              list(range(10)),
+                              [0 for i in range(5)]+[9 for i in range(5)]],
+                       bin_edges=10, y_ticks=[0, 5, 10], filename=out_svg)
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_autobin_hist_2():
+
+    this_fn_base = 'autobin_hist'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.hist(data=[[2 for i in range(10)],
+                              list(range(10)),
+                              [0 for i in range(5)]+[9 for i in range(5)]],
+                       y_ticks=[0, 5, 10], filename=out_svg)
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
 def test_df_hist():
 
     this_fn_base = 'hist'
