@@ -35,3 +35,12 @@ Displaying time series data in a Pandas dataFrame
 ..  figure:: ../examples/time_example.svg
 
     time_example.svg
+
+Displaying histograms
+---------------------
+
+.. literalinclude:: ../examples/hist_example.py
+
+..  figure:: ../examples/hist_example.svg
+
+    hist_example.svg

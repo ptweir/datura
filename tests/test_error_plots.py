@@ -1,14 +1,14 @@
 import datura
-import numpy as np
-import pandas as pd
 import os
+
+xs = [-1, 2]
+ys = [[0, 0], [4, 5]]
+y_errors = [[1, .5], [2, 3]]
+yus = [[1, .5], [6, 8]]
+yls = [[-1, -.5], [2, 2]]
 
 
 def test_error_plot_symmetrical():
-    xs = [-1, 2]
-    ys = [[0, 0], [4, 5]]
-    y_errors = [[1, .5], [2, 3]]
-
     this_fn_base = 'symmetrical_error'
     out_svg = os.path.join('tests', this_fn_base+'.svg')
     persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
@@ -22,11 +22,6 @@ def test_error_plot_symmetrical():
 
 
 def test_error_plot():
-    xs = [-1, 2]
-    ys = [[0, 0], [4, 5]]
-    yus = [[1, .5], [6, 8]]
-    yls = [[-1, -.5], [2, 2]]
-
     this_fn_base = 'symmetrical_error'
     out_svg = os.path.join('tests', this_fn_base+'.svg')
     persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
