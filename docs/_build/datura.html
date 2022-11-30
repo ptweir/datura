@@ -101,8 +101,8 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="datura.draw.error_plot">
 <span class="sig-prename descclassname"><span class="pre">datura.draw.</span></span><span class="sig-name descname"><span class="pre">error_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/draw.html#error_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.draw.error_plot" title="Permalink to this definition"></a></dt>
-<dd><p>Returns .svg text and saves a .svg file containing a plot of the data in
-lists ys and xs.</p>
+<dd><p>Returns .svg text and saves a .svg file containing a line plot of the
+data in lists ys and xs with error patches between lists yus and yls.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <dl class="simple">
@@ -112,10 +112,13 @@ lists ys and xs.</p>
 <dt>ys<span class="classifier">list of lists</span></dt><dd><p>Ordinates of the lines to plot
 (each list corresponds to a different line)</p>
 </dd>
-<dt>yus<span class="classifier">list of lists, optional</span></dt><dd><p>Abscissas of the upper bounds of the error patches to plot
+<dt>yus<span class="classifier">list of lists, optional</span></dt><dd><p>Ordinates of the upper bounds of the error patches to plot
 (each list corresponds to a different line)</p>
 </dd>
-<dt>yls<span class="classifier">list of lists, optional</span></dt><dd><p>Abscissas of the lower bounds of the error patches to plot
+<dt>yls<span class="classifier">list of lists, optional</span></dt><dd><p>Ordinates of the lower bounds of the error patches to plot
+(each list corresponds to a different line)</p>
+</dd>
+<dt>y_errors: list of lists, optional</dt><dd><p>Values to be added and subtracted from ys to create error patches
 (each list corresponds to a different line)</p>
 </dd>
 <dt>filename<span class="classifier">string, optional</span></dt><dd><p>Name of the file to save. Default is ‘plot.svg’</p>
@@ -164,15 +167,65 @@ If None a automatically generated axis is displayed</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="datura.draw.hist">
 <span class="sig-prename descclassname"><span class="pre">datura.draw.</span></span><span class="sig-name descname"><span class="pre">hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/draw.html#hist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.draw.hist" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns .svg text and saves a .svg file containing a histogram of the
+data in list of lists data.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>data<span class="classifier">list of lists</span></dt><dd><p>raw values to be binned into histogram counts
+(each list corresponds to a different histogram)</p>
+</dd>
+<dt>bin_edges<span class="classifier">int or list of lists</span></dt><dd><p>if int, that number of equally spaced bins are created between the
+minimum value in the data and the maximum value in data
+if lists, each list is used as bins for each list in the input data</p>
+</dd>
+<dt>filename<span class="classifier">string, optional</span></dt><dd><p>Name of the file to save. Default is ‘plot.svg’</p>
+</dd>
+<dt>x_label<span class="classifier">string, optional</span></dt><dd><p>Label for x axis</p>
+</dd>
+<dt>y_label<span class="classifier">string, optional</span></dt><dd><p>Label for y axis</p>
+</dd>
+<dt>title<span class="classifier">string, optional</span></dt><dd><p>Title of figure</p>
+</dd>
+<dt>colors<span class="classifier">list, optional</span></dt><dd><p>List containing svg colors for each histogram</p>
+</dd>
+<dt>fill_colors<span class="classifier">list, optional</span></dt><dd><p>List containing svg fill colors for each patch</p>
+</dd>
+<dt>fill_opacities<span class="classifier">list, optional</span></dt><dd><p>List containing numbers between 0 and 1 for each fill</p>
+</dd>
+<dt>line_widths<span class="classifier">list, optional</span></dt><dd><p>List containing width for each histogram</p>
+</dd>
+<dt>labels<span class="classifier">list of strings, optional</span></dt><dd><p>Labels corresponding to each line</p>
+</dd>
+<dt>label_nudges<span class="classifier">list of ints, optional</span></dt><dd><p>distances to move labels (intended to manually avoid overlaps)</p>
+</dd>
+<dt>x_ticks<span class="classifier">list, optional</span></dt><dd><p>locations of ticks on the x-axis.
+Empty (or length 1 list) will result in no x-axis being displayed.
+If None a automatically generated axis is displayed</p>
+</dd>
+<dt>y_ticks<span class="classifier">list, optional</span></dt><dd><p>locations of ticks on the y-axis.
+Empty (or length 1 list) will result in no y-axis being displayed.
+If None a automatically generated axis is displayed</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>full_figure : raw svg string</p>
+</section>
+<section id="id3">
+<h3>Notes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>Tries to infer correct behavior when input is unexpected.</p>
+</section>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="datura.draw.plot">
 <span class="sig-prename descclassname"><span class="pre">datura.draw.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/draw.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.draw.plot" title="Permalink to this definition"></a></dt>
-<dd><p>Returns .svg text and saves a .svg file containing a plot of the data in
-lists ys and xs.</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dd><p>Returns .svg text and saves a .svg file containing a line plot of the
+data in lists xs and ys.</p>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>xs<span class="classifier">list of lists</span></dt><dd><p>Abscissas of the lines to plot
 (each list corresponds to a different line)</p>
@@ -208,12 +261,12 @@ If None a automatically generated axis is displayed</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h3>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
 <p>full_figure : raw svg string</p>
 </section>
-<section id="id3">
-<h3>Notes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<section id="id6">
+<h3>Notes<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
 <p>Tries to infer correct behavior when input is unexpected.</p>
 </section>
 </dd></dl>
@@ -221,10 +274,10 @@ If None a automatically generated axis is displayed</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="datura.draw.scatter">
 <span class="sig-prename descclassname"><span class="pre">datura.draw.</span></span><span class="sig-name descname"><span class="pre">scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datura/draw.html#scatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datura.draw.scatter" title="Permalink to this definition"></a></dt>
-<dd><p>Returns .svg text and saves a .svg file containing a plot of the data in
-lists ys and xs.</p>
-<section id="id4">
-<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<dd><p>Returns .svg text and saves a .svg file containing a scatter plot of the
+data in lists xs and ys.</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>xs<span class="classifier">list of lists</span></dt><dd><p>Abscissas of the lines to plot
 (each list corresponds to a different line)</p>
@@ -258,12 +311,12 @@ If None a automatically generated axis is displayed</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h3>Returns<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
 <p>full_figure : raw svg string</p>
 </section>
-<section id="id6">
-<h3>Notes<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<section id="id9">
+<h3>Notes<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
 <p>Tries to infer correct behavior when input is unexpected.</p>
 </section>
 </dd></dl>

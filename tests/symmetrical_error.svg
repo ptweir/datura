@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<polygon fill="black" stroke="none" stroke-width="0" fill-opacity="0.2" points="40.0,141.11111111111114 360.0,149.33333333333334 360.0,165.77777777777777 40.0,174.0 " />
+<polygon fill="blue" stroke="none" stroke-width="0" fill-opacity="0.2" points="40.0,58.888888888888886 360.0,26.0 360.0,124.66666666666667 40.0,124.66666666666667 " />
+
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,157.55555555555554 360.0,157.55555555555554 " />
+<polyline fill="none" stroke="blue" stroke-width="1" points="40.0,91.77777777777777 360.0,75.33333333333334 " />
+
+<g font-family="sans-serif" font-size="10" ></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > -1 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text> </g>
+
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,157.55555555555554 38.0,157.55555555555554 36.0,157.55555555555554 36.0,141.11111111111114 38.0,141.11111111111114 36.0,141.11111111111114 36.0,124.66666666666667 38.0,124.66666666666667 36.0,124.66666666666667 36.0,108.22222222222223 38.0,108.22222222222223 36.0,108.22222222222223 36.0,91.77777777777777 38.0,91.77777777777777 36.0,91.77777777777777 36.0,75.33333333333334 38.0,75.33333333333334 36.0,75.33333333333334 36.0,58.888888888888886 38.0,58.888888888888886 36.0,58.888888888888886 36.0,42.44444444444445 38.0,42.44444444444445 36.0,42.44444444444445 36.0,26.0 38.0,26.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > -1 </text>
+    <text x="34.0" y="157.55555555555554" fill="black" text-anchor="end" dominant-baseline="middle" > 0 </text>
+    <text x="34.0" y="141.11111111111114" fill="black" text-anchor="end" dominant-baseline="middle" > 1 </text>
+    <text x="34.0" y="124.66666666666667" fill="black" text-anchor="end" dominant-baseline="middle" > 2 </text>
+    <text x="34.0" y="108.22222222222223" fill="black" text-anchor="end" dominant-baseline="middle" > 3 </text>
+    <text x="34.0" y="91.77777777777777" fill="black" text-anchor="end" dominant-baseline="middle" > 4 </text>
+    <text x="34.0" y="75.33333333333334" fill="black" text-anchor="end" dominant-baseline="middle" > 5 </text>
+    <text x="34.0" y="58.888888888888886" fill="black" text-anchor="end" dominant-baseline="middle" > 6 </text>
+    <text x="34.0" y="42.44444444444445" fill="black" text-anchor="end" dominant-baseline="middle" > 7 </text><text x="34.0" y="26.0" fill="black" text-anchor="end" dominant-baseline="middle" > 8 </text> </g>
+
+</svg>

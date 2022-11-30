@@ -481,8 +481,8 @@
 
 
 <div class="viewcode-block" id="plot"><a class="viewcode-back" href="../../datura.html#datura.draw.plot">[docs]</a><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
-<span class="sd">    lists ys and xs.</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a line plot of the</span>
+<span class="sd">    data in lists xs and ys.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -533,8 +533,8 @@
 
 
 <div class="viewcode-block" id="scatter"><a class="viewcode-back" href="../../datura.html#datura.draw.scatter">[docs]</a><span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
-<span class="sd">    lists ys and xs.</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a scatter plot of the</span>
+<span class="sd">    data in lists xs and ys.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -581,14 +581,14 @@
     <span class="k">if</span> <span class="s1">&#39;line_widths&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;line_widths&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="s1">&#39;points_radii&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">points_radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;points_radii&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="error_plot"><a class="viewcode-back" href="../../datura.html#datura.draw.error_plot">[docs]</a><span class="k">def</span> <span class="nf">error_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a plot of the data in</span>
-<span class="sd">    lists ys and xs.</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a line plot of the</span>
+<span class="sd">    data in lists ys and xs with error patches between lists yus and yls.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -599,10 +599,13 @@
 <span class="sd">        Ordinates of the lines to plot</span>
 <span class="sd">        (each list corresponds to a different line)</span>
 <span class="sd">    yus : list of lists, optional</span>
-<span class="sd">        Abscissas of the upper bounds of the error patches to plot</span>
+<span class="sd">        Ordinates of the upper bounds of the error patches to plot</span>
 <span class="sd">        (each list corresponds to a different line)</span>
 <span class="sd">    yls : list of lists, optional</span>
-<span class="sd">        Abscissas of the lower bounds of the error patches to plot</span>
+<span class="sd">        Ordinates of the lower bounds of the error patches to plot</span>
+<span class="sd">        (each list corresponds to a different line)</span>
+<span class="sd">    y_errors: list of lists, optional</span>
+<span class="sd">        Values to be added and subtracted from ys to create error patches</span>
 <span class="sd">        (each list corresponds to a different line)</span>
 <span class="sd">    filename : string, optional</span>
 <span class="sd">        Name of the file to save. Default is &#39;plot.svg&#39;</span>
@@ -646,10 +649,78 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="p">,</span> <span class="n">yls</span> <span class="o">=</span> <span class="n">_convert_to_lists_of_lists</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                  <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                  <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;yus&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                                                  <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;yls&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">yus</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">yls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_errors</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_errors&#39;</span><span class="p">)</span>
+        <span class="n">y_errors</span> <span class="o">=</span> <span class="n">_convert_from_np_pd</span><span class="p">(</span><span class="n">y_errors</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">y_errors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_y</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">_y</span> <span class="ow">in</span> <span class="n">y_errors</span><span class="p">):</span>
+                <span class="n">y_errors</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_errors</span><span class="p">]</span>  <span class="c1"># convert to list of lists</span>
+        <span class="n">yus</span><span class="p">,</span> <span class="n">yls</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">y_ind</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ys</span><span class="p">):</span>
+            <span class="n">yu</span> <span class="o">=</span> <span class="p">[</span><span class="n">yi</span> <span class="o">+</span> <span class="n">ye</span> <span class="k">for</span> <span class="n">yi</span><span class="p">,</span> <span class="n">ye</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_errors</span><span class="p">[</span><span class="n">y_ind</span><span class="p">])]</span>
+            <span class="n">yl</span> <span class="o">=</span> <span class="p">[</span><span class="n">yi</span> <span class="o">-</span> <span class="n">ye</span> <span class="k">for</span> <span class="n">yi</span><span class="p">,</span> <span class="n">ye</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_errors</span><span class="p">[</span><span class="n">y_ind</span><span class="p">])]</span>
+            <span class="n">yus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yu</span><span class="p">)</span>
+            <span class="n">yls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yl</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="n">yus</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="n">yls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="hist"><a class="viewcode-back" href="../../datura.html#datura.draw.hist">[docs]</a><span class="k">def</span> <span class="nf">hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bin_edges</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns .svg text and saves a .svg file containing a histogram of the</span>
+<span class="sd">        data in list of lists data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : list of lists</span>
+<span class="sd">            raw values to be binned into histogram counts</span>
+<span class="sd">            (each list corresponds to a different histogram)</span>
+<span class="sd">        bin_edges : int or list of lists</span>
+<span class="sd">            if int, that number of equally spaced bins are created between the</span>
+<span class="sd">            minimum value in the data and the maximum value in data</span>
+<span class="sd">            if lists, each list is used as bins for each list in the input data</span>
+<span class="sd">        filename : string, optional</span>
+<span class="sd">            Name of the file to save. Default is &#39;plot.svg&#39;</span>
+<span class="sd">        x_label : string, optional</span>
+<span class="sd">            Label for x axis</span>
+<span class="sd">        y_label : string, optional</span>
+<span class="sd">            Label for y axis</span>
+<span class="sd">        title : string, optional</span>
+<span class="sd">            Title of figure</span>
+<span class="sd">        colors : list, optional</span>
+<span class="sd">            List containing svg colors for each histogram</span>
+<span class="sd">        fill_colors : list, optional</span>
+<span class="sd">            List containing svg fill colors for each patch</span>
+<span class="sd">        fill_opacities : list, optional</span>
+<span class="sd">            List containing numbers between 0 and 1 for each fill</span>
+<span class="sd">        line_widths : list, optional</span>
+<span class="sd">            List containing width for each histogram</span>
+<span class="sd">        labels : list of strings, optional</span>
+<span class="sd">            Labels corresponding to each line</span>
+<span class="sd">        label_nudges : list of ints, optional</span>
+<span class="sd">            distances to move labels (intended to manually avoid overlaps)</span>
+<span class="sd">        x_ticks : list, optional</span>
+<span class="sd">            locations of ticks on the x-axis.</span>
+<span class="sd">            Empty (or length 1 list) will result in no x-axis being displayed.</span>
+<span class="sd">            If None a automatically generated axis is displayed</span>
+<span class="sd">        y_ticks : list, optional</span>
+<span class="sd">            locations of ticks on the y-axis.</span>
+<span class="sd">            Empty (or length 1 list) will result in no y-axis being displayed.</span>
+<span class="sd">            If None a automatically generated axis is displayed</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        full_figure : raw svg string</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Tries to infer correct behavior when input is unexpected.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
 
     <span class="n">bin_edges</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_convert_to_lists_of_lists</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span>
                                                        <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>

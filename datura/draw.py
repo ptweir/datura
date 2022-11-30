@@ -411,8 +411,8 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
 
 def plot(*args, **kwargs):
-    """Returns .svg text and saves a .svg file containing a plot of the data in
-    lists ys and xs.
+    """Returns .svg text and saves a .svg file containing a line plot of the
+    data in lists xs and ys.
 
     Parameters
     ----------
@@ -463,8 +463,8 @@ def plot(*args, **kwargs):
 
 
 def scatter(*args, **kwargs):
-    """Returns .svg text and saves a .svg file containing a plot of the data in
-    lists ys and xs.
+    """Returns .svg text and saves a .svg file containing a scatter plot of the
+    data in lists xs and ys.
 
     Parameters
     ----------
@@ -511,14 +511,14 @@ def scatter(*args, **kwargs):
     if 'line_widths' not in kwargs.keys():
         kwargs['line_widths'] = None
     if 'points_radii' not in kwargs.keys():
-        points_radii = [1]
+        kwargs['points_radii'] = [1]
 
     return base_plot(*args, **kwargs)
 
 
 def error_plot(*args, **kwargs):
-    """Returns .svg text and saves a .svg file containing a plot of the data in
-    lists ys and xs.
+    """Returns .svg text and saves a .svg file containing a line plot of the
+    data in lists ys and xs with error patches between lists yus and yls.
 
     Parameters
     ----------
@@ -529,10 +529,13 @@ def error_plot(*args, **kwargs):
         Ordinates of the lines to plot
         (each list corresponds to a different line)
     yus : list of lists, optional
-        Abscissas of the upper bounds of the error patches to plot
+        Ordinates of the upper bounds of the error patches to plot
         (each list corresponds to a different line)
     yls : list of lists, optional
-        Abscissas of the lower bounds of the error patches to plot
+        Ordinates of the lower bounds of the error patches to plot
+        (each list corresponds to a different line)
+    y_errors: list of lists, optional
+        Values to be added and subtracted from ys to create error patches
         (each list corresponds to a different line)
     filename : string, optional
         Name of the file to save. Default is 'plot.svg'
@@ -576,10 +579,78 @@ def error_plot(*args, **kwargs):
 
     """
 
-    return base_plot(*args, **kwargs)
+    xs, ys, yus, yls = _convert_to_lists_of_lists(args[0],
+                                                  args[1],
+                                                  kwargs.pop('yus', None),
+                                                  kwargs.pop('yls', None))
+
+    if yus is None or yls is None:
+        y_errors = kwargs.pop('y_errors')
+        y_errors = _convert_from_np_pd(y_errors)
+        if y_errors is not None:
+            if not all(isinstance(_y, list) for _y in y_errors):
+                y_errors = [y_errors]  # convert to list of lists
+        yus, yls = [], []
+        for y_ind, y in enumerate(ys):
+            yu = [yi + ye for yi, ye in zip(y, y_errors[y_ind])]
+            yl = [yi - ye for yi, ye in zip(y, y_errors[y_ind])]
+            yus.append(yu)
+            yls.append(yl)
+
+    return base_plot(xs, ys, yus=yus, yls=yls, **kwargs)
 
 
 def hist(data, bin_edges=10, **kwargs):
+    """Returns .svg text and saves a .svg file containing a histogram of the
+        data in list of lists data.
+
+        Parameters
+        ----------
+        data : list of lists
+            raw values to be binned into histogram counts
+            (each list corresponds to a different histogram)
+        bin_edges : int or list of lists
+            if int, that number of equally spaced bins are created between the
+            minimum value in the data and the maximum value in data
+            if lists, each list is used as bins for each list in the input data
+        filename : string, optional
+            Name of the file to save. Default is 'plot.svg'
+        x_label : string, optional
+            Label for x axis
+        y_label : string, optional
+            Label for y axis
+        title : string, optional
+            Title of figure
+        colors : list, optional
+            List containing svg colors for each histogram
+        fill_colors : list, optional
+            List containing svg fill colors for each patch
+        fill_opacities : list, optional
+            List containing numbers between 0 and 1 for each fill
+        line_widths : list, optional
+            List containing width for each histogram
+        labels : list of strings, optional
+            Labels corresponding to each line
+        label_nudges : list of ints, optional
+            distances to move labels (intended to manually avoid overlaps)
+        x_ticks : list, optional
+            locations of ticks on the x-axis.
+            Empty (or length 1 list) will result in no x-axis being displayed.
+            If None a automatically generated axis is displayed
+        y_ticks : list, optional
+            locations of ticks on the y-axis.
+            Empty (or length 1 list) will result in no y-axis being displayed.
+            If None a automatically generated axis is displayed
+
+        Returns
+        -------
+        full_figure : raw svg string
+
+        Notes
+        -----
+        Tries to infer correct behavior when input is unexpected.
+
+        """
 
     bin_edges, data, _, _ = _convert_to_lists_of_lists(bin_edges, data,
                                                        None, None)
