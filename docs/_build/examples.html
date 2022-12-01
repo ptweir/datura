@@ -92,34 +92,47 @@
 <img alt="_images/first_example.svg" src="_images/first_example.svg" /></section>
 <section id="displaying-error-patches">
 <h2>Displaying error patches<a class="headerlink" href="#displaying-error-patches" title="Permalink to this heading"></a></h2>
+<p>The following demonstrates how to display error patches with output from a
+typical SQL query. (You can see the query that generated the data using an open
+data set available through the <a class="reference external" href="https://console.cloud.google.com/marketplace/product/sportradar-public-data/mlb-pitch-by-pitch">Bigquery</a> console.)</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datura</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;line #1&#39;</span><span class="p">,</span> <span class="s1">&#39;line #2&#39;</span><span class="p">,</span> <span class="s1">&#39;line #3&#39;</span><span class="p">]</span>
-<span class="n">label_nudges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">sql_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">WITH final_score_CTE AS (</span>
+<span class="s2">SELECT </span>
+<span class="s2">    MIN(homeFinalRuns) AS home_runs</span>
+<span class="s2">  , MIN(awayFinalRuns) AS away_runs</span>
+<span class="s2">  , MIN(startTime) AS start_time</span>
+<span class="s2">  , gameID</span>
+<span class="s2">FROM `bigquery-public-data.baseball.games_wide`</span>
+<span class="s2">WHERE gameStatus = &#39;closed&#39;</span>
+<span class="s2">GROUP BY gameID</span>
+<span class="s2">)</span>
+<span class="s2">SELECT</span>
+<span class="s2">  AVG(home_runs) AS avg_home_runs</span>
+<span class="s2">  , STDDEV_SAMP(home_runs) AS std_home_runs</span>
+<span class="s2">  , AVG(away_runs) AS avg_away_runs</span>
+<span class="s2">  , STDDEV_SAMP(away_runs) AS std_away_runs</span>
+<span class="s2">  , COUNT( DISTINCT gameID) AS games</span>
+<span class="s2">  , DATE_TRUNC(start_time, MONTH) AS game_month</span>
+<span class="s2">FROM final_score_CTE</span>
+<span class="s2">GROUP BY game_month</span>
+<span class="s2">ORDER BY game_month</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-<span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="n">xx</span><span class="o">*</span><span class="mf">.1</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
-<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">]</span>
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/runs.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;game_month&#39;</span><span class="p">])</span>
+<span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;sem_home&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;std_home_runs&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span><span class="o">**</span><span class="mf">.5</span>
+<span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;sem_away&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;std_away_runs&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;games&#39;</span><span class="p">]</span><span class="o">**</span><span class="mf">.5</span>
 
-<span class="n">y1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">xx</span><span class="o">*</span><span class="mf">.035</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
-<span class="n">y2</span> <span class="o">=</span> <span class="p">[(</span><span class="n">xx</span><span class="o">*</span><span class="mf">.1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
-<span class="n">y3</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">10</span><span class="p">)[:</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">xx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">xx</span><span class="o">*</span><span class="mf">.1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
-<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">]</span>
-
-<span class="n">yu1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">+</span><span class="mi">10</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y1</span><span class="p">]</span>
-<span class="n">yl1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">-</span><span class="mi">10</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y1</span><span class="p">]</span>
-<span class="n">yu2</span> <span class="o">=</span> <span class="n">y2</span>  <span class="c1"># this is a bit of a hack</span>
-<span class="n">yl2</span> <span class="o">=</span> <span class="n">y2</span>
-<span class="n">yu3</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">*</span><span class="mf">1.3</span><span class="o">+</span><span class="mi">5</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y3</span><span class="p">]</span>
-<span class="n">yl3</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">*</span><span class="mf">.5</span><span class="o">-</span><span class="mi">10</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y3</span><span class="p">]</span>
-<span class="n">yus</span> <span class="o">=</span> <span class="p">[</span><span class="n">yu1</span><span class="p">,</span> <span class="n">yu2</span><span class="p">,</span> <span class="n">yu3</span><span class="p">]</span>
-<span class="n">yls</span> <span class="o">=</span> <span class="p">[</span><span class="n">yl1</span><span class="p">,</span> <span class="n">yl2</span><span class="p">,</span> <span class="n">yl3</span><span class="p">]</span>
-
-<span class="n">datura</span><span class="o">.</span><span class="n">error_plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="o">=</span><span class="n">yus</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="n">yls</span><span class="p">,</span>
+<span class="n">datura</span><span class="o">.</span><span class="n">error_plot</span><span class="p">(</span><span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;game_month&#39;</span><span class="p">],</span>
+                  <span class="n">results_df</span><span class="p">[[</span><span class="s1">&#39;avg_home_runs&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_away_runs&#39;</span><span class="p">]],</span>
+                  <span class="n">y_errors</span><span class="o">=</span><span class="n">results_df</span><span class="p">[[</span><span class="s1">&#39;sem_home&#39;</span><span class="p">,</span> <span class="s1">&#39;sem_away&#39;</span><span class="p">]],</span>
                   <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;examples/error_patch_example.svg&#39;</span><span class="p">,</span>
-                  <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;x label&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;y label&#39;</span><span class="p">,</span>
-                  <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Error Patch Example&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
-                  <span class="n">label_nudges</span><span class="o">=</span><span class="n">label_nudges</span><span class="p">,</span> <span class="n">x_ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-                  <span class="n">y_ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+                  <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;Game month&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;Runs (+/- SE)&#39;</span><span class="p">,</span>
+                  <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Error Patch Example&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Home&#39;</span><span class="p">,</span> <span class="s1">&#39;Away&#39;</span><span class="p">],</span>
+                  <span class="n">label_nudges</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="n">y_ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id1">
