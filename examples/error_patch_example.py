@@ -2,6 +2,7 @@ import datura
 import pandas as pd
 
 sql_query = """
+--sql
 WITH final_score_CTE AS (
 SELECT 
     MIN(homeFinalRuns) AS home_runs
@@ -22,6 +23,7 @@ SELECT
 FROM final_score_CTE
 GROUP BY game_month
 ORDER BY game_month
+;
 """
 
 results_df = pd.read_csv('examples/runs.csv', parse_dates=['game_month'])
