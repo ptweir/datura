@@ -10,9 +10,13 @@ def _interactive_display(filename):
     try:
         from IPython.display import SVG, display
         from IPython import get_ipython
+        ipython_present = True
         try:
             shell = get_ipython().__class__.__name__
             if shell == 'ZMQInteractiveShell':
+                in_notebook = True
+                display(SVG(filename))
+            elif shell == 'Shell':
                 in_notebook = True
                 display(SVG(filename))
             elif shell == 'TerminalInteractiveShell':
@@ -23,7 +27,8 @@ def _interactive_display(filename):
             in_notebook = False
     except ModuleNotFoundError:
         in_notebook = False
-    if not in_notebook:
+        ipython_present = False
+    if ipython_present and not in_notebook:
         webbrowser.open('file://' + os.path.realpath(filename))
 
     return in_notebook
