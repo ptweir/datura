@@ -2,6 +2,31 @@
 from datetime import datetime
 import math
 import textwrap
+import os
+import webbrowser
+
+
+def _interactive_display(filename):
+    try:
+        from IPython.display import SVG, display
+        from IPython import get_ipython
+        try:
+            shell = get_ipython().__class__.__name__
+            if shell == 'ZMQInteractiveShell':
+                in_notebook = True
+                display(SVG(filename))
+            elif shell == 'TerminalInteractiveShell':
+                in_notebook = False
+            else:
+                in_notebook = False
+        except NameError:
+            in_notebook = False
+    except ModuleNotFoundError:
+        in_notebook = False
+    if not in_notebook:
+        webbrowser.open('file://' + os.path.realpath(filename))
+
+    return in_notebook
 
 
 def _make_pretty_ticks(x_min, x_max, xs):
@@ -273,7 +298,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
               colors=None, fill_colors=None, fill_opacities=None,
               line_widths='1', points_radii=None,
               labels=None, label_nudges=None,
-              x_ticks=None, y_ticks=None):
+              x_ticks=None, y_ticks=None, interactive_mode=True):
     if filename[-4:] != '.svg':
         filename += '.svg'
 
@@ -407,6 +432,9 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     out_file.write(full_figure)
     out_file.close()
 
+    if interactive_mode:
+        in_notebook = _interactive_display(filename)
+
     return full_figure
 
 
@@ -448,6 +476,8 @@ def plot(*args, **kwargs):
         locations of ticks on the y-axis.
         Empty (or length 1 list) will result in no y-axis being displayed.
         If None a automatically generated axis is displayed
+    interactive_mode : bool, optional
+        if True, display inline (jupyter notebooks) or in new browser tab.
 
     Returns
     -------
