@@ -104,11 +104,52 @@
     <span class="k">return</span> <span class="n">in_notebook</span>
 
 
-<span class="k">def</span> <span class="nf">_make_pretty_ticks</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">xs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_make_pretty_ticks</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">x_axis_is_time</span><span class="p">):</span>
 
-    <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">x_axis_is_time</span><span class="p">:</span>
+        <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">min_rounded</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.1e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span>
+        <span class="n">max_rounded</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.1e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span>
+
+        <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">min_rounded</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">min_rounded</span> <span class="o">==</span> <span class="n">max_rounded</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x_max</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_rounded</span><span class="p">):</span>
+                <span class="n">significand_st</span><span class="p">,</span> <span class="n">exp_st</span> <span class="o">=</span> <span class="n">max_rounded</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+                <span class="n">max_out</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;e&#39;</span> <span class="o">+</span> <span class="n">exp_st</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_rounded</span><span class="p">)</span>
+                <span class="n">x_ticks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_out</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x_min</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">min_rounded</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_rounded</span><span class="p">)):</span>
+                <span class="n">significand_st</span><span class="p">,</span> <span class="n">exp_st</span> <span class="o">=</span> <span class="n">min_rounded</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+                <span class="n">min_out</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="o">-</span><span class="mf">.1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;e&#39;</span> <span class="o">+</span> <span class="n">exp_st</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">min_rounded</span><span class="p">)</span>
+                <span class="n">x_ticks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_out</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO: add in more ticks if available</span>
+            <span class="n">x_ticks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">max_rounded</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">x_ticks</span>
+
+
+<span class="k">def</span> <span class="nf">_strip_zeros</span><span class="p">(</span><span class="n">x_tick</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="n">x_tick</span><span class="p">):</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x_tick</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x_out</span>
+
+
+<span class="k">def</span> <span class="nf">_num2pretty_string</span><span class="p">(</span><span class="n">x_tick</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="n">_strip_zeros</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="n">_strip_zeros</span><span class="p">(</span><span class="n">x_tick</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;K&#39;</span>
+    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000000000</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="n">_strip_zeros</span><span class="p">(</span><span class="n">x_tick</span><span class="o">/</span><span class="mi">1000000</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;M&#39;</span>
+    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000000000000</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="n">_strip_zeros</span><span class="p">(</span><span class="n">x_tick</span><span class="o">/</span><span class="mi">1000000000</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;B&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_out</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:E}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_tick</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x_out</span>
 
 
 <span class="k">def</span> <span class="nf">_remove_extra_whitespace</span><span class="p">(</span><span class="n">in_string</span><span class="p">):</span>
@@ -324,6 +365,7 @@
         <span class="k">for</span> <span class="n">yt_ind</span><span class="p">,</span> <span class="n">yt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">yt_vb</span> <span class="o">=</span> <span class="n">y2vb</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
             <span class="n">ytn_vb</span> <span class="o">=</span> <span class="n">y2vb</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">[</span><span class="n">yt_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">yt_text</span> <span class="o">=</span> <span class="n">y_ticks_text</span><span class="p">[</span><span class="n">yt_ind</span><span class="p">]</span>
             <span class="n">y_axis_pts_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s2">                </span><span class="si">{</span><span class="n">y_axis_xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                </span><span class="si">{</span><span class="n">y_axis_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2"></span>
@@ -331,12 +373,13 @@
             <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span>
             <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s2">                &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
-<span class="s2">                text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">yt</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">                text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">yt_text</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">y_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">y_axis_xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
         <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span> <span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
-<span class="s2">            text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">y_ticks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">y_ticks_text</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            &lt;/text&gt; &lt;/g&gt;&quot;&quot;&quot;</span><span class="p">)</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s2">            &lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;1&quot;</span>
@@ -435,18 +478,17 @@
     <span class="n">y_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">all_ys</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">x_ticks</span> <span class="o">=</span> <span class="n">_make_pretty_ticks</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">x_axis_is_time</span><span class="p">:</span>
-            <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
+        <span class="n">x_ticks</span> <span class="o">=</span> <span class="n">_make_pretty_ticks</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">x_axis_is_time</span><span class="p">)</span>
 
-    <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x_axis_is_time</span><span class="p">:</span>
+        <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">_num2pretty_string</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">x_axis_is_time</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
         <span class="c1"># trying to convert ticks</span>
         <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">y_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">y_ticks</span> <span class="o">=</span> <span class="n">_make_pretty_ticks</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+        <span class="n">y_ticks</span> <span class="o">=</span> <span class="n">_make_pretty_ticks</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">]</span>  <span class="c1"># convert to list with one string</span>
@@ -484,7 +526,7 @@
                                                         <span class="n">x_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span>
                                                         <span class="n">vb_height</span><span class="p">,</span> <span class="n">YBUF</span><span class="p">,</span>
                                                         <span class="n">tick_length</span><span class="p">,</span> <span class="n">x2vb</span><span class="p">)</span>
-    <span class="n">y_ticks_text</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># TODO</span>
+    <span class="n">y_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">_num2pretty_string</span><span class="p">(</span><span class="n">_yt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_yt</span> <span class="ow">in</span> <span class="n">y_ticks</span><span class="p">]</span>
     <span class="n">y_axis</span><span class="p">,</span> <span class="n">y_axis_text_vb</span><span class="p">,</span> <span class="n">y_axis_label</span> <span class="o">=</span> <span class="n">_make_y_axis</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">,</span> <span class="n">y_ticks_text</span><span class="p">,</span>
                                                         <span class="n">y_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span>
                                                         <span class="n">vb_height</span><span class="p">,</span> <span class="n">XBUF</span><span class="p">,</span>

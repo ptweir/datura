@@ -34,11 +34,52 @@ def _interactive_display(filename):
     return in_notebook
 
 
-def _make_pretty_ticks(x_min, x_max, xs):
+def _make_pretty_ticks(x_min, x_max, x_axis_is_time):
 
-    x_ticks = [x_min, x_max]
+    if x_axis_is_time:
+        x_ticks = [datetime.fromtimestamp(_xt) for _xt in [x_min, x_max]]
+    else:
+        min_rounded = '{:.1e}'.format(x_min)
+        max_rounded = '{:.1e}'.format(x_max)
+
+        x_ticks = [float(min_rounded)]
+        if min_rounded == max_rounded:
+            if x_max > float(max_rounded):
+                significand_st, exp_st = max_rounded.split("e")
+                max_out = float(str(.1) + 'e' + exp_st) + float(max_rounded)
+                x_ticks.append(max_out)
+            if (x_min < float(min_rounded)) or (x_max == float(max_rounded)):
+                significand_st, exp_st = min_rounded.split("e")
+                min_out = float(str(-.1) + 'e' + exp_st) + float(min_rounded)
+                x_ticks.insert(0, min_out)
+        else:
+            # TODO: add in more ticks if available
+            x_ticks.append(float(max_rounded))
 
     return x_ticks
+
+
+def _strip_zeros(x_tick):
+    if int(x_tick) == float(x_tick):
+        x_out = str(int(x_tick))
+    else:
+        x_out = str(x_tick)
+    return x_out
+
+
+def _num2pretty_string(x_tick):
+    if abs(x_tick) < 1000:
+        x_out = _strip_zeros(x_tick)
+    elif abs(x_tick) < 1000000:
+        x_out = _strip_zeros(x_tick/1000) + 'K'
+    elif abs(x_tick) < 1000000000:
+        x_out = _strip_zeros(x_tick/1000000) + 'M'
+    elif abs(x_tick) < 1000000000000:
+        x_out = _strip_zeros(x_tick/1000000000) + 'B'
+    else:
+        x_out = "{:E}".format(x_tick)
+
+    return x_out
 
 
 def _remove_extra_whitespace(in_string):
@@ -254,6 +295,7 @@ def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
         for yt_ind, yt in enumerate(y_ticks[:-1]):
             yt_vb = y2vb(yt)
             ytn_vb = y2vb(y_ticks[yt_ind + 1])
+            yt_text = y_ticks_text[yt_ind]
             y_axis_pts_vb += _remove_extra_whitespace(f"""\
                 {y_axis_xt_vb},{yt_vb}
                 {y_axis_x_vb},{yt_vb}
@@ -261,12 +303,13 @@ def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
             y_axis_text_vb += '\n    '
             y_axis_text_vb += _remove_extra_whitespace(f"""\
                 <text x="{y_axis_x_vb - tick_length}" y="{yt_vb}" fill="black"
-                text-anchor="end" dominant-baseline="middle" > {yt} </text>""")
+                text-anchor="end" dominant-baseline="middle" > {yt_text}
+                </text>""")
 
         y_axis_pts_vb += f"""{y_axis_xt_vb},{ytn_vb}"""
         y_axis_text_vb += _remove_extra_whitespace(f"""\
             <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="black"
-            text-anchor="end" dominant-baseline="middle" > {y_ticks[-1]}
+            text-anchor="end" dominant-baseline="middle" > {y_ticks_text[-1]}
             </text> </g>""")
         y_axis = _remove_extra_whitespace(f"""\
             <polyline fill="none" stroke="black" stroke-width="1"
@@ -365,18 +408,17 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     y_max = max([max(y) for y in all_ys])
 
     if x_ticks is None:
-        x_ticks = _make_pretty_ticks(x_min, x_max, xs)
-        if x_axis_is_time:
-            x_ticks = [datetime.fromtimestamp(_xt) for _xt in x_ticks]
+        x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time)
 
-    x_ticks_text = [str(_xt) for _xt in x_ticks]
+    if not x_axis_is_time:
+        x_ticks_text = [_num2pretty_string(_xt) for _xt in x_ticks]
     if x_axis_is_time and len(x_ticks) >= 2:
         x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
         # trying to convert ticks
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
 
     if y_ticks is None:
-        y_ticks = _make_pretty_ticks(y_min, y_max, ys)
+        y_ticks = _make_pretty_ticks(y_min, y_max, False)
 
     if type(labels) == str and len(ys) == 1:
         labels = [labels]  # convert to list with one string
@@ -414,7 +456,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                                                         x_label, vb_width,
                                                         vb_height, YBUF,
                                                         tick_length, x2vb)
-    y_ticks_text = []  # TODO
+    y_ticks_text = [_num2pretty_string(_yt) for _yt in y_ticks]
     y_axis, y_axis_text_vb, y_axis_label = _make_y_axis(y_ticks, y_ticks_text,
                                                         y_label, vb_width,
                                                         vb_height, XBUF,

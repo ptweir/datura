@@ -4,7 +4,7 @@ import pandas as pd
 sql_query = """
 --sql
 WITH final_score_CTE AS (
-SELECT 
+SELECT
     MIN(homeFinalRuns) AS home_runs
   , MIN(awayFinalRuns) AS away_runs
   , MIN(startTime) AS start_time
