@@ -123,7 +123,9 @@ def _convert_to_lists_of_lists(xs, ys, yus, yls):
             yls = [yls]  # convert to list of lists
 
     xs = _convert_from_np_pd(xs)
-    if not all(isinstance(_x, list) for _x in xs):
+    if xs is None:
+        xs = [list(range(len(_y))) for _y in ys]  # convert to list of lists
+    elif not all(isinstance(_x, list) for _x in xs):
         xs = [xs for i in range(len(ys))]  # convert to list of lists
 
     return xs, ys, yus, yls
@@ -359,8 +361,6 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     vb_width_in = vb_width*.0096*2
     vb_height_in = vb_height*.0096*2
 
-    xs, ys, yus, yls = _convert_to_lists_of_lists(xs, ys, yus, yls)
-
     if label_nudges is None and labels is not None:
         label_nudges = [0 for y in ys]
 
@@ -535,8 +535,19 @@ def plot(*args, **kwargs):
     Tries to infer correct behavior when input is unexpected.
 
     """
+    if len(args) == 1:
+        xs = None
+        ys = args[0]
+    elif len(args) == 2:
+        xs = args[0]
+        ys = args[1]
 
-    return base_plot(*args, **kwargs)
+    yus = kwargs.pop('yus', None)
+    yls = kwargs.pop('yls', None)
+
+    xs, ys, yus, yls = _convert_to_lists_of_lists(xs, ys, yus, yls)
+
+    return base_plot(xs, ys, yus=yus, yls=yls, **kwargs)
 
 
 def scatter(*args, **kwargs):
@@ -590,7 +601,19 @@ def scatter(*args, **kwargs):
     if 'points_radii' not in kwargs.keys():
         kwargs['points_radii'] = [1]
 
-    return base_plot(*args, **kwargs)
+    if len(args) == 1:
+        xs = None
+        ys = args[0]
+    elif len(args) == 2:
+        xs = args[0]
+        ys = args[1]
+
+    yus = kwargs.pop('yus', None)
+    yls = kwargs.pop('yls', None)
+
+    xs, ys, yus, yls = _convert_to_lists_of_lists(xs, ys, yus, yls)
+
+    return base_plot(xs, ys, yus=yus, yls=yls, **kwargs)
 
 
 def error_plot(*args, **kwargs):
