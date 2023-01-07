@@ -205,23 +205,24 @@ def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges,
                            tick_length, line_widths, points_radii):
     datalines = []
     all_circles = []
-    for line_ind, x in enumerate(xs):
-        y = ys[line_ind]
+    if ys != []:
+        for line_ind, y in enumerate(ys):
+            x = xs[line_ind]
 
-        assert len(x) == len(y), 'all xs and ys should be the same length'
+            assert len(x) == len(y), 'all xs and ys should be the same length'
 
-        x_vb = [x2vb(xi) for xi in x]
-        y_vb = [y2vb(yi) for yi in y]
-        dataline = ''
-        circles = '<g fill="{cc}" stroke="none" stroke-width="0">'
-        for xy_vb in zip(x_vb, y_vb):
-            dataline += str(xy_vb[0]) + ',' + str(xy_vb[1]) + ' '
-            circles += f'<circle cx="{xy_vb[0]}" cy="{xy_vb[1]}"'
-            circles += ' r="{cr}"/>'
+            x_vb = [x2vb(xi) for xi in x]
+            y_vb = [y2vb(yi) for yi in y]
+            dataline = ''
+            circles = '<g fill="{cc}" stroke="none" stroke-width="0">'
+            for xy_vb in zip(x_vb, y_vb):
+                dataline += str(xy_vb[0]) + ',' + str(xy_vb[1]) + ' '
+                circles += f'<circle cx="{xy_vb[0]}" cy="{xy_vb[1]}"'
+                circles += ' r="{cr}"/>'
 
-        circles += '</g>'
-        datalines.append(dataline)
-        all_circles.append(circles)
+            circles += '</g>'
+            datalines.append(dataline)
+            all_circles.append(circles)
 
     polylines = ''
     line_labels = '<g font-family="sans-serif" font-size="10" >'
@@ -796,3 +797,52 @@ def _make_histogram_xys(hist_data, bin_edges):
     yl_out = [0 for y_o in y_out]
 
     return x_out, y_out, yl_out
+
+
+def bar(*args, bar_width=None, **kwargs):
+    """testing
+
+    """
+    if len(args) == 1:
+        autoposition_bars = True
+        xs = None
+        ys = args[0]
+    elif len(args) == 2:
+        autoposition_bars = False
+        xs = args[0]  # TODO check if xs is list of strings
+        ys = args[1]
+        if bar_width is None:
+            bar_width = 0.8
+
+    yus_in = kwargs.pop('yus', None)
+    yls_in = kwargs.pop('yls', None)
+    x_ticks = kwargs.pop('x_ticks', None)
+    fill_opacities = kwargs.pop('fill_opacities', [1])
+
+    xs, ys, _yus, _yls = _convert_to_lists_of_lists(xs, ys, None, None)
+
+    if autoposition_bars and (bar_width is None):
+        bar_width = 0.8 / len(xs)
+
+    yus, yls = [], []
+    for y_ind, y in enumerate(ys):
+        yu = [yi*_i for yi in y for _i in (0, 1, 1, 0)]
+        yl = [0 for yi in y for _i in (0, 1, 1, 0)]
+        yus.append(yu)
+        yls.append(yl)
+
+    xts = set()
+    xs_out = []
+    for x_ind, x in enumerate(xs):
+        bar_center = (-.5 * (len(xs) - 1) + x_ind) * bar_width
+        nudges = [-.5*bar_width, -.5*bar_width, .5*bar_width, .5*bar_width]
+        if autoposition_bars:
+            nudges = [bar_center + _n for _n in nudges]
+            xts = xts.union(set(x))
+        xs_out.append([xi+_d for xi in x for _d in nudges])
+
+    if x_ticks is None and autoposition_bars:
+        x_ticks = list(xts)
+
+    return base_plot(xs_out, ys=[], yus=yus, yls=yls, x_ticks=x_ticks,
+                     fill_opacities=fill_opacities, **kwargs)

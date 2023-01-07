@@ -275,23 +275,24 @@
                            <span class="n">tick_length</span><span class="p">,</span> <span class="n">line_widths</span><span class="p">,</span> <span class="n">points_radii</span><span class="p">):</span>
     <span class="n">datalines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">all_circles</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ys</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">for</span> <span class="n">line_ind</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ys</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s1">&#39;all xs and ys should be the same length&#39;</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s1">&#39;all xs and ys should be the same length&#39;</span>
 
-        <span class="n">x_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">x2vb</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">y_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">y2vb</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
-        <span class="n">dataline</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">circles</span> <span class="o">=</span> <span class="s1">&#39;&lt;g fill=&quot;</span><span class="si">{cc}</span><span class="s1">&quot; stroke=&quot;none&quot; stroke-width=&quot;0&quot;&gt;&#39;</span>
-        <span class="k">for</span> <span class="n">xy_vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_vb</span><span class="p">,</span> <span class="n">y_vb</span><span class="p">):</span>
-            <span class="n">dataline</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
-            <span class="n">circles</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-            <span class="n">circles</span> <span class="o">+=</span> <span class="s1">&#39; r=&quot;</span><span class="si">{cr}</span><span class="s1">&quot;/&gt;&#39;</span>
+            <span class="n">x_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">x2vb</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">y_vb</span> <span class="o">=</span> <span class="p">[</span><span class="n">y2vb</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+            <span class="n">dataline</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">circles</span> <span class="o">=</span> <span class="s1">&#39;&lt;g fill=&quot;</span><span class="si">{cc}</span><span class="s1">&quot; stroke=&quot;none&quot; stroke-width=&quot;0&quot;&gt;&#39;</span>
+            <span class="k">for</span> <span class="n">xy_vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_vb</span><span class="p">,</span> <span class="n">y_vb</span><span class="p">):</span>
+                <span class="n">dataline</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+                <span class="n">circles</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">xy_vb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="n">circles</span> <span class="o">+=</span> <span class="s1">&#39; r=&quot;</span><span class="si">{cr}</span><span class="s1">&quot;/&gt;&#39;</span>
 
-        <span class="n">circles</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/g&gt;&#39;</span>
-        <span class="n">datalines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataline</span><span class="p">)</span>
-        <span class="n">all_circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span>
+            <span class="n">circles</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/g&gt;&#39;</span>
+            <span class="n">datalines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataline</span><span class="p">)</span>
+            <span class="n">all_circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span>
 
     <span class="n">polylines</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="n">line_labels</span> <span class="o">=</span> <span class="s1">&#39;&lt;g font-family=&quot;sans-serif&quot; font-size=&quot;10&quot; &gt;&#39;</span>
@@ -866,6 +867,55 @@
     <span class="n">yl_out</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">y_o</span> <span class="ow">in</span> <span class="n">y_out</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">x_out</span><span class="p">,</span> <span class="n">y_out</span><span class="p">,</span> <span class="n">yl_out</span>
+
+
+<div class="viewcode-block" id="bar"><a class="viewcode-back" href="../../datura.html#datura.draw.bar">[docs]</a><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;testing</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">autoposition_bars</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">autoposition_bars</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># TODO check if xs is list of strings</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">bar_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="n">yus_in</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;yus&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">yls_in</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;yls&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">x_ticks</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_ticks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">fill_opacities</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_opacities&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">_yus</span><span class="p">,</span> <span class="n">_yls</span> <span class="o">=</span> <span class="n">_convert_to_lists_of_lists</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">autoposition_bars</span> <span class="ow">and</span> <span class="p">(</span><span class="n">bar_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+
+    <span class="n">yus</span><span class="p">,</span> <span class="n">yls</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">y_ind</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ys</span><span class="p">):</span>
+        <span class="n">yu</span> <span class="o">=</span> <span class="p">[</span><span class="n">yi</span><span class="o">*</span><span class="n">_i</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span> <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+        <span class="n">yl</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span> <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+        <span class="n">yus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yu</span><span class="p">)</span>
+        <span class="n">yls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yl</span><span class="p">)</span>
+
+    <span class="n">xts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">xs_out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x_ind</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+        <span class="n">bar_center</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">.5</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x_ind</span><span class="p">)</span> <span class="o">*</span> <span class="n">bar_width</span>
+        <span class="n">nudges</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.5</span><span class="o">*</span><span class="n">bar_width</span><span class="p">,</span> <span class="o">-</span><span class="mf">.5</span><span class="o">*</span><span class="n">bar_width</span><span class="p">,</span> <span class="mf">.5</span><span class="o">*</span><span class="n">bar_width</span><span class="p">,</span> <span class="mf">.5</span><span class="o">*</span><span class="n">bar_width</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">autoposition_bars</span><span class="p">:</span>
+            <span class="n">nudges</span> <span class="o">=</span> <span class="p">[</span><span class="n">bar_center</span> <span class="o">+</span> <span class="n">_n</span> <span class="k">for</span> <span class="n">_n</span> <span class="ow">in</span> <span class="n">nudges</span><span class="p">]</span>
+            <span class="n">xts</span> <span class="o">=</span> <span class="n">xts</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">xs_out</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">xi</span><span class="o">+</span><span class="n">_d</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">for</span> <span class="n">_d</span> <span class="ow">in</span> <span class="n">nudges</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">autoposition_bars</span><span class="p">:</span>
+        <span class="n">x_ticks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">xts</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">base_plot</span><span class="p">(</span><span class="n">xs_out</span><span class="p">,</span> <span class="n">ys</span><span class="o">=</span><span class="p">[],</span> <span class="n">yus</span><span class="o">=</span><span class="n">yus</span><span class="p">,</span> <span class="n">yls</span><span class="o">=</span><span class="n">yls</span><span class="p">,</span> <span class="n">x_ticks</span><span class="o">=</span><span class="n">x_ticks</span><span class="p">,</span>
+                     <span class="n">fill_opacities</span><span class="o">=</span><span class="n">fill_opacities</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
