@@ -39,6 +39,7 @@ def _make_pretty_ticks(x_min, x_max, x_axis_is_time):
     if x_axis_is_time:
         x_ticks = [datetime.fromtimestamp(_xt) for _xt in [x_min, x_max]]
     else:
+        # TODO: if small number of x and equally spaced, just use them
         min_rounded = '{:.1e}'.format(x_min)
         max_rounded = '{:.1e}'.format(x_max)
 
@@ -349,9 +350,14 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
               colors=None, fill_colors=None, fill_opacities=None,
               line_widths='1', points_radii=None,
               labels=None, label_nudges=None,
-              x_ticks=None, y_ticks=None, interactive_mode=True):
+              x_ticks=None, y_ticks=None, x_ticks_text=None,
+              interactive_mode=True):
     if filename[-4:] != '.svg':
         filename += '.svg'
+
+    if x_ticks_text is not None:
+        assert x_ticks is not None, 'x_ticks_text requies x_ticks'
+        assert len(x_ticks) == len(x_ticks_text), 'x_ticks x_ticks_text '
 
     XBUF = 0.1
     YBUF = 0.13
@@ -411,10 +417,11 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     if x_ticks is None:
         x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time)
 
-    if not x_axis_is_time:
+    if not x_axis_is_time and x_ticks_text is None:
         x_ticks_text = [_num2pretty_string(_xt) for _xt in x_ticks]
     if x_axis_is_time and len(x_ticks) >= 2:
-        x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
+        if x_ticks_text is None:
+            x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
         # trying to convert ticks
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
 
