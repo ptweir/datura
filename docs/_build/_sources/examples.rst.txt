@@ -49,3 +49,12 @@ Displaying histograms
 ..  figure:: ../examples/hist_example.svg
 
     hist_example.svg
+
+Displaying bar charts
+---------------------
+
+.. literalinclude:: ../examples/bar_example.py
+
+..  figure:: ../examples/bar_example.svg
+
+    bar_example.svg

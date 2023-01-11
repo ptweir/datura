@@ -109,6 +109,7 @@
     <span class="k">if</span> <span class="n">x_axis_is_time</span><span class="p">:</span>
         <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]]</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># TODO: if small number of x and equally spaced, just use them</span>
         <span class="n">min_rounded</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.1e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span>
         <span class="n">max_rounded</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.1e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span>
 
@@ -419,9 +420,14 @@
               <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_opacities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">line_widths</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">points_radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interactive_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+              <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_ticks_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">interactive_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
         <span class="n">filename</span> <span class="o">+=</span> <span class="s1">&#39;.svg&#39;</span>
+
+    <span class="k">if</span> <span class="n">x_ticks_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;x_ticks_text requies x_ticks&#39;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks_text</span><span class="p">),</span> <span class="s1">&#39;x_ticks x_ticks_text &#39;</span>
 
     <span class="n">XBUF</span> <span class="o">=</span> <span class="mf">0.1</span>
     <span class="n">YBUF</span> <span class="o">=</span> <span class="mf">0.13</span>
@@ -481,10 +487,11 @@
     <span class="k">if</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x_ticks</span> <span class="o">=</span> <span class="n">_make_pretty_ticks</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">x_axis_is_time</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">x_axis_is_time</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x_axis_is_time</span> <span class="ow">and</span> <span class="n">x_ticks_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">_num2pretty_string</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">x_axis_is_time</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">x_ticks_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
         <span class="c1"># trying to convert ticks</span>
         <span class="n">x_ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">_xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_xt</span> <span class="ow">in</span> <span class="n">x_ticks</span><span class="p">]</span>
 

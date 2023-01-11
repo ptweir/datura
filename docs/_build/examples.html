@@ -48,6 +48,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#displaying-data-in-a-pandas-dataframe">Displaying data in a Pandas dataFrame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-time-series-data-in-a-pandas-dataframe">Displaying time series data in a Pandas dataFrame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-histograms">Displaying histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#displaying-bar-charts">Displaying bar charts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">datura</a></li>
@@ -226,6 +227,25 @@ data set available through the <a class="reference external" href="https://conso
 <figure class="align-default" id="id4">
 <img alt="_images/hist_example.svg" src="_images/hist_example.svg" /><figcaption>
 <p><span class="caption-text">hist_example.svg</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="displaying-bar-charts">
+<h2>Displaying bar charts<a class="headerlink" href="#displaying-bar-charts" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datura</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="n">x_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Boreas&#39;</span><span class="p">,</span> <span class="s1">&#39;Zephryos&#39;</span><span class="p">,</span> <span class="s1">&#39;Notos&#39;</span><span class="p">,</span> <span class="s1">&#39;Euros&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Night&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                        <span class="s1">&#39;Day&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+
+<span class="n">datura</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;examples/bar_example.svg&#39;</span><span class="p">,</span> <span class="n">x_ticks_text</span><span class="o">=</span><span class="n">x_ticks_text</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id5">
+<img alt="_images/bar_example.svg" src="_images/bar_example.svg" /><figcaption>
+<p><span class="caption-text">bar_example.svg</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
