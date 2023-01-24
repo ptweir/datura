@@ -4,10 +4,45 @@ Introduction
 Overview
 --------
 
-``plot([0, 1, 2], [1,2,-1] , x_ticks=[0, 1, 2], y_ticks=[-1, 1], x_label='time', y_label='amount', labels='label')``
+Datura is a simple, pure Python library for creating data visualizations.
 
-the :meth:`~datura.draw.plot` function.
 
-.. raw:: html
+Installation
+------------
+.. role:: bash(code)
+   :language: bash
 
-    <?xml version="1.0" standalone="no"?><svg width="7.68in" height="3.84in" viewBox="0 0 400 200" \n    xmlns="http://www.w3.org/2000/svg" version="1.1">\n\n    \n    <polyline fill="none" stroke="black" stroke-width="1" points="40.0,75.33333333333334 200.0,26.0 360.0,174.0 " />\n \n    <g font-family="sans-serif" font-size="10" > <text x="362.0" y="174.0" dy="0" fill="black" dominant-baseline="middle" > label </text>\n</g>\n    <polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 200.0,178.0 200.0,176.0 200.0,178.0 360.0,178.0 360.0,176.0" />\n    <g font-family="sans-serif" font-size="10" > <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 0 </text>\n <text x="200.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 1 </text>\n <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text> </g>\n    <text x="200.0" y="198" fill="black" text-anchor="middle" font-family="sans-serif" font-size="10"> time </text>\n    <polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,75.33333333333334 38.0,75.33333333333334" />\n    <g font-family="sans-serif" font-size="10" > <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > -1 </text>\n <text x="34.0" y="75.33333333333334" fill="black" text-anchor="end" dominant-baseline="middle" > 1 </text> </g>\n    <text fill="black" text-anchor="middle" dominant-baseline="hanging" transform="translate(2,100.0) rotate(270)" font-family="sans-serif" font-size="10"> amount </text>\n    \n\n    </svg>
+:bash:`pip install datura`
+
+Why does the world need another Python plotting library?
+--------------------------------------------------------
+
+There are several excellent visualization libraries already available for Python.
+(The author can personally recommend `matplotlib`_ , `plotly`_, and `pyqtgraph`_.)
+So why create another? Datura is free and open source, easy to install, and works well in both notebook environments and other development environments.
+Further, Datura creates figures that are beautiful by default and reproducible.
+
+Each one of these criteria resulted in design choices for Datura that make it substantially different from other libraries.
+Insisting that it be easy to install resulted in the choice to have zero requirements (outside of the Python standard library).
+Datura does not have any configuration files that users need to maintain or adjust (more on this later).
+
+The desire to have it work in a variety of environments drove the usage of svg files as the file format — these files can be rendered anywhere a notebook is running and basically any environment with a browser.
+
+Although beauty is subjective, the default settings for Datura are intentionally chosen to take advantage of the space and colors available to the human visual system to express common quantitative concepts clearly and with minimal clutter.
+
+The final motivating factor, reproducibility, drove the decision to wrap all figure creation into a single line of code.
+While this design can result in commands with somewhat lengthy lists of arguments, it guarantees that running the same command generates the same figure, which is especially important in notebook environments where individual cells can be run and re-run in any order.
+This consideration also factored into the decision to exclude any configuration files, which can invisibly change the behavior of other plotting libraries.
+
+.. _matplotlib: https://matplotlib.org/stable/index.html
+.. _plotly: https://plotly.com/
+.. _pyqtgraph: https://www.pyqtgraph.org/
+
+Contributing
+------------
+Create an `issue`_
+
+Or contribute directly to the Datura `repo`_
+
+.. _issue: https://github.com/ptweir/datura/issues
+.. _repo: https://github.com/ptweir/datura

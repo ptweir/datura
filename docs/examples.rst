@@ -58,3 +58,9 @@ Displaying bar charts
 ..  figure:: ../examples/bar_example.svg
 
     bar_example.svg
+
+Jupyter notebooks
+-----------------
+
+.. raw:: html
+   :file: ../examples/jupyter_example.html
