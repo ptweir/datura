@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,101.85633668933183 71.98247535596933,57.26910069041014 103.96495071193866,29.712673378663645 136.03504928806134,29.712673378663645 168.0175246440307,57.26910069041012 200.0,101.85633668933181 231.98247535596934,146.44357268825348 264.052573932092,173.99999999999997 296.0350492880614,174.0 328.0175246440307,146.44357268825354 360.0,101.85633668933184 " />
+<polyline fill="none" stroke="blue" stroke-width="1" points="40.0,26.0 71.98247535596933,78.41543952130046 103.96495071193866,163.2254022020291 136.03504928806134,163.2254022020291 168.0175246440307,78.41543952130047 200.0,26.0 231.98247535596934,78.41543952130044 264.052573932092,163.2254022020291 296.0350492880614,163.22540220202913 328.0175246440307,78.4154395213005 360.0,26.0 " />
+
+<g font-family="sans-serif" font-size="10" ></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2010-01-01 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2020-01-01 </text> </g>
+
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,173.91985654419707 36.0,173.91985654419707 36.0,26.0 38.0,26.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="173.91985654419707" fill="black" text-anchor="end" dominant-baseline="middle" > -0.95 </text><text x="34.0" y="26.0" fill="black" text-anchor="end" dominant-baseline="middle" > 1 </text> </g>
+
+</svg>
