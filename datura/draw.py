@@ -34,12 +34,29 @@ def _interactive_display(filename):
     return in_notebook
 
 
-def _make_pretty_ticks(x_min, x_max, x_axis_is_time):
+def _check_equally_spaced(xs):
+    unique_xs = list(set(xi for _x in xs for xi in _x))
+    unique_xs.sort()
+    diffs = set()
+    for _i, xi in enumerate(unique_xs[:-1]):
+        diff = unique_xs[_i + 1] - xi
+        diffs.add(diff)
+
+    return len(diffs) == 1, unique_xs
+
+
+def _make_pretty_ticks(x_min, x_max, x_axis_is_time, xs=None):
 
     if x_axis_is_time:
         x_ticks = [datetime.fromtimestamp(_xt) for _xt in [x_min, x_max]]
     else:
-        # TODO: if small number of x and equally spaced, just use them
+        if xs is not None:
+            equally_spaced, unique_xs = _check_equally_spaced(xs)
+            if len(unique_xs) < 11 and equally_spaced:
+                # if small number of x and equally spaced, just use them
+                x_ticks = unique_xs
+                return x_ticks
+
         min_rounded = '{:.1e}'.format(x_min)
         max_rounded = '{:.1e}'.format(x_max)
 
@@ -54,8 +71,23 @@ def _make_pretty_ticks(x_min, x_max, x_axis_is_time):
                 min_out = float(str(-.1) + 'e' + exp_st) + float(min_rounded)
                 x_ticks.insert(0, min_out)
         else:
-            # TODO: add in more ticks if available
+            # add in more ticks if available
+            mean = (float(max_rounded) + float(min_rounded)) / 2.
+            thrd = (float(max_rounded) + float(min_rounded)) / 3.
+            if float('{:.1e}'.format(mean)) == mean:
+                x_ticks.append(float(mean))
+                l_mean = (mean + float(min_rounded)) / 2.
+                u_mean = (mean + float(max_rounded)) / 2.
+                if float('{:.1e}'.format(l_mean)) == l_mean:
+                    if float('{:.1e}'.format(u_mean)) == u_mean:
+                        x_ticks.append(float(l_mean))
+                        x_ticks.append(float(u_mean))
+            elif float('{:.1e}'.format(thrd)) == thrd:
+                if float('{:.1e}'.format(2*thrd)) == 2*thrd:
+                    x_ticks.append(float(thrd))
+                    x_ticks.append(2*float(thrd))
             x_ticks.append(float(max_rounded))
+            x_ticks.sort()
 
     return x_ticks
 
@@ -415,7 +447,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     y_max = max([max(y) for y in all_ys])
 
     if x_ticks is None:
-        x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time)
+        x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time, all_xs)
 
     if not x_axis_is_time and x_ticks_text is None:
         x_ticks_text = [_num2pretty_string(_xt) for _xt in x_ticks]
@@ -426,7 +458,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
 
     if y_ticks is None:
-        y_ticks = _make_pretty_ticks(y_min, y_max, False)
+        y_ticks = _make_pretty_ticks(y_min, y_max, False, all_ys)
 
     if type(labels) == str and len(ys) == 1:
         labels = [labels]  # convert to list with one string

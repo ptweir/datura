@@ -13,6 +13,16 @@ def test_num2pretty_string():
         assert _out == in_out[1]
 
 
+def test_check_equally_spaced():
+
+    in_outs = [[[[1, 2, 3], [3, 4, 5], [1, 2]], True, [1, 2, 3, 4, 5]],
+               [[[1, 2, 3], [3, 5], [1, 2]], False, [1, 2, 3, 5]]
+               ]
+    for in_out in in_outs:
+        _out_1, _out_2 = datura.draw._check_equally_spaced(in_out[0])
+        assert (_out_1, _out_2) == (in_out[1], in_out[2])
+
+
 def test_year_ticks():
     time_range = pd.date_range(start='2010-01-01', end='2020-01-01', freq='YS')
     df = pd.DataFrame(data={'t': time_range,
