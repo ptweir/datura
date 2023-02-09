@@ -45,9 +45,9 @@ def _check_equally_spaced(xs):
     return len(diffs) == 1, unique_xs
 
 
-def _make_pretty_ticks(x_min, x_max, x_axis_is_time, xs=None):
+def _make_pretty_ticks(x_min, x_max, axis_is_time, xs=None):
 
-    if x_axis_is_time:
+    if axis_is_time:
         x_ticks = [datetime.fromtimestamp(_xt) for _xt in [x_min, x_max]]
     else:
         if xs is not None:
@@ -111,6 +111,51 @@ def _num2pretty_string(x_tick):
         x_out = _strip_zeros(x_tick/1000000000) + 'B'
     else:
         x_out = "{:E}".format(x_tick)
+
+    return x_out
+
+
+def find_safe_time_trunc(x_ticks):
+    unique_year = set()
+    unique_month = set()
+    unique_day = set()
+    unique_hour = set()
+    unique_minute = set()
+    unique_second = set()
+    unique_microsecond = set()
+    for xt in x_ticks:
+        unique_year.add(xt.year)
+        unique_month.add(xt.month)
+        unique_day.add(xt.day)
+        unique_hour.add(xt.hour)
+        unique_minute.add(xt.minute)
+        unique_second.add(xt.second)
+        unique_microsecond.add(xt.microsecond)
+
+    all_same = [len(unique_year) == 1, len(unique_month) == 1,
+                len(unique_day) == 1, len(unique_hour) == 1,
+                len(unique_minute) == 1, len(unique_second) == 1,
+                len(unique_microsecond) == 1]
+
+    date_part = ['year', 'month', 'day', 'hour', 'minute', 'second', 'msecond']
+    max_t_trunc = date_part[all_same.index(False)]
+    min_t_trunc = date_part[::-1][all_same[::-1].index(False)]
+
+    return max_t_trunc, min_t_trunc
+
+
+def _tm2pretty_string(x_tick, max_t_trunc, min_t_trunc):
+    x_out = str(x_tick)
+    if min_t_trunc in ('year', 'month', 'day'):
+        x_out = str(x_tick).split(' ')[0]
+    elif max_t_trunc in ('hour', 'minute', 'second', 'msecond'):
+        x_out = str(x_tick).split(' ')[1]
+    elif min_t_trunc in ('hour', 'minute'):
+        x_out = ':'.join(str(x_tick).split(':')[0:2])
+        if max_t_trunc in ('year', 'month', 'day'):
+            x_out = '-'.join(x_out.split('-')[1:])
+    else:
+        x_out = str(x_tick)
 
     return x_out
 
@@ -453,7 +498,9 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_ticks_text = [_num2pretty_string(_xt) for _xt in x_ticks]
     if x_axis_is_time and len(x_ticks) >= 2:
         if x_ticks_text is None:
-            x_ticks_text = [str(_xt).split(' ')[0] for _xt in x_ticks]
+            max_t_trunc, min_t_trunc = find_safe_time_trunc(x_ticks)
+            x_ticks_text = [_tm2pretty_string(_xt, max_t_trunc, min_t_trunc)
+                            for _xt in x_ticks]
         # trying to convert ticks
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
 

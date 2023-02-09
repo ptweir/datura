@@ -89,3 +89,39 @@ def test_day_ticks():
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_hour_ticks_subday():
+    time_range = pd.date_range(start="2023-08-01", end="2023-08-01 12:0:0",
+                               freq="H")
+    df = pd.DataFrame(data={'t': time_range,
+                            'y1': np.sin(np.linspace(0, 2*np.pi, 13)),
+                            'y2': np.cos(np.linspace(0, 4*np.pi, 13))})
+
+    this_fn_base = 'hour_ticks_subday'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(df['t'], df[['y1', 'y2']], filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_hour_ticks():
+    time_range = pd.date_range(start="2023-08-01", end="2023-08-02 12:0:0",
+                               freq="H")
+    df = pd.DataFrame(data={'t': time_range,
+                            'y1': np.sin(np.linspace(0, 2*np.pi, 37)),
+                            'y2': np.cos(np.linspace(0, 4*np.pi, 37))})
+
+    this_fn_base = 'hour_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(df['t'], df[['y1', 'y2']], filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
