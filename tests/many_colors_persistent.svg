@@ -74,10 +74,20 @@
     <text x="362.0" y="38.97687805258005" dy="0" fill="rgb(255, 213, 0)" dominant-baseline="middle"></text>
     <text x="362.0" y="36.983431253276194" dy="0" fill="rgb(255, 227, 0)" dominant-baseline="middle"></text>
     <text x="362.0" y="29.01074995874202" dy="0" fill="rgb(255, 241, 0)" dominant-baseline="middle">40</text></g>
-<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 360.0,178.0 360.0,176.0" />
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 69.7005988023952,178.0 69.7005988023952,176.0 69.7005988023952,178.0 96.52694610778443,178.0 96.52694610778443,176.0 96.52694610778443,178.0 126.18762475049901,178.0 126.18762475049901,176.0 126.18762475049901,178.0 154.93013972055888,178.0 154.93013972055888,176.0 154.93013972055888,178.0 184.6307385229541,178.0 184.6307385229541,176.0 184.6307385229541,178.0 213.37325349301398,178.0 213.37325349301398,176.0 213.37325349301398,178.0 243.0738522954092,178.0 243.0738522954092,176.0 243.0738522954092,178.0 272.7744510978044,178.0 272.7744510978044,176.0 272.7744510978044,178.0 301.5169660678643,178.0 301.5169660678643,176.0 301.5169660678643,178.0 331.21756487025954,178.0 331.21756487025954,176.0 331.21756487025954,178.0 360.0,178.0 360.0,176.0" />
 <g font-family="sans-serif" font-size="10" >
-    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2022-01-01 </text>
-    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2022-12-01 </text> </g>
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2022-Jan </text>
+    <text x="69.7005988023952" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Feb </text>
+    <text x="96.52694610778443" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Mar </text>
+    <text x="126.18762475049901" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Apr </text>
+    <text x="154.93013972055888" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > May </text>
+    <text x="184.6307385229541" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Jun </text>
+    <text x="213.37325349301398" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Jul </text>
+    <text x="243.0738522954092" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Aug </text>
+    <text x="272.7744510978044" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Sep </text>
+    <text x="301.5169660678643" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Oct </text>
+    <text x="331.21756487025954" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Nov </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > Dec </text> </g>
 
 <polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,138.6992223353741 38.0,138.6992223353741 36.0,138.6992223353741 36.0,103.39844467074822 38.0,103.39844467074822 36.0,103.39844467074822 36.0,68.09766700612232 38.0,68.09766700612232 36.0,68.09766700612232 36.0,32.79688934149643 38.0,32.79688934149643" />
 <g font-family="sans-serif" font-size="10" >

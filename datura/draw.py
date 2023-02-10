@@ -45,17 +45,22 @@ def _check_equally_spaced(xs):
     return len(diffs) == 1, unique_xs
 
 
-def _make_pretty_ticks(x_min, x_max, axis_is_time, xs=None):
+def _make_pretty_ticks(x_min, x_max, axis_is_time, xs):
 
+    equally_spaced, unique_xs = _check_equally_spaced(xs)
     if axis_is_time:
-        x_ticks = [datetime.fromtimestamp(_xt) for _xt in [x_min, x_max]]
+        if len(unique_xs) <= 12:
+            # if small number of x, just use them
+            x_ticks_timestamps = unique_xs
+        else:
+            x_ticks_timestamps = [x_min, x_max]
+
+        x_ticks = [datetime.fromtimestamp(_xt) for _xt in x_ticks_timestamps]
     else:
-        if xs is not None:
-            equally_spaced, unique_xs = _check_equally_spaced(xs)
-            if len(unique_xs) < 11 and equally_spaced:
-                # if small number of x and equally spaced, just use them
-                x_ticks = unique_xs
-                return x_ticks
+        if len(unique_xs) <= 10 and equally_spaced:
+            # if small number of x and equally spaced, just use them
+            x_ticks = unique_xs
+            return x_ticks
 
         min_rounded = '{:.1e}'.format(x_min)
         max_rounded = '{:.1e}'.format(x_max)
@@ -144,9 +149,19 @@ def find_safe_time_trunc(x_ticks):
     return max_t_trunc, min_t_trunc
 
 
-def _tm2pretty_string(x_tick, max_t_trunc, min_t_trunc):
-    x_out = str(x_tick)
-    if min_t_trunc in ('year', 'month', 'day'):
+def _tm2pretty_string(x_tick, max_t_trunc, min_t_trunc, n_ticks, isfirst):
+
+    if n_ticks < 6 and min_t_trunc in ('year', 'month', 'day'):
+        x_out = str(x_tick).split(' ')[0]
+    elif min_t_trunc == 'year':
+        x_out = str(x_tick.year)
+    elif min_t_trunc == 'month' and max_t_trunc=='year':
+        x_out = str(x_tick.year) + '-' + str(x_tick.month)
+    elif min_t_trunc == 'month' and max_t_trunc=='month':
+        x_out = x_tick.strftime("%B")[:3]
+        if isfirst:
+            x_out = str(x_tick.year) + '-' + x_tick.strftime("%B")[:3]
+    elif min_t_trunc =='day':
         x_out = str(x_tick).split(' ')[0]
     elif max_t_trunc in ('hour', 'minute', 'second', 'msecond'):
         x_out = str(x_tick).split(' ')[1]
@@ -499,7 +514,8 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     if x_axis_is_time and len(x_ticks) >= 2:
         if x_ticks_text is None:
             max_t_trunc, min_t_trunc = find_safe_time_trunc(x_ticks)
-            x_ticks_text = [_tm2pretty_string(_xt, max_t_trunc, min_t_trunc)
+            x_ticks_text = [_tm2pretty_string(_xt, max_t_trunc, min_t_trunc,
+                                              len(x_ticks), _xt==x_ticks[0])
                             for _xt in x_ticks]
         # trying to convert ticks
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
