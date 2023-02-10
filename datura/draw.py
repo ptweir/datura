@@ -4,6 +4,7 @@ import math
 import textwrap
 import os
 import webbrowser
+import warnings
 
 
 def _interactive_display(filename):
@@ -442,14 +443,23 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
               colors=None, fill_colors=None, fill_opacities=None,
               line_widths='1', points_radii=None,
               labels=None, label_nudges=None,
-              x_ticks=None, y_ticks=None, x_ticks_text=None,
+              x_ticks=None, y_ticks=None,
+              x_ticks_text=None, y_ticks_text=None,
               interactive_mode=True):
     if filename[-4:] != '.svg':
         filename += '.svg'
-
+    
     if x_ticks_text is not None:
-        assert x_ticks is not None, 'x_ticks_text requies x_ticks'
-        assert len(x_ticks) == len(x_ticks_text), 'x_ticks x_ticks_text '
+        if x_ticks is None:
+            warnings.warn('x_ticks_text requires x_ticks')
+        elif len(x_ticks) == len(x_ticks_text):
+            warnings.warn('#x_ticks != #x_ticks_text')
+
+    if y_ticks_text is not None:
+        if y_ticks is None:
+            warnings.warn('y_ticks_text requires y_ticks')
+        elif len(y_ticks) == len(y_ticks_text):
+            warnings.warn('#y_ticks != #y_ticks_text')
 
     XBUF = 0.1
     YBUF = 0.13
@@ -559,7 +569,8 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
                                                         x_label, vb_width,
                                                         vb_height, YBUF,
                                                         tick_length, x2vb)
-    y_ticks_text = [_num2pretty_string(_yt) for _yt in y_ticks]
+    if y_ticks_text is None:
+        y_ticks_text = [_num2pretty_string(_yt) for _yt in y_ticks]
     y_axis, y_axis_text_vb, y_axis_label = _make_y_axis(y_ticks, y_ticks_text,
                                                         y_label, vb_width,
                                                         vb_height, XBUF,
@@ -620,14 +631,20 @@ def plot(*args, **kwargs):
         distances to move labels (intended to manually avoid overlaps)
     x_ticks : list, optional
         locations of ticks on the x-axis.
-        Empty (or length 1 list) will result in no x-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no x-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
     y_ticks : list, optional
         locations of ticks on the y-axis.
-        Empty (or length 1 list) will result in no y-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no y-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    x_ticks_text : list, optional
+        text to replace x_tick labels (requires x_ticks)
+    y_ticks_text : list, optional
+        text to replace y_tick labels (requires y_ticks)
     interactive_mode : bool, optional
-        if True, display inline (jupyter notebooks) or in new browser tab.
+        if True, display inline (jupyter notebooks) or in new browser tab
 
     Returns
     -------
@@ -683,12 +700,20 @@ def scatter(*args, **kwargs):
         distances to move labels (intended to manually avoid overlaps)
     x_ticks : list, optional
         locations of ticks on the x-axis.
-        Empty (or length 1 list) will result in no x-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no x-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
     y_ticks : list, optional
         locations of ticks on the y-axis.
-        Empty (or length 1 list) will result in no y-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no y-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    x_ticks_text : list, optional
+        text to replace x_tick labels (requires x_ticks)
+    y_ticks_text : list, optional
+        text to replace y_tick labels (requires y_ticks)
+    interactive_mode : bool, optional
+        if True, display inline (jupyter notebooks) or in new browser tab
 
     Returns
     -------
@@ -765,12 +790,20 @@ def error_plot(*args, **kwargs):
         distances to move labels (intended to manually avoid overlaps)
     x_ticks : list, optional
         locations of ticks on the x-axis.
-        Empty (or length 1 list) will result in no x-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no x-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
     y_ticks : list, optional
         locations of ticks on the y-axis.
-        Empty (or length 1 list) will result in no y-axis being displayed.
-        If None a automatically generated axis is displayed
+        If list with one element, will result in no y-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    x_ticks_text : list, optional
+        text to replace x_tick labels (requires x_ticks)
+    y_ticks_text : list, optional
+        text to replace y_tick labels (requires y_ticks)
+    interactive_mode : bool, optional
+        if True, display inline (jupyter notebooks) or in new browser tab
 
     Returns
     -------
@@ -805,45 +838,53 @@ def error_plot(*args, **kwargs):
 
 def hist(data, bin_edges=10, **kwargs):
     """Returns .svg text and saves a .svg file containing a histogram of the
-        data in list of lists data.
+    data in list of lists data.
 
-        Parameters
-        ----------
-        data : list of lists
-            raw values to be binned into histogram counts
-            (each list corresponds to a different histogram)
-        bin_edges : int or list of lists
-            if int, that number of equally spaced bins are created between the
-            minimum value in the data and the maximum value in data
-            if lists, each list is used as bins for each list in the input data
-        filename : string, optional
-            Name of the file to save. Default is 'plot.svg'
-        x_label : string, optional
-            Label for x axis
-        y_label : string, optional
-            Label for y axis
-        title : string, optional
-            Title of figure
-        colors : list, optional
-            List containing svg colors for each histogram
-        fill_colors : list, optional
-            List containing svg fill colors for each patch
-        fill_opacities : list, optional
-            List containing numbers between 0 and 1 for each fill
-        line_widths : list, optional
-            List containing width for each histogram
-        labels : list of strings, optional
-            Labels corresponding to each line
-        label_nudges : list of ints, optional
-            distances to move labels (intended to manually avoid overlaps)
-        x_ticks : list, optional
-            locations of ticks on the x-axis.
-            Empty (or length 1 list) will result in no x-axis being displayed.
-            If None a automatically generated axis is displayed
-        y_ticks : list, optional
-            locations of ticks on the y-axis.
-            Empty (or length 1 list) will result in no y-axis being displayed.
-            If None a automatically generated axis is displayed
+    Parameters
+    ----------
+    data : list of lists
+        raw values to be binned into histogram counts
+        (each list corresponds to a different histogram)
+    bin_edges : int or list of lists
+        if int, that number of equally spaced bins are created between the
+        minimum value in the data and the maximum value in data
+        if lists, each list is used as bins for each list in the input data
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+        Label for x axis
+    y_label : string, optional
+        Label for y axis
+    title : string, optional
+        Title of figure
+    colors : list, optional
+        List containing svg colors for each histogram
+    fill_colors : list, optional
+        List containing svg fill colors for each patch
+    fill_opacities : list, optional
+        List containing numbers between 0 and 1 for each fill
+    line_widths : list, optional
+        List containing width for each histogram
+    labels : list of strings, optional
+        Labels corresponding to each line
+    label_nudges : list of ints, optional
+        distances to move labels (intended to manually avoid overlaps)
+    x_ticks : list, optional
+        locations of ticks on the x-axis.
+        If list with one element, will result in no x-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis.
+        If list with one element, will result in no y-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    x_ticks_text : list, optional
+        text to replace x_tick labels (requires x_ticks)
+    y_ticks_text : list, optional
+        text to replace y_tick labels (requires y_ticks)
+    interactive_mode : bool, optional
+        if True, display inline (jupyter notebooks) or in new browser tab
 
         Returns
         -------
@@ -902,7 +943,52 @@ def _make_histogram_xys(hist_data, bin_edges):
 
 
 def bar(*args, bar_width=None, **kwargs):
-    """testing
+    """Returns .svg text and saves a .svg file containing a bar chart of the
+    data in lists xs and ys.
+
+    Parameters
+    ----------
+    xs : list of lists, optional
+        Abscissas of the centers of the bars to plot
+        (each list corresponds to a different collection of bars)
+        if not specified, bars are centered on 0, 1, ... N
+    ys : list of lists
+        Ordinates of the bars to plot
+        (each list corresponds to a different collection)
+    filename : string, optional
+        Name of the file to save. Default is 'plot.svg'
+    x_label : string, optional
+        Label for x axis
+    y_label : string, optional
+        Label for y axis
+    title : string, optional
+        Title of figure
+    colors : list, optional
+        List containing svg colors for each line
+    x_ticks : list, optional
+        locations of ticks on the x-axis.
+        If list with one element, will result in no x-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    y_ticks : list, optional
+        locations of ticks on the y-axis.
+        If list with one element, will result in no y-axis being displayed
+        (but axis will be extended if necessary to include that value)
+        If None an automatically generated axis is displayed
+    x_ticks_text : list, optional
+        text to replace x_tick labels (requires x_ticks)
+    y_ticks_text : list, optional
+        text to replace y_tick labels (requires y_ticks)
+    interactive_mode : bool, optional
+        if True, display inline (jupyter notebooks) or in new browser tab
+
+    Returns
+    -------
+    full_figure : raw svg string
+
+    Notes
+    -----
+    Tries to infer correct behavior when input is unexpected.
 
     """
     if len(args) == 1:
