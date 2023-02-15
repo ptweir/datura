@@ -17,5 +17,5 @@ classifiers = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/ptweir/datura"
+Documentation = "https://datura.readthedocs.io/en/latest/"
 Source = "https://github.com/ptweir/datura"

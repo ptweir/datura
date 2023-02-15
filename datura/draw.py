@@ -156,13 +156,13 @@ def _tm2pretty_string(x_tick, max_t_trunc, min_t_trunc, n_ticks, isfirst):
         x_out = str(x_tick).split(' ')[0]
     elif min_t_trunc == 'year':
         x_out = str(x_tick.year)
-    elif min_t_trunc == 'month' and max_t_trunc=='year':
+    elif min_t_trunc == 'month' and max_t_trunc == 'year':
         x_out = str(x_tick.year) + '-' + str(x_tick.month)
-    elif min_t_trunc == 'month' and max_t_trunc=='month':
+    elif min_t_trunc == 'month' and max_t_trunc == 'month':
         x_out = x_tick.strftime("%B")[:3]
         if isfirst:
             x_out = str(x_tick.year) + '-' + x_tick.strftime("%B")[:3]
-    elif min_t_trunc =='day':
+    elif min_t_trunc == 'day':
         x_out = str(x_tick).split(' ')[0]
     elif max_t_trunc in ('hour', 'minute', 'second', 'msecond'):
         x_out = str(x_tick).split(' ')[1]
@@ -329,6 +329,8 @@ def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges,
         if points_radii is not None:
             c_r = points_radii[line_ind % len(points_radii)]
             polylines += all_circles[line_ind].format(cr=c_r, cc=color) + '\n'
+        else:
+            c_r = 0
         if labels is not None:
             label = labels[line_ind]
             label_nudge = -1*label_nudges[line_ind]
@@ -338,7 +340,7 @@ def _make_lines_and_labels(xs, ys, x2vb, y2vb, colors, labels, label_nudges,
             y_label_vb = y2vb(ys[line_ind][max_ind])
             line_labels += '\n    '
             line_labels += _remove_extra_whitespace(f"""\
-                <text x="{x_label_vb + tick_length}"
+                <text x="{x_label_vb + tick_length + c_r}"
                 y="{y_label_vb}" dy="{label_nudge}" fill="{label_color}"
                 dominant-baseline="middle">{label}</text>""")
 
@@ -448,7 +450,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
               interactive_mode=True):
     if filename[-4:] != '.svg':
         filename += '.svg'
-    
+
     if x_ticks_text is not None:
         if x_ticks is None:
             warnings.warn('x_ticks_text requires x_ticks')
@@ -525,7 +527,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         if x_ticks_text is None:
             max_t_trunc, min_t_trunc = find_safe_time_trunc(x_ticks)
             x_ticks_text = [_tm2pretty_string(_xt, max_t_trunc, min_t_trunc,
-                                              len(x_ticks), _xt==x_ticks[0])
+                                              len(x_ticks), _xt == x_ticks[0])
                             for _xt in x_ticks]
         # trying to convert ticks
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]

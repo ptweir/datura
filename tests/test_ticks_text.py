@@ -17,6 +17,7 @@ def test_default_ticks_text():
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()
 
+
 def test_x_ticks_text():
 
     this_fn_base = 'ticks'
