@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="images/datura_196.png"><br>
+</div>
+
 # Datura
 
 A simple pure Python data visualization package.

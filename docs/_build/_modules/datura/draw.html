@@ -295,28 +295,43 @@
     <span class="k">return</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="p">,</span> <span class="n">yls</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_colors</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">fill_colors</span><span class="p">,</span> <span class="n">fill_opacities</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_convert_colors</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">fill_colors</span><span class="p">,</span> <span class="n">fill_opacities</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">yus</span><span class="p">,</span> <span class="n">CLR</span><span class="p">,</span>
+                    <span class="n">dark_mode</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;violet&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">]</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">CLR</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;violet&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">):</span>
-            <span class="n">num_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
-            <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">color_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">):</span>
-                <span class="n">red</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span><span class="p">))</span>
-                <span class="n">green</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span> <span class="o">-</span> <span class="mi">256</span><span class="p">))</span>
-                <span class="n">this_color</span> <span class="o">=</span> <span class="s1">&#39;rgb(&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">red</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">green</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, 0)&#39;</span>
-                <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_color</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dark_mode</span><span class="p">:</span>
+                <span class="n">num_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">color_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">):</span>
+                    <span class="n">blu</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span><span class="p">))</span>
+                    <span class="n">blu</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">blu</span>
+                    <span class="n">grn</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span> <span class="o">-</span> <span class="mi">256</span><span class="p">))</span>
+                    <span class="n">grn</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">grn</span>
+                    <span class="n">this_clr</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grn</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">blu</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+                    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_clr</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">num_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">color_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_colors</span><span class="p">):</span>
+                    <span class="n">red</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span><span class="p">))</span>
+                    <span class="n">grn</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_ind</span><span class="o">*</span><span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">num_colors</span> <span class="o">-</span> <span class="mi">256</span><span class="p">))</span>
+                    <span class="n">this_color</span> <span class="o">=</span> <span class="s1">&#39;rgb(&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">red</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grn</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, 0)&#39;</span>
+                    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_color</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fill_colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fill_colors</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">fill_opacities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">yus</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="n">fill_opacities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0.2&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">yus</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dark_mode</span><span class="p">:</span>
+            <span class="n">fill_opacities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0.4&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">yus</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fill_opacities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0.2&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">yus</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fill_colors</span><span class="p">,</span> <span class="n">fill_opacities</span>
 
 
 <span class="k">def</span> <span class="nf">_make_x_axis</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">,</span> <span class="n">x_ticks_text</span><span class="p">,</span> <span class="n">x_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">vb_height</span><span class="p">,</span> <span class="n">YBUF</span><span class="p">,</span>
-                 <span class="n">tick_length</span><span class="p">,</span> <span class="n">x2vb</span><span class="p">):</span>
+                 <span class="n">tick_length</span><span class="p">,</span> <span class="n">x2vb</span><span class="p">,</span> <span class="n">CLR</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">x_axis</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="n">x_axis_text_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -336,19 +351,19 @@
 <span class="s2">                </span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_y_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
             <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span>
             <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">                &lt;text x=&quot;</span><span class="si">{</span><span class="n">xt_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">                &lt;text x=&quot;</span><span class="si">{</span><span class="n">xt_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">                text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; &gt; </span><span class="si">{</span><span class="n">xt_text</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">x_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">x_axis_yt_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
         <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span>
         <span class="n">x_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">xtn_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_axis_y_vb</span> <span class="o">+</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">            text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot; &gt;</span>
 <span class="s2">            </span><span class="si">{</span><span class="n">x_ticks_text</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt;/text&gt; &lt;/g&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">x_axis</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;1&quot;</span>
+<span class="s2">            &lt;polyline fill=&quot;none&quot; stroke=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot; stroke-width=&quot;1&quot;</span>
 <span class="s2">            points=&quot;</span><span class="si">{</span><span class="n">x_axis_pts_vb</span><span class="si">}</span><span class="s2">&quot; /&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">x_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -358,7 +373,7 @@
         <span class="n">x_label_y_vb</span> <span class="o">=</span> <span class="n">vb_height</span> <span class="o">-</span> <span class="n">tick_length</span>
 
         <span class="n">x_axis_label</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">x_label_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_label_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">x_label_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">x_label_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">            text-anchor=&quot;middle&quot; font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt;</span>
 <span class="s2">            </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
@@ -450,7 +465,7 @@
 
 
 <span class="k">def</span> <span class="nf">_make_y_axis</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">,</span> <span class="n">y_ticks_text</span><span class="p">,</span> <span class="n">y_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">vb_height</span><span class="p">,</span> <span class="n">XBUF</span><span class="p">,</span>
-                 <span class="n">tick_length</span><span class="p">,</span> <span class="n">y2vb</span><span class="p">):</span>
+                 <span class="n">tick_length</span><span class="p">,</span> <span class="n">y2vb</span><span class="p">,</span> <span class="n">CLR</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -471,17 +486,17 @@
 <span class="s2">                </span><span class="si">{</span><span class="n">y_axis_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
             <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span>
             <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">                &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">                &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">yt_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">                text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">yt_text</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">y_axis_pts_vb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">y_axis_xt_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
         <span class="n">y_axis_text_vb</span> <span class="o">+=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span> <span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">y_axis_x_vb</span> <span class="o">-</span> <span class="n">tick_length</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span> <span class="n">ytn_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">            text-anchor=&quot;end&quot; dominant-baseline=&quot;middle&quot; &gt; </span><span class="si">{</span><span class="n">y_ticks_text</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            &lt;/text&gt; &lt;/g&gt;&quot;&quot;&quot;</span><span class="p">)</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;1&quot;</span>
+<span class="s2">            &lt;polyline fill=&quot;none&quot; stroke=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot; stroke-width=&quot;1&quot;</span>
 <span class="s2">            points=&quot;</span><span class="si">{</span><span class="n">y_axis_pts_vb</span><span class="si">}</span><span class="s2">&quot; /&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">y_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -490,21 +505,21 @@
         <span class="n">y_label_x_vb</span> <span class="o">=</span> <span class="n">tick_length</span>
         <span class="n">y_label_y_vb</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="n">vb_height</span>
         <span class="n">y_axis_label</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;text fill=&quot;black&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot;</span>
+<span class="s2">            &lt;text fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot;</span>
 <span class="s2">            transform=&quot;translate(</span><span class="si">{</span><span class="n">y_label_x_vb</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y_label_y_vb</span><span class="si">}</span><span class="s2">) rotate(270)&quot;</span>
 <span class="s2">            font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt; </span><span class="si">{</span><span class="n">y_label</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">y_axis</span><span class="p">,</span> <span class="n">y_axis_text_vb</span><span class="p">,</span> <span class="n">y_axis_label</span>
 
 
-<span class="k">def</span> <span class="nf">_make_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">tick_length</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_make_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">tick_length</span><span class="p">,</span> <span class="n">CLR</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">title_vb</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">title_x_vb</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="n">vb_width</span>
         <span class="n">title_y_vb</span> <span class="o">=</span> <span class="n">tick_length</span>
         <span class="n">title_vb</span> <span class="o">=</span> <span class="n">_remove_extra_whitespace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">title_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">title_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;black&quot;</span>
+<span class="s2">            &lt;text x=&quot;</span><span class="si">{</span><span class="n">title_x_vb</span><span class="si">}</span><span class="s2">&quot; y=&quot;</span><span class="si">{</span><span class="n">title_y_vb</span><span class="si">}</span><span class="s2">&quot; fill=&quot;</span><span class="si">{</span><span class="n">CLR</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">            text-anchor=&quot;middle&quot; dominant-baseline=&quot;hanging&quot;</span>
 <span class="s2">            font-family=&quot;sans-serif&quot; font-size=&quot;10&quot;&gt; </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2"> &lt;/text&gt;&quot;&quot;&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">title_vb</span>
@@ -517,20 +532,20 @@
               <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_nudges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">x_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">x_ticks_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_ticks_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">interactive_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+              <span class="n">interactive_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dark_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
         <span class="n">filename</span> <span class="o">+=</span> <span class="s1">&#39;.svg&#39;</span>
 
     <span class="k">if</span> <span class="n">x_ticks_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">x_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;x_ticks_text requires x_ticks&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks_text</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_ticks_text</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;#x_ticks != #x_ticks_text&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">y_ticks_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">y_ticks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;y_ticks_text requires y_ticks&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_ticks_text</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_ticks_text</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;#y_ticks != #y_ticks_text&#39;</span><span class="p">)</span>
 
     <span class="n">XBUF</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -541,6 +556,11 @@
 
     <span class="n">vb_width_in</span> <span class="o">=</span> <span class="n">vb_width</span><span class="o">*</span><span class="mf">.0096</span><span class="o">*</span><span class="mi">2</span>
     <span class="n">vb_height_in</span> <span class="o">=</span> <span class="n">vb_height</span><span class="o">*</span><span class="mf">.0096</span><span class="o">*</span><span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">dark_mode</span><span class="p">:</span>
+        <span class="n">CLR</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">CLR</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
 
     <span class="k">if</span> <span class="n">label_nudges</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">label_nudges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">]</span>
@@ -610,7 +630,7 @@
 
     <span class="n">colors</span><span class="p">,</span> <span class="n">fill_colors</span><span class="p">,</span> <span class="n">fill_opacities</span> <span class="o">=</span> <span class="n">_convert_colors</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">fill_colors</span><span class="p">,</span>
                                                           <span class="n">fill_opacities</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span>
-                                                          <span class="n">yus</span><span class="p">)</span>
+                                                          <span class="n">yus</span><span class="p">,</span> <span class="n">CLR</span><span class="p">,</span> <span class="n">dark_mode</span><span class="p">)</span>
 
     <span class="n">x_range</span> <span class="o">=</span> <span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span>
     <span class="k">if</span> <span class="n">x_range</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -640,14 +660,16 @@
     <span class="n">x_axis</span><span class="p">,</span> <span class="n">x_axis_text_vb</span><span class="p">,</span> <span class="n">x_axis_label</span> <span class="o">=</span> <span class="n">_make_x_axis</span><span class="p">(</span><span class="n">x_ticks</span><span class="p">,</span> <span class="n">x_ticks_text</span><span class="p">,</span>
                                                         <span class="n">x_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span>
                                                         <span class="n">vb_height</span><span class="p">,</span> <span class="n">YBUF</span><span class="p">,</span>
-                                                        <span class="n">tick_length</span><span class="p">,</span> <span class="n">x2vb</span><span class="p">)</span>
+                                                        <span class="n">tick_length</span><span class="p">,</span> <span class="n">x2vb</span><span class="p">,</span>
+                                                        <span class="n">CLR</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">y_ticks_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">y_ticks_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">_num2pretty_string</span><span class="p">(</span><span class="n">_yt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_yt</span> <span class="ow">in</span> <span class="n">y_ticks</span><span class="p">]</span>
     <span class="n">y_axis</span><span class="p">,</span> <span class="n">y_axis_text_vb</span><span class="p">,</span> <span class="n">y_axis_label</span> <span class="o">=</span> <span class="n">_make_y_axis</span><span class="p">(</span><span class="n">y_ticks</span><span class="p">,</span> <span class="n">y_ticks_text</span><span class="p">,</span>
                                                         <span class="n">y_label</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span>
                                                         <span class="n">vb_height</span><span class="p">,</span> <span class="n">XBUF</span><span class="p">,</span>
-                                                        <span class="n">tick_length</span><span class="p">,</span> <span class="n">y2vb</span><span class="p">)</span>
-    <span class="n">title_vb</span> <span class="o">=</span> <span class="n">_make_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">tick_length</span><span class="p">)</span>
+                                                        <span class="n">tick_length</span><span class="p">,</span> <span class="n">y2vb</span><span class="p">,</span>
+                                                        <span class="n">CLR</span><span class="p">)</span>
+    <span class="n">title_vb</span> <span class="o">=</span> <span class="n">_make_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">vb_width</span><span class="p">,</span> <span class="n">tick_length</span><span class="p">,</span> <span class="n">CLR</span><span class="p">)</span>
 
     <span class="n">full_figure</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">shorten</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s2">    &lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;</span>
@@ -655,6 +677,9 @@
 <span class="s2">    height=&quot;</span><span class="si">{</span><span class="n">vb_height_in</span><span class="si">}</span><span class="s2">in&quot;</span>
 <span class="s2">    viewBox=&quot;0 0 </span><span class="si">{</span><span class="n">vb_width</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">vb_height</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="s2">    xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;&quot;&quot;&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dark_mode</span><span class="p">:</span>
+        <span class="n">full_figure</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;#000000&quot;/&gt;&#39;</span>
 
     <span class="n">full_figure</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">polygons</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">polylines</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">line_labels</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
     <span class="n">full_figure</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x_axis</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">x_axis_text_vb</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">x_axis_label</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>

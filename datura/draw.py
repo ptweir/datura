@@ -225,28 +225,43 @@ def _convert_to_lists_of_lists(xs, ys, yus, yls):
     return xs, ys, yus, yls
 
 
-def _convert_colors(colors, fill_colors, fill_opacities, ys, yus):
+def _convert_colors(colors, fill_colors, fill_opacities, ys, yus, CLR,
+                    dark_mode):
     if colors is None:
-        colors = ['black', 'blue', 'red', 'green', 'orange', 'violet', 'brown']
+        colors = [CLR, 'blue', 'red', 'green', 'orange', 'violet', 'brown']
         if len(ys) > len(colors):
-            num_colors = len(ys)
-            colors = []
-            for color_ind in range(num_colors):
-                red = math.floor(min(255, color_ind*256*2/num_colors))
-                green = math.floor(max(0, color_ind*256*2/num_colors - 256))
-                this_color = 'rgb(' + str(red) + ', ' + str(green) + ', 0)'
-                colors.append(this_color)
+            if dark_mode:
+                num_colors = len(ys)
+                colors = []
+                for color_ind in range(num_colors):
+                    blu = math.floor(min(255, color_ind*256*2/num_colors))
+                    blu = 255 - blu
+                    grn = math.floor(max(0, color_ind*256*2/num_colors - 256))
+                    grn = 255 - grn
+                    this_clr = 'rgb(255, ' + str(grn) + ', ' + str(blu) + ')'
+                    colors.append(this_clr)
+            else:
+                num_colors = len(ys)
+                colors = []
+                for color_ind in range(num_colors):
+                    red = math.floor(min(255, color_ind*256*2/num_colors))
+                    grn = math.floor(max(0, color_ind*256*2/num_colors - 256))
+                    this_color = 'rgb(' + str(red) + ', ' + str(grn) + ', 0)'
+                    colors.append(this_color)
     if fill_colors is None:
         fill_colors = colors.copy()
 
     if (fill_opacities is None) and (yus is not None):
-        fill_opacities = ['0.2']*len(yus)
+        if dark_mode:
+            fill_opacities = ['0.4']*len(yus)
+        else:
+            fill_opacities = ['0.2']*len(yus)
 
     return colors, fill_colors, fill_opacities
 
 
 def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF,
-                 tick_length, x2vb):
+                 tick_length, x2vb, CLR):
     if len(x_ticks) < 2:
         x_axis = ''
         x_axis_text_vb = ''
@@ -266,19 +281,19 @@ def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF,
                 {xtn_vb},{x_axis_y_vb}""") + ' '
             x_axis_text_vb += '\n    '
             x_axis_text_vb += _remove_extra_whitespace(f"""\
-                <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="black"
+                <text x="{xt_vb}" y="{x_axis_y_vb + tick_length}" fill="{CLR}"
                 text-anchor="middle" dominant-baseline="hanging" > {xt_text}
                 </text>""")
 
         x_axis_pts_vb += f""" {xtn_vb},{x_axis_yt_vb}"""
         x_axis_text_vb += '\n    '
         x_axis_text_vb += _remove_extra_whitespace(f"""\
-            <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="black"
+            <text x="{xtn_vb}" y="{x_axis_y_vb + tick_length}" fill="{CLR}"
             text-anchor="middle" dominant-baseline="hanging" >
             {x_ticks_text[-1]} </text> </g>""")
 
         x_axis = _remove_extra_whitespace(f"""\
-            <polyline fill="none" stroke="black" stroke-width="1"
+            <polyline fill="none" stroke="{CLR}" stroke-width="1"
             points="{x_axis_pts_vb}" />""")
 
     if x_label is None:
@@ -288,7 +303,7 @@ def _make_x_axis(x_ticks, x_ticks_text, x_label, vb_width, vb_height, YBUF,
         x_label_y_vb = vb_height - tick_length
 
         x_axis_label = _remove_extra_whitespace(f"""\
-            <text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="black"
+            <text x="{x_label_x_vb}" y="{x_label_y_vb}" fill="{CLR}"
             text-anchor="middle" font-family="sans-serif" font-size="10">
             {x_label} </text>""")
 
@@ -380,7 +395,7 @@ def _make_polygons(xs, yus, yls, x2vb, y2vb, fill_colors, fill_opacities):
 
 
 def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
-                 tick_length, y2vb):
+                 tick_length, y2vb, CLR):
 
     if len(y_ticks) < 2:
         y_axis = ''
@@ -401,17 +416,17 @@ def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
                 {y_axis_x_vb},{ytn_vb}""") + ' '
             y_axis_text_vb += '\n    '
             y_axis_text_vb += _remove_extra_whitespace(f"""\
-                <text x="{y_axis_x_vb - tick_length}" y="{yt_vb}" fill="black"
+                <text x="{y_axis_x_vb - tick_length}" y="{yt_vb}" fill="{CLR}"
                 text-anchor="end" dominant-baseline="middle" > {yt_text}
                 </text>""")
 
         y_axis_pts_vb += f"""{y_axis_xt_vb},{ytn_vb}"""
         y_axis_text_vb += _remove_extra_whitespace(f"""\
-            <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="black"
+            <text x="{y_axis_x_vb - tick_length}" y="{ ytn_vb}" fill="{CLR}"
             text-anchor="end" dominant-baseline="middle" > {y_ticks_text[-1]}
             </text> </g>""")
         y_axis = _remove_extra_whitespace(f"""\
-            <polyline fill="none" stroke="black" stroke-width="1"
+            <polyline fill="none" stroke="{CLR}" stroke-width="1"
             points="{y_axis_pts_vb}" />""")
 
     if y_label is None:
@@ -420,21 +435,21 @@ def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
         y_label_x_vb = tick_length
         y_label_y_vb = .5 * vb_height
         y_axis_label = _remove_extra_whitespace(f"""\
-            <text fill="black" text-anchor="middle" dominant-baseline="hanging"
+            <text fill="{CLR}" text-anchor="middle" dominant-baseline="hanging"
             transform="translate({y_label_x_vb},{y_label_y_vb}) rotate(270)"
             font-family="sans-serif" font-size="10"> {y_label} </text>""")
 
     return y_axis, y_axis_text_vb, y_axis_label
 
 
-def _make_title(title, vb_width, tick_length):
+def _make_title(title, vb_width, tick_length, CLR):
     if title is None:
         title_vb = ''
     else:
         title_x_vb = .5*vb_width
         title_y_vb = tick_length
         title_vb = _remove_extra_whitespace(f"""\
-            <text x="{title_x_vb}" y="{title_y_vb}" fill="black"
+            <text x="{title_x_vb}" y="{title_y_vb}" fill="{CLR}"
             text-anchor="middle" dominant-baseline="hanging"
             font-family="sans-serif" font-size="10"> {title} </text>""")
     return title_vb
@@ -447,20 +462,20 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
               labels=None, label_nudges=None,
               x_ticks=None, y_ticks=None,
               x_ticks_text=None, y_ticks_text=None,
-              interactive_mode=True):
+              interactive_mode=True, dark_mode=False):
     if filename[-4:] != '.svg':
         filename += '.svg'
 
     if x_ticks_text is not None:
         if x_ticks is None:
             warnings.warn('x_ticks_text requires x_ticks')
-        elif len(x_ticks) == len(x_ticks_text):
+        elif len(x_ticks) != len(x_ticks_text):
             warnings.warn('#x_ticks != #x_ticks_text')
 
     if y_ticks_text is not None:
         if y_ticks is None:
             warnings.warn('y_ticks_text requires y_ticks')
-        elif len(y_ticks) == len(y_ticks_text):
+        elif len(y_ticks) != len(y_ticks_text):
             warnings.warn('#y_ticks != #y_ticks_text')
 
     XBUF = 0.1
@@ -471,6 +486,11 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     vb_width_in = vb_width*.0096*2
     vb_height_in = vb_height*.0096*2
+
+    if dark_mode:
+        CLR = 'white'
+    else:
+        CLR = 'black'
 
     if label_nudges is None and labels is not None:
         label_nudges = [0 for y in ys]
@@ -540,7 +560,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     colors, fill_colors, fill_opacities = _convert_colors(colors, fill_colors,
                                                           fill_opacities, ys,
-                                                          yus)
+                                                          yus, CLR, dark_mode)
 
     x_range = x_max - x_min
     if x_range == 0:
@@ -570,14 +590,16 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     x_axis, x_axis_text_vb, x_axis_label = _make_x_axis(x_ticks, x_ticks_text,
                                                         x_label, vb_width,
                                                         vb_height, YBUF,
-                                                        tick_length, x2vb)
+                                                        tick_length, x2vb,
+                                                        CLR)
     if y_ticks_text is None:
         y_ticks_text = [_num2pretty_string(_yt) for _yt in y_ticks]
     y_axis, y_axis_text_vb, y_axis_label = _make_y_axis(y_ticks, y_ticks_text,
                                                         y_label, vb_width,
                                                         vb_height, XBUF,
-                                                        tick_length, y2vb)
-    title_vb = _make_title(title, vb_width, tick_length)
+                                                        tick_length, y2vb,
+                                                        CLR)
+    title_vb = _make_title(title, vb_width, tick_length, CLR)
 
     full_figure = textwrap.shorten(f"""\
     <?xml version="1.0" standalone="no"?>
@@ -585,6 +607,9 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     height="{vb_height_in}in"
     viewBox="0 0 {vb_width} {vb_height}"
     xmlns="http://www.w3.org/2000/svg" version="1.1">""", 1000)
+
+    if dark_mode:
+        full_figure += '\n<rect width="100%" height="100%" fill="#000000"/>'
 
     full_figure += f'\n{polygons}\n{polylines}\n{line_labels}\n'
     full_figure += f'{x_axis}\n{x_axis_text_vb}\n{x_axis_label}\n'

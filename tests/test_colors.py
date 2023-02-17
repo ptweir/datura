@@ -52,3 +52,30 @@ def test_many_colors():
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_many_colors():
+    rng = np.random.RandomState(30)
+    ar = rng.normal(loc=5, scale=2, size=11)
+    labels = [5]
+    for this_loc in range(6, 41):
+        ar = np.vstack((ar, rng.normal(loc=this_loc, scale=2, size=11)))
+        if this_loc % 5 == 0:
+            labels.append(str(this_loc))
+        else:
+            labels.append('')
+    ar = np.hstack((ar, ar.mean(1)[:, np.newaxis]))
+    ar = ar.T
+
+    dts = pd.date_range(start='2023-01-01', end='2023-12-31', freq='MS')
+
+    this_fn_base = 'many_colors_darkmode'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(dts, ar, filename=out_svg, labels=labels,
+                       x_label='Month', y_ticks=[0, 10, 20, 30, 40],
+                       dark_mode=True)
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
