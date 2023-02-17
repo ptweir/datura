@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/datura_196.png" onerror="this.src='https://raw.githubusercontent.com/ptweir/datura/main/images/datura_196.png';"><br>
+  <img src="https://raw.githubusercontent.com/ptweir/datura/main/images/datura_196.png"><br>
 </div>
 
 # Datura
