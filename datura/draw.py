@@ -79,7 +79,6 @@ def _make_pretty_ticks(x_min, x_max, axis_is_time, xs):
         else:
             # add in more ticks if available
             mean = (float(max_rounded) + float(min_rounded)) / 2.
-            thrd = (float(max_rounded) + float(min_rounded)) / 3.
             if float('{:.1e}'.format(mean)) == mean:
                 x_ticks.append(float(mean))
                 l_mean = (mean + float(min_rounded)) / 2.
@@ -88,10 +87,6 @@ def _make_pretty_ticks(x_min, x_max, axis_is_time, xs):
                     if float('{:.1e}'.format(u_mean)) == u_mean:
                         x_ticks.append(float(l_mean))
                         x_ticks.append(float(u_mean))
-            elif float('{:.1e}'.format(thrd)) == thrd:
-                if float('{:.1e}'.format(2*thrd)) == 2*thrd:
-                    x_ticks.append(float(thrd))
-                    x_ticks.append(2*float(thrd))
             x_ticks.append(float(max_rounded))
             x_ticks.sort()
 
@@ -540,6 +535,14 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     if x_ticks is None:
         x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time, all_xs)
+        if x_axis_is_time:
+            x_ticks_for_min_max = [datetime.timestamp(_xt) for _xt in x_ticks]
+            all_xs = xs + [x_ticks_for_min_max]
+        else:
+            all_xs = xs + [x_ticks]
+
+        x_min = min([min(x) for x in all_xs])
+        x_max = max([max(x) for x in all_xs])
 
     if not x_axis_is_time and x_ticks_text is None:
         x_ticks_text = [_num2pretty_string(_xt) for _xt in x_ticks]
@@ -554,6 +557,9 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
 
     if y_ticks is None:
         y_ticks = _make_pretty_ticks(y_min, y_max, False, all_ys)
+        all_ys = all_ys + [y_ticks]
+        y_min = min([min(y) for y in all_ys])
+        y_max = max([max(y) for y in all_ys])
 
     if type(labels) == str and len(ys) == 1:
         labels = [labels]  # convert to list with one string

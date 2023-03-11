@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,174.0 69.0909090909091,146.84703421832336 98.18181818181819,134.19055365131004 127.27272727272727,126.99389995933305 156.36363636363637,121.55126938941497 185.45454545454547,116.37518154882936 214.54545454545453,110.90675652123396 243.63636363636363,101.65514436762912 272.72727272727275,97.66560158020101 301.81818181818187,95.37849299947713 330.90909090909093,83.07453668738745 360.0,58.62998896183117 " />
+<polyline fill="none" stroke="blue" stroke-width="1" points="40.0,62.3615871724859 69.0909090909091,60.19485272758962 98.18181818181819,58.88793353860454 127.27272727272727,65.04421077092893 156.36363636363637,72.07749956428279 185.45454545454547,73.71114855051415 214.54545454545453,73.59937256724567 243.63636363636363,73.36722244814965 272.72727272727275,73.42740951606343 301.81818181818187,65.13879044907918 330.90909090909093,52.129785627142255 360.0,36.739092546331264 " />
+<polyline fill="none" stroke="red" stroke-width="1" points="40.0,29.980944634868983 69.0909090909091,29.017951548248394 " />
+
+<g font-family="sans-serif" font-size="10" ></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 200.0,178.0 200.0,176.0 200.0,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 0 </text>
+    <text x="200.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 5.5 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 11 </text> </g>
+
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,172.16859350490907 36.0,172.16859350490907 36.0,26.0 38.0,26.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="172.16859350490907" fill="black" text-anchor="end" dominant-baseline="middle" > 0.011 </text><text x="34.0" y="26.0" fill="black" text-anchor="end" dominant-baseline="middle" > 0.028 </text> </g>
+
+</svg>

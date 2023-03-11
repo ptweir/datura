@@ -125,3 +125,56 @@ def test_hour_ticks():
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_problem1_ticks():
+    ys = [[0.440795, 0.411026, 0.386452],
+          [0.404519, 0.363246, 0.334465, 0.346549]]
+    this_fn_base = 'problem1_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(ys, filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_problem2_ticks():
+
+    y_s = [[0.010787,
+            0.013945,
+            0.015417,
+            0.016254,
+            0.016887,
+            0.017489,
+            0.018125,
+            0.019201,
+            0.019665,
+            0.019931,
+            0.021362,
+            0.024205],
+           [0.023771,
+            0.024023,
+            0.024175,
+            0.023459,
+            0.022641,
+            0.022451,
+            0.022464,
+            0.022491,
+            0.022484,
+            0.023448,
+            0.024961,
+            0.026751],
+           [0.027537, 0.027649]]
+
+    this_fn_base = 'problem2_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(y_s, filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()

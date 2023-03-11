@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,26.0 146.66666666666666,65.76544067873098 253.33333333333331,98.59139852881445 " />
+<polyline fill="none" stroke="blue" stroke-width="1" points="40.0,74.45749356920436 146.66666666666666,129.58998149736 253.33333333333331,168.03565142831357 360.0,151.8938399747281 " />
+
+<g font-family="sans-serif" font-size="10" ></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 146.66666666666666,178.0 146.66666666666666,176.0 146.66666666666666,178.0 253.33333333333331,178.0 253.33333333333331,176.0 253.33333333333331,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 0 </text>
+    <text x="146.66666666666666" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 1 </text>
+    <text x="253.33333333333331" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 3 </text> </g>
+
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,27.06196127984113 38.0,27.06196127984113" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > 0.33 </text><text x="34.0" y="27.06196127984113" fill="black" text-anchor="end" dominant-baseline="middle" > 0.44 </text> </g>
+
+</svg>
