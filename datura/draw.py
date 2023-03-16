@@ -438,11 +438,24 @@ def _make_y_axis(y_ticks, y_ticks_text, y_label, vb_width, vb_height, XBUF,
 
 
 def _make_title(title, vb_width, tick_length, CLR):
+    title_x_vb = .5*vb_width
+    title_y_vb = tick_length
     if title is None:
         title_vb = ''
+    elif '\n' in title:
+        t_list = title.split('\n')
+        title_vb = _remove_extra_whitespace(f"""\
+            <text x="{title_x_vb}" y="{title_y_vb}" fill="{CLR}"
+            text-anchor="middle" dominant-baseline="hanging"
+            font-family="sans-serif" font-size="10"> """)
+        for t_i, t_l in enumerate(t_list):
+            if t_i == 0:
+                dy = '0'
+            else:
+                dy = '1.2em'
+            title_vb += f'<tspan x="{title_x_vb}" dy="{dy}"> {t_l} </tspan>'
+        title_vb += " </text>"
     else:
-        title_x_vb = .5*vb_width
-        title_y_vb = tick_length
         title_vb = _remove_extra_whitespace(f"""\
             <text x="{title_x_vb}" y="{title_y_vb}" fill="{CLR}"
             text-anchor="middle" dominant-baseline="hanging"

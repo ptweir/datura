@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?> <svg width="7.68in" height="3.84in" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+<polyline fill="none" stroke="black" stroke-width="1" points="120.0,26.0 " />
+<g fill="black" stroke="none" stroke-width="0"><circle cx="120.0" cy="26.0" r="5"/></g>
+<polyline fill="none" stroke="blue" stroke-width="1" points="120.0,118.5 200.0,26.0 " />
+<g fill="blue" stroke="none" stroke-width="0"><circle cx="120.0" cy="118.5" r="5"/><circle cx="200.0" cy="26.0" r="5"/></g>
+<polyline fill="none" stroke="red" stroke-width="1" points="120.0,174.0 200.0,26.0 280.0,155.5 " />
+<g fill="red" stroke="none" stroke-width="0"><circle cx="120.0" cy="174.0" r="5"/><circle cx="200.0" cy="26.0" r="5"/><circle cx="280.0" cy="155.5" r="5"/></g>
+
+<g font-family="sans-serif" font-size="10" >
+    <text x="127.0" y="26.0" dy="0" fill="black" dominant-baseline="middle">short</text>
+    <text x="207.0" y="26.0" dy="0" fill="blue" dominant-baseline="middle">medium</text>
+    <text x="287.0" y="155.5" dy="0" fill="red" dominant-baseline="middle">long</text></g>
+<polyline fill="none" stroke="black" stroke-width="1" points="40.0,176.0 40.0,178.0 120.0,178.0 120.0,176.0 120.0,178.0 200.0,178.0 200.0,176.0 200.0,178.0 280.0,178.0 280.0,176.0 280.0,178.0 360.0,178.0 360.0,176.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="40.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 0 </text>
+    <text x="120.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 1 </text>
+    <text x="200.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 2 </text>
+    <text x="280.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 3 </text>
+    <text x="360.0" y="180.0" fill="black" text-anchor="middle" dominant-baseline="hanging" > 4 </text> </g>
+
+<polyline fill="none" stroke="black" stroke-width="1" points="38.0,174.0 36.0,174.0 36.0,137.0 38.0,137.0 36.0,137.0 36.0,100.0 38.0,100.0 36.0,100.0 36.0,63.0 38.0,63.0 36.0,63.0 36.0,26.0 38.0,26.0" />
+<g font-family="sans-serif" font-size="10" >
+    <text x="34.0" y="174.0" fill="black" text-anchor="end" dominant-baseline="middle" > 2 </text>
+    <text x="34.0" y="137.0" fill="black" text-anchor="end" dominant-baseline="middle" > 4 </text>
+    <text x="34.0" y="100.0" fill="black" text-anchor="end" dominant-baseline="middle" > 6 </text>
+    <text x="34.0" y="63.0" fill="black" text-anchor="end" dominant-baseline="middle" > 8 </text><text x="34.0" y="26.0" fill="black" text-anchor="end" dominant-baseline="middle" > 10 </text> </g>
+
+<text x="200.0" y="2" fill="black" text-anchor="middle" dominant-baseline="hanging" font-family="sans-serif" font-size="10"><tspan x="200.0" dy="0"> First title line </tspan><tspan x="200.0" dy="1.2em"> Second title line </tspan> </text></svg>
