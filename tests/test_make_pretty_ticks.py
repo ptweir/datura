@@ -178,3 +178,17 @@ def test_problem2_ticks():
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
             assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_timezone_ticks():
+    df = pd.read_csv(os.path.join('tests', 'tide.tsv'), sep='\t',
+                     parse_dates=[0])
+    this_fn_base = 'timezone_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    _out = datura.plot(df['datetime'], df['waterlevel'], filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()

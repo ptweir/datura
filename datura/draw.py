@@ -46,7 +46,7 @@ def _check_equally_spaced(xs):
     return len(diffs) == 1, unique_xs
 
 
-def _make_pretty_ticks(x_min, x_max, axis_is_time, xs):
+def _make_pretty_ticks(x_min, x_max, axis_is_time, xs, x_axis_tz):
 
     equally_spaced, unique_xs = _check_equally_spaced(xs)
     if axis_is_time:
@@ -56,7 +56,8 @@ def _make_pretty_ticks(x_min, x_max, axis_is_time, xs):
         else:
             x_ticks_timestamps = [x_min, x_max]
 
-        x_ticks = [datetime.fromtimestamp(_xt) for _xt in x_ticks_timestamps]
+        x_ticks = [datetime.fromtimestamp(_xt, tz=x_axis_tz)
+                   for _xt in x_ticks_timestamps]
     else:
         if len(unique_xs) <= 10 and equally_spaced:
             # if small number of x and equally spaced, just use them
@@ -159,7 +160,9 @@ def _tm2pretty_string(x_tick, max_t_trunc, min_t_trunc, n_ticks, isfirst):
             x_out = str(x_tick.year) + '-' + x_tick.strftime("%B")[:3]
     elif min_t_trunc == 'day':
         x_out = str(x_tick).split(' ')[0]
-    elif max_t_trunc in ('hour', 'minute', 'second', 'msecond'):
+    elif max_t_trunc in ('hour', 'minute', 'second'):
+        x_out = str(x_tick).split(' ')[1].split('+')[0]
+    elif max_t_trunc in ('msecond'):
         x_out = str(x_tick).split(' ')[1]
     elif min_t_trunc in ('hour', 'minute'):
         x_out = ':'.join(str(x_tick).split(':')[0:2])
@@ -515,11 +518,13 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         y_ticks.sort()
 
     x_axis_is_time = False
+    x_axis_tz = False
     for x_index, _x in enumerate(xs):
         try:
             _x[0] / 2
         except TypeError:
             x_axis_is_time = True
+            x_axis_tz = _x[0].tz
             xs[x_index] = [datetime.timestamp(_xi) for _xi in _x]
 
     all_xs = xs
@@ -547,7 +552,8 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     y_max = max([max(y) for y in all_ys])
 
     if x_ticks is None:
-        x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time, all_xs)
+        x_ticks = _make_pretty_ticks(x_min, x_max, x_axis_is_time, all_xs,
+                                     x_axis_tz)
         if x_axis_is_time:
             x_ticks_for_min_max = [datetime.timestamp(_xt) for _xt in x_ticks]
             all_xs = xs + [x_ticks_for_min_max]
@@ -569,7 +575,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
         x_ticks = [datetime.timestamp(_xt) for _xt in x_ticks]
 
     if y_ticks is None:
-        y_ticks = _make_pretty_ticks(y_min, y_max, False, all_ys)
+        y_ticks = _make_pretty_ticks(y_min, y_max, False, all_ys, None)
         all_ys = all_ys + [y_ticks]
         y_min = min([min(y) for y in all_ys])
         y_max = max([max(y) for y in all_ys])
