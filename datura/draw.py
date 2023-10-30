@@ -7,7 +7,7 @@ import webbrowser
 import warnings
 
 
-def _interactive_display(filename):
+def _interactive_display(filename, full_figure):
     try:
         from IPython.display import SVG, display
         from IPython import get_ipython
@@ -19,7 +19,7 @@ def _interactive_display(filename):
                 display(SVG(filename))
             elif shell == 'DatabricksShell':
                 in_notebook = True
-                displayHTML(filename)
+                displayHTML(full_figure)
             elif shell == 'TerminalInteractiveShell':
                 in_notebook = False
             else:
@@ -651,7 +651,7 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
     out_file.close()
 
     if interactive_mode:
-        in_notebook = _interactive_display(filename)
+        in_notebook = _interactive_display(filename, full_figure)
 
     return full_figure
 
