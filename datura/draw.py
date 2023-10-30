@@ -14,9 +14,12 @@ def _interactive_display(filename):
         ipython_present = True
         try:
             shell = get_ipython().__class__.__name__
-            if shell in ('ZMQInteractiveShell', 'Shell', 'DatabricksShell'):
+            if shell in ('ZMQInteractiveShell', 'Shell'):
                 in_notebook = True
                 display(SVG(filename))
+            elif shell == 'DatabricksShell':
+                in_notebook = True
+                displayHTML(filename)
             elif shell == 'TerminalInteractiveShell':
                 in_notebook = False
             else:
