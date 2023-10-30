@@ -1,5 +1,5 @@
 """functions to produce a line plot"""
-from datetime import datetime
+from datetime import datetime, timezone
 import math
 import textwrap
 import os
@@ -524,7 +524,12 @@ def base_plot(xs, ys, yus=None, yls=None, filename='plot.svg',
             _x[0] / 2
         except TypeError:
             x_axis_is_time = True
-            x_axis_tz = _x[0].tz
+            try:
+                x_axis_tz = _x[0].tz
+            except AttributeError:
+                x_axis_tz = timezone.utc
+                _x = [datetime(*_xi.timetuple()[:6],
+                               tzinfo=timezone.utc) for _xi in _x]
             xs[x_index] = [datetime.timestamp(_xi) for _xi in _x]
 
     all_xs = xs

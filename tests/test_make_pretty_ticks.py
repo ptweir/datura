@@ -1,7 +1,7 @@
 import datura
 import numpy as np
 import pandas as pd
-from datetime import datetime
+import datetime
 import os
 
 
@@ -188,6 +188,36 @@ def test_timezone_ticks():
     persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
 
     _out = datura.plot(df['datetime'], df['waterlevel'], filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_datetime_ticks():
+    this_fn_base = 'datetime_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    xs = [[datetime.datetime(2022, 9, 1, 3), datetime.datetime(2022, 9, 1, 4)]]
+    ys = [[1, 2]]
+
+    _out = datura.plot(xs, ys, filename=out_svg)
+
+    with open(out_svg) as out_svg_file:
+        with open(persistent_svg) as persistent_svg_file:
+            assert out_svg_file.read() == persistent_svg_file.read()
+
+
+def test_date_ticks():
+    this_fn_base = 'date_ticks'
+    out_svg = os.path.join('tests', this_fn_base+'.svg')
+    persistent_svg = os.path.join('tests', this_fn_base+'_persistent.svg')
+
+    xs = [[datetime.date(2022, 9, 1), datetime.date(2023, 9, 1)]]
+    ys = [[1, 2]]
+
+    _out = datura.plot(xs, ys, filename=out_svg)
 
     with open(out_svg) as out_svg_file:
         with open(persistent_svg) as persistent_svg_file:
