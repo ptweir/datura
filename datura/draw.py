@@ -9,7 +9,7 @@ import warnings
 
 def _interactive_display(filename, full_figure):
     try:
-        from IPython.display import SVG, display
+        from IPython.display import SVG, HTML, display
         from IPython import get_ipython
         ipython_present = True
         try:
@@ -19,7 +19,7 @@ def _interactive_display(filename, full_figure):
                 display(SVG(filename))
             elif shell == 'DatabricksShell':
                 in_notebook = True
-                displayHTML(full_figure)
+                display(HTML(full_figure))
             elif shell == 'TerminalInteractiveShell':
                 in_notebook = False
             else:

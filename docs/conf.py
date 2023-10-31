@@ -20,13 +20,13 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'datura'
-copyright = '2022, Peter Weir'
+copyright = '2023, Peter Weir'
 author = 'Peter Weir'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.0.6'
+release = '1.0.5'
 
 
 # -- General configuration ---------------------------------------------------
